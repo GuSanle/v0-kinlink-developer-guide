@@ -1,0 +1,405 @@
+import { CodeBlock } from "@/components/code-block"
+
+export default function FieldOperationsPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">字段操作</h1>
+        <p className="mt-2 text-lg text-muted-foreground">了解如何使用Kinlink API操作表单字段。</p>
+      </div>
+
+      <div className="docs-content">
+        <p>
+          Kinlink
+          API提供了一系列丰富的函数用于操作表单字段。本指南涵盖了最常见的字段操作，包括获取和设置字段值、显示和隐藏字段、启用和禁用字段以及样式设置。
+        </p>
+
+        <h2>获取和设置字段值</h2>
+
+        <p>最常见的操作之一是获取和设置字段值。这对于实现字段联动、计算和其他动态行为非常有用。</p>
+
+        <h3>获取字段值</h3>
+
+        <CodeBlock
+          code={`// 获取单个字段的值
+const name = kinlink.formApi.getFieldValue('name');
+console.log(name); // 输出: "John Doe"
+
+// 获取所有表单值
+const allValues = kinlink.formApi.getAllValues();
+console.log(allValues); // 输出: { name: "John Doe", email: "john@example.com", ... }`}
+          language="javascript"
+          filename="get-field-values.js"
+        />
+
+        <h3>设置字段值</h3>
+
+        <CodeBlock
+          code={`// 设置单个字段的值
+kinlink.formApi.setFieldValue('name', 'Jane Smith');
+
+// 一次设置多个字段值
+kinlink.formApi.setFieldsValue({
+  name: 'Jane Smith',
+  email: 'jane@example.com',
+  age: 30
+});`}
+          language="javascript"
+          filename="set-field-values.js"
+        />
+
+        <h3>示例：计算总额</h3>
+
+        <CodeBlock
+          code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName } = data;
+  const form = kinlink.formApi;
+  
+  // 当数量或价格变化时重新计算总额
+  if (fieldName === 'quantity' || fieldName === 'price') {
+    const quantity = Number(form.getFieldValue('quantity')) || 0;
+    const price = Number(form.getFieldValue('price')) || 0;
+    const total = quantity * price;
+    
+    form.setFieldValue('total', total);
+  }
+});`}
+          language="javascript"
+          filename="calculate-total.js"
+          showLineNumbers={true}
+        />
+
+        <h2>显示和隐藏字段</h2>
+
+        <p>您可以根据用户输入或其他条件动态显示和隐藏字段。这对于创建能够适应用户需求的条件表单非常有用。</p>
+
+        <h3>隐藏字段</h3>
+
+        <CodeBlock
+          code={`// 完全隐藏字段（不会被提交）
+kinlink.formApi.hideField('additionalInfo');
+
+// 视觉上隐藏字段但在提交时保留其值
+kinlink.formApi.visuallyHideField('hiddenId');`}
+          language="javascript"
+          filename="hide-fields.js"
+        />
+
+        <h3>显示字段</h3>
+
+        <CodeBlock
+          code={`// 显示之前隐藏的字段
+kinlink.formApi.showField('additionalInfo');`}
+          language="javascript"
+          filename="show-fields.js"
+        />
+
+        <h3>检查字段状态</h3>
+
+        <CodeBlock
+          code={`// 检查字段是否可见、启用等
+const state = kinlink.formApi.getFieldState('name');
+console.log(state); // 输出: { visible: true, disabled: false, excludeFromSubmit: false }`}
+          language="javascript"
+          filename="check-field-state.js"
+        />
+
+        <h3>示例：条件字段</h3>
+
+        <CodeBlock
+          code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+  // 初始隐藏字段
+  kinlink.formApi.hideField('businessName');
+  kinlink.formApi.hideField('personalId');
+});
+
+kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  const form = kinlink.formApi;
+  
+  // 根据客户类型显示/隐藏字段
+  if (fieldName === 'customerType') {
+    if (value === 'business') {
+      form.showField('businessName');
+      form.hideField('personalId');
+    } else if (value === 'individual') {
+      form.hideField('businessName');
+      form.showField('personalId');
+    } else {
+      form.hideField('businessName');
+      form.hideField('personalId');
+    }
+  }
+});`}
+          language="javascript"
+          filename="conditional-fields.js"
+          showLineNumbers={true}
+        />
+
+        <h2>启用和禁用字段</h2>
+
+        <p>
+          您可以启用和禁用字段来控制用户是否可以编辑它们。这对于只读字段、计算字段或只在特定条件下可编辑的字段非常有用。
+        </p>
+
+        <h3>禁用字段</h3>
+
+        <CodeBlock
+          code={`// 禁用字段（使其只读）
+kinlink.formApi.disableField('total');`}
+          language="javascript"
+          filename="disable-field.js"
+        />
+
+        <h3>启用字段</h3>
+
+        <CodeBlock
+          code={`// 启用之前禁用的字段
+kinlink.formApi.enableField('total');`}
+          language="javascript"
+          filename="enable-field.js"
+        />
+
+        <h3>示例：条件启用/禁用</h3>
+
+        <CodeBlock
+          code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  const form = kinlink.formApi;
+  
+  // 根据支付方式启用/禁用字段
+  if (fieldName === 'paymentMethod') {
+    if (value === 'creditCard') {
+      form.enableField('cardNumber');
+      form.enableField('expiryDate');
+      form.enableField('cvv');
+      form.disableField('bankAccount');
+    } else if (value === 'bankTransfer') {
+      form.disableField('cardNumber');
+      form.disableField('expiryDate');
+      form.disableField('cvv');
+      form.enableField('bankAccount');
+    } else {
+      form.disableField('cardNumber');
+      form.disableField('expiryDate');
+      form.disableField('cvv');
+      form.disableField('bankAccount');
+    }
+  }
+});`}
+          language="javascript"
+          filename="conditional-enabling.js"
+          showLineNumbers={true}
+        />
+
+        <h2>样式设置</h2>
+
+        <p>
+          您可以通过为字段标签和组件设置样式来自定义字段的外观。这对于突出显示重要字段、创建视觉层次结构或适应您的品牌指南非常有用。
+        </p>
+
+        <h3>设置字段标签样式</h3>
+
+        <CodeBlock
+          code={`// 设置字段标签的样式
+kinlink.formApi.setFieldLabelStyle('name', {
+  color: 'red',
+  fontWeight: 'bold'
+});
+
+// 获取字段标签的当前样式
+const labelStyle = kinlink.formApi.getFieldLabelStyle('name');
+console.log(labelStyle); // 输出: { color: "red", fontWeight: "bold" }
+
+// 重置字段标签的样式
+kinlink.formApi.resetFieldLabelStyle('name');
+
+// 设置多个字段标签的样式
+kinlink.formApi.setFieldsLabelStyles({
+  name: { color: 'red', fontWeight: 'bold' },
+  email: { color: 'blue', fontStyle: 'italic' }
+});`}
+          language="javascript"
+          filename="style-field-labels.js"
+          showLineNumbers={true}
+        />
+
+        <h3>设置字段组件样式</h3>
+
+        <CodeBlock
+          code={`// 设置字段组件的样式（输入框、选择框等）
+kinlink.formApi.setFieldComponentStyle('name', {
+  backgroundColor: '#f0f0f0',
+  padding: '10px'
+});
+
+// 获取字段组件的当前样式
+const componentStyle = kinlink.formApi.getFieldComponentStyle('name');
+console.log(componentStyle); // 输出: { backgroundColor: "#f0f0f0", padding: "10px" }
+
+// 重置字段组件的样式
+kinlink.formApi.resetFieldComponentStyle('name');
+
+// 设置多个字段组件的样式
+kinlink.formApi.setFieldsComponentStyles({
+  name: { backgroundColor: '#f0f0f0', padding: '10px' },
+  email: { backgroundColor: '#e0e0e0', padding: '8px' }
+});`}
+          language="javascript"
+          filename="style-field-components.js"
+          showLineNumbers={true}
+        />
+
+        <h3>更改字段标签</h3>
+
+        <CodeBlock
+          code={`// 更改字段标签的文本
+kinlink.formApi.setFieldLabelText('name', '全名');
+
+// 将字段标签的文本重置为原始值
+kinlink.formApi.resetFieldLabelText('name');`}
+          language="javascript"
+          filename="change-field-labels.js"
+        />
+
+        <h3>示例：突出显示必填字段</h3>
+
+        <CodeBlock
+          code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+  const form = kinlink.formApi;
+  
+  // 突出显示必填字段
+  const requiredFields = ['name', 'email', 'phone'];
+  
+  requiredFields.forEach(field => {
+    form.setFieldLabelStyle(field, {
+      color: '#ff4d4f',
+      fontWeight: 'bold'
+    });
+    
+    // 在标签中添加星号
+    const currentLabel = form.getFieldLabelText(field);
+    form.setFieldLabelText(field, \`\${currentLabel} *\`);
+  });
+});`}
+          language="javascript"
+          filename="highlight-required-fields.js"
+          showLineNumbers={true}
+        />
+
+        <h2>最佳实践</h2>
+
+        <ul>
+          <li>
+            <strong>在FORM_LOADED中初始化：</strong> 在FORM_LOADED事件处理程序中设置初始字段状态。
+          </li>
+          <li>
+            <strong>分组相关操作：</strong> 显示/隐藏多个字段时，将操作分组以提高可读性。
+          </li>
+          <li>
+            <strong>使用字段联动：</strong> 在FIELD_CHANGE事件处理程序中实现字段联动，创建动态表单。
+          </li>
+          <li>
+            <strong>禁用计算字段：</strong> 始终禁用计算或自动填充的字段，以防止用户编辑。
+          </li>
+          <li>
+            <strong>使用一致的样式：</strong> 对类似字段应用一致的样式，创建统一的用户体验。
+          </li>
+          <li>
+            <strong>考虑移动用户：</strong> 记住字段操作也会影响移动用户。在移动设备上测试您的表单。
+          </li>
+        </ul>
+
+        <h2>完整示例</h2>
+
+        <p>这是一个展示各种字段操作的完整示例：</p>
+
+        <CodeBlock
+          code={`(function() {
+  // 表单加载时初始化
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    const form = kinlink.formApi;
+    
+    // 初始隐藏字段
+    form.hideField('businessDetails');
+    form.hideField('individualDetails');
+    
+    // 设置默认值
+    form.setFieldValue('quantity', 1);
+    form.setFieldValue('price', 10);
+    form.setFieldValue('total', 10);
+    
+    // 禁用计算字段
+    form.disableField('total');
+    
+    // 设置必填字段样式
+    ['name', 'email', 'phone'].forEach(field => {
+      form.setFieldLabelStyle(field, {
+        color: '#ff4d4f',
+        fontWeight: 'bold'
+      });
+      
+      const currentLabel = form.getFieldLabelText(field);
+      form.setFieldLabelText(field, \`\${currentLabel} *\`);
+    });
+  });
+  
+  // 处理字段变化
+  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+    const { fieldName, value } = data;
+    const form = kinlink.formApi;
+    
+    // 根据客户类型显示/隐藏字段
+    if (fieldName === 'customerType') {
+      if (value === 'business') {
+        form.showField('businessDetails');
+        form.hideField('individualDetails');
+      } else if (value === 'individual') {
+        form.hideField('businessDetails');
+        form.showField('individualDetails');
+      } else {
+        form.hideField('businessDetails');
+        form.hideField('individualDetails');
+      }
+    }
+    
+    // 当数量或价格变化时计算总额
+    if (fieldName === 'quantity' || fieldName === 'price') {
+      const quantity = Number(form.getFieldValue('quantity')) || 0;
+      const price = Number(form.getFieldValue('price')) || 0;
+      const total = quantity * price;
+      
+      form.setFieldValue('total', total);
+    }
+    
+    // 输入折扣码时应用折扣
+    if (fieldName === 'discountCode' && value === 'SAVE10') {
+      const total = Number(form.getFieldValue('total')) || 0;
+      const discountedTotal = total * 0.9; // 10%折扣
+      
+      form.setFieldValue('total', discountedTotal);
+      form.setFieldComponentStyle('discountCode', {
+        backgroundColor: '#f6ffed',
+        borderColor: '#b7eb8f'
+      });
+      form.showSuccess('已应用折扣: 10% 优惠');
+    } else if (fieldName === 'discountCode' && value && value !== 'SAVE10') {
+      form.setFieldComponentStyle('discountCode', {
+        backgroundColor: '#fff2f0',
+        borderColor: '#ffccc7'
+      });
+      form.setFieldError('discountCode', '无效的折扣码');
+    } else if (fieldName === 'discountCode' && !value) {
+      form.resetFieldComponentStyle('discountCode');
+      form.clearFieldError('discountCode');
+    }
+  });
+})();`}
+          language="javascript"
+          filename="complete-field-operations.js"
+          showLineNumbers={true}
+        />
+      </div>
+    </div>
+  )
+}
