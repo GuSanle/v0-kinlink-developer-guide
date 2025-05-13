@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# hooks 目录说明
+
+[hooks/](mdc:hooks) 目录用于存放自定义 React hooks。
+
+- 每个 hook 建议单文件实现，命名以 use- 开头。
+- hooks 应采用函数式声明，优先使用具名导出。
+- 推荐使用 RORO（接收对象，返回对象）模式提升可读性和可维护性。

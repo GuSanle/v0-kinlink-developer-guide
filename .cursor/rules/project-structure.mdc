@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 项目结构说明
+
+本项目采用模块化结构，主要目录说明如下：
+
+- [app/](mdc:app)：包含页面、文档、API 参考、示例和指南，采用 Next.js 路由结构。
+- [components/](mdc:components)：存放可复用的 UI 组件和页面级组件，子目录 [ui/](mdc:components/ui) 为基础 UI 组件库。
+- [hooks/](mdc:hooks)：自定义 React hooks。
+- [lib/](mdc:lib)：工具函数和通用逻辑。
+- [public/](mdc:public)：静态资源，如图片、字体等。
+- [styles/](mdc:styles)：全局和模块化样式文件。
+- [.next/](mdc:.next)：Next.js 构建产物，通常无需手动修改。
+
+入口文件为 [app/page.tsx](mdc:app/page.tsx)。文档内容主要位于 [app/docs/](mdc:app/docs) 下，包含 API 参考、示例和指南。

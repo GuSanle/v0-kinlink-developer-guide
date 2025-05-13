@@ -1,24 +1,49 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Header() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navigation = [
     { name: "首页", href: "/" },
     { name: "文档", href: "/docs" },
     { name: "API参考", href: "/docs/api-reference" },
     { name: "示例", href: "/examples" },
-  ]
+  ];
+
+  function getActiveHref({
+    pathname,
+    navigation,
+  }: {
+    pathname: string | null;
+    navigation: { name: string; href: string }[];
+  }): string {
+    if (!pathname || !navigation) return "";
+    let activeHref = "";
+    let maxLength = 0;
+    for (const item of navigation)
+      if (
+        pathname === item.href ||
+        pathname.startsWith(item.href + "/") ||
+        pathname === item.href + "/"
+      )
+        if (item.href.length > maxLength) {
+          activeHref = item.href;
+          maxLength = item.href.length;
+        }
+    return activeHref;
+  }
+
+  const activeHref = getActiveHref({ pathname, navigation });
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
@@ -30,7 +55,7 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                  activeHref === item.href
                     ? "text-foreground"
                     : "text-muted-foreground"
                 }`}
@@ -56,7 +81,7 @@ export default function Header() {
                     key={item.name}
                     href={item.href}
                     className={`text-sm font-medium transition-colors hover:text-primary ${
-                      pathname === item.href || pathname.startsWith(`${item.href}/`)
+                      activeHref === item.href
                         ? "text-foreground"
                         : "text-muted-foreground"
                     }`}
@@ -70,5 +95,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 文档目录说明
+
+[app/docs/](mdc:app/docs) 目录用于存放开发者文档，结构如下：
+
+- [api-reference/](mdc:app/docs/api-reference)：API 参考文档，细分为 events、form-api、layout-api 等子目录。
+- [examples/](mdc:app/docs/examples)：示例代码和用法，按主题分子目录。
+- [guides/](mdc:app/docs/guides)：开发指南，涵盖表单操作、校验、移动端适配等主题。
+- [installation/](mdc:app/docs/installation)：安装与快速上手文档。
+
+每个子目录下可包含页面、布局和相关资源，采用 Next.js 路由结构。

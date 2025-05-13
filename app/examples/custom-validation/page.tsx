@@ -1,13 +1,18 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { CodeBlock } from "@/components/code-block"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CodeBlock } from "@/components/code-block";
+import {
+  HighlightTabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../highlight-tabs";
 
 export const metadata = {
   title: "自定义验证示例 - Kinlink开发者",
   description: "学习如何为您的表单实现高级验证规则，并提供视觉反馈。",
-}
+};
 
 export default function CustomValidationPage() {
   return (
@@ -26,7 +31,7 @@ export default function CustomValidationPage() {
           本示例演示如何为您的表单实现高级验证规则，并提供视觉反馈。您将学习如何创建密码强度验证、异步用户名检查等功能。
         </p>
 
-        <Tabs defaultValue="overview">
+        <HighlightTabs defaultValue="overview">
           <TabsList className="mb-4">
             <TabsTrigger value="overview">概述</TabsTrigger>
             <TabsTrigger value="code">代码</TabsTrigger>
@@ -69,7 +74,9 @@ export default function CustomValidationPage() {
 
           <TabsContent value="code">
             <h2>完整示例</h2>
-            <p>此代码演示了注册表单中的高级验证技术，包括密码强度验证和异步用户名检查。</p>
+            <p>
+              此代码演示了注册表单中的高级验证技术，包括密码强度验证和异步用户名检查。
+            </p>
 
             <CodeBlock
               code={`(function() {
@@ -282,7 +289,6 @@ export default function CustomValidationPage() {
 })();`}
               language="javascript"
               filename="custom-validation-example.js"
-              showLineNumbers={true}
             />
 
             <h3>表单结构</h3>
@@ -310,7 +316,6 @@ export default function CustomValidationPage() {
 </form>`}
               language="html"
               filename="form-structure.html"
-              showLineNumbers={true}
             />
           </TabsContent>
 
@@ -318,10 +323,14 @@ export default function CustomValidationPage() {
             <h2>如何使用此示例</h2>
 
             <h3>步骤1：创建您的表单</h3>
-            <p>首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。</p>
+            <p>
+              首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。
+            </p>
 
             <h3>步骤2：添加JavaScript代码</h3>
-            <p>从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。</p>
+            <p>
+              从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。
+            </p>
 
             <h3>步骤3：测试您的表单</h3>
             <p>预览您的表单并测试以下功能：</p>
@@ -357,7 +366,7 @@ export default function CustomValidationPage() {
               </li>
             </ul>
           </TabsContent>
-        </Tabs>
+        </HighlightTabs>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Link href="/examples">
@@ -372,5 +381,5 @@ export default function CustomValidationPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

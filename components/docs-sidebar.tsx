@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function DocsSidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   // 将侧边栏项目从英文改为中文
   const sidebarItems = [
@@ -59,36 +59,23 @@ export function DocsSidebar() {
         },
       ],
     },
-    {
-      title: "示例",
-      items: [
-        {
-          title: "字段联动",
-          href: "/docs/examples/field-linking",
-        },
-        {
-          title: "自定义验证",
-          href: "/docs/examples/custom-validation",
-        },
-        {
-          title: "外部集成",
-          href: "/docs/examples/external-integration",
-        },
-      ],
-    },
-  ]
+  ];
 
   return (
     <div className="w-full">
       {sidebarItems.map((section, i) => (
         <div key={i} className="pb-4">
-          <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">{section.title}</h4>
+          <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
+            {section.title}
+          </h4>
           {section.items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={`block rounded-md px-2 py-1 text-sm hover:bg-accent ${
-                pathname === item.href ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground"
+                pathname === item.href
+                  ? "bg-accent text-accent-foreground font-medium"
+                  : "text-muted-foreground"
               }`}
             >
               {item.title}
@@ -97,5 +84,5 @@ export function DocsSidebar() {
         </div>
       ))}
     </div>
-  )
+  );
 }

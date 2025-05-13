@@ -1,13 +1,18 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { CodeBlock } from "@/components/code-block"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CodeBlock } from "@/components/code-block";
+import {
+  HighlightTabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../highlight-tabs";
 
 export const metadata = {
   title: "多步骤表单示例 - Kinlink开发者",
   description: "学习如何创建带有进度跟踪和验证的多步骤注册表单。",
-}
+};
 
 export default function MultiStepFormPage() {
   return (
@@ -22,9 +27,11 @@ export default function MultiStepFormPage() {
       </div>
 
       <div className="prose prose-blue dark:prose-invert max-w-none">
-        <p className="lead">本示例演示如何创建带有进度跟踪、每步验证和最终提交前摘要审核的多步骤注册表单。</p>
+        <p className="lead">
+          本示例演示如何创建带有进度跟踪、每步验证和最终提交前摘要审核的多步骤注册表单。
+        </p>
 
-        <Tabs defaultValue="overview">
+        <HighlightTabs defaultValue="overview">
           <TabsList className="mb-4">
             <TabsTrigger value="overview">概述</TabsTrigger>
             <TabsTrigger value="code">代码</TabsTrigger>
@@ -67,7 +74,9 @@ export default function MultiStepFormPage() {
 
           <TabsContent value="code">
             <h2>完整示例</h2>
-            <p>此代码演示了一个带有个人信息、联系方式、账户设置和最终审核步骤的多步骤注册表单。</p>
+            <p>
+              此代码演示了一个带有个人信息、联系方式、账户设置和最终审核步骤的多步骤注册表单。
+            </p>
 
             <CodeBlock
               code={`(function() {
@@ -511,7 +520,6 @@ export default function MultiStepFormPage() {
 })();`}
               language="javascript"
               filename="multi-step-form-example.js"
-              showLineNumbers={true}
             />
           </TabsContent>
 
@@ -520,8 +528,8 @@ export default function MultiStepFormPage() {
 
             <h3>步骤1：创建您的表单</h3>
           </TabsContent>
-        </Tabs>
+        </HighlightTabs>
       </div>
     </div>
-  )
+  );
 }

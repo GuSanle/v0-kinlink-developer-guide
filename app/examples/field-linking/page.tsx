@@ -1,13 +1,18 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { CodeBlock } from "@/components/code-block"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CodeBlock } from "@/components/code-block";
+import {
+  HighlightTabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../highlight-tabs";
 
 export const metadata = {
   title: "字段联动示例 - Kinlink开发者",
   description: "学习如何使用字段联动和条件逻辑创建动态表单。",
-}
+};
 
 export default function FieldLinkingPage() {
   return (
@@ -26,7 +31,7 @@ export default function FieldLinkingPage() {
           本示例演示如何使用字段联动和条件逻辑创建动态表单。您将学习如何基于用户输入显示/隐藏字段、自动计算值，以及根据表单状态应用不同的验证规则。
         </p>
 
-        <Tabs defaultValue="overview">
+        <HighlightTabs defaultValue="overview">
           <TabsList className="mb-4">
             <TabsTrigger value="overview">概述</TabsTrigger>
             <TabsTrigger value="code">代码</TabsTrigger>
@@ -69,7 +74,9 @@ export default function FieldLinkingPage() {
 
           <TabsContent value="code">
             <h2>完整示例</h2>
-            <p>此代码演示了产品订单表单中的字段联动。它基于产品类型显示/隐藏字段，计算总计，并应用折扣。</p>
+            <p>
+              此代码演示了产品订单表单中的字段联动。它基于产品类型显示/隐藏字段，计算总计，并应用折扣。
+            </p>
 
             <CodeBlock
               code={`(function() {
@@ -172,7 +179,6 @@ export default function FieldLinkingPage() {
 })();`}
               language="javascript"
               filename="field-linking-example.js"
-              showLineNumbers={true}
             />
 
             <h3>表单结构</h3>
@@ -221,7 +227,6 @@ export default function FieldLinkingPage() {
 </form>`}
               language="html"
               filename="form-structure.html"
-              showLineNumbers={true}
             />
           </TabsContent>
 
@@ -229,10 +234,14 @@ export default function FieldLinkingPage() {
             <h2>如何使用此示例</h2>
 
             <h3>步骤1：创建您的表单</h3>
-            <p>首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。</p>
+            <p>
+              首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。
+            </p>
 
             <h3>步骤2：添加JavaScript代码</h3>
-            <p>从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。</p>
+            <p>
+              从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。
+            </p>
 
             <h3>步骤3：测试您的表单</h3>
             <p>预览您的表单并测试以下功能：</p>
@@ -255,7 +264,8 @@ export default function FieldLinkingPage() {
             <h3>最佳实践</h3>
             <ul>
               <li>
-                <strong>清晰的用户反馈：</strong> 当字段出现或消失时，始终提供清晰的反馈
+                <strong>清晰的用户反馈：</strong>{" "}
+                当字段出现或消失时，始终提供清晰的反馈
               </li>
               <li>
                 <strong>一致的验证：</strong> 确保验证规则一致且有意义
@@ -268,7 +278,7 @@ export default function FieldLinkingPage() {
               </li>
             </ul>
           </TabsContent>
-        </Tabs>
+        </HighlightTabs>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Link href="/examples">
@@ -283,5 +293,5 @@ export default function FieldLinkingPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

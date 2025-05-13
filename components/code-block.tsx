@@ -1,54 +1,71 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { Check, Copy } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useRef, useEffect } from "react";
+import { Check, Copy } from "lucide-react";
+import hljs from "highlight.js";
+import "highlight.js/styles/github-dark.css";
 
 interface CodeBlockProps {
-  code: string
-  language?: string
-  filename?: string
-  showLineNumbers?: boolean
+  code: string;
+  language?: string;
+  filename?: string;
 }
 
-export function CodeBlock({ code, language = "javascript", filename, showLineNumbers = false }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false)
-  const codeRef = useRef<HTMLPreElement>(null)
+export function CodeBlock({
+  code,
+  language = "javascript",
+  filename,
+}: CodeBlockProps) {
+  const [copied, setCopied] = useState(false);
+  const preRef = useRef<HTMLPreElement>(null);
 
-  const copyToClipboard = async () => {
-    if (!navigator.clipboard || !code) return
-
+  useEffect(() => {
+    if (!preRef.current) return;
+    const codeElement = preRef.current.querySelector("code");
+    if (!codeElement) return;
     try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error("Failed to copy code: ", err)
+      hljs.highlightElement(codeElement as HTMLElement);
+    } catch (e) {
+      // 静默处理错误
     }
+  }, [code, language]);
+
+  function handleCopy() {
+    if (!navigator.clipboard || !code) return;
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch((err) => {
+        console.error("复制代码失败: ", err);
+      });
   }
 
   return (
-    <div className="relative my-6 overflow-hidden rounded-lg border bg-muted">
+    <div className="not-prose relative my-6 rounded-lg overflow-hidden border border-neutral-800 bg-[#0d1117] shadow-md">
       {filename && (
-        <div className="flex items-center justify-between border-b bg-muted px-4 py-2 text-sm text-muted-foreground">
-          <span>{filename}</span>
+        <div className="px-4 py-2 text-sm font-medium text-neutral-300 border-b border-neutral-800 bg-[#0d1117]">
+          {filename}
         </div>
       )}
-      <div className="relative">
-        <pre
-          ref={codeRef}
-          className={cn("overflow-x-auto p-4 text-sm", showLineNumbers && "line-numbers", `language-${language}`)}
-        >
-          <code className={`language-${language}`}>{code}</code>
-        </pre>
-        <button
-          onClick={copyToClipboard}
-          className="absolute right-3 top-3 rounded-md border bg-background p-2 text-muted-foreground hover:bg-muted-foreground/10"
-          aria-label="Copy code"
-        >
-          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-        </button>
-      </div>
+      <button
+        onClick={handleCopy}
+        className="absolute z-10 right-3 top-3 rounded-md bg-neutral-800 p-1.5 text-neutral-300 hover:bg-neutral-700 transition-colors"
+        aria-label={copied ? "已复制" : "复制代码"}
+        title={copied ? "已复制！" : "复制代码"}
+      >
+        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+      </button>
+      <pre
+        ref={preRef}
+        className="overflow-x-auto p-4 text-sm font-mono bg-[#0d1117] text-neutral-300 m-0 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent"
+      >
+        <code className={language ? `language-${language}` : undefined}>
+          {code}
+        </code>
+      </pre>
     </div>
-  )
+  );
 }

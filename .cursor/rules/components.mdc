@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 组件目录说明
+
+[components/](mdc:components) 目录用于存放可复用的 React 组件。
+
+- 页面级和业务相关组件直接放在 components 根目录。
+- [ui/](mdc:components/ui) 子目录为基础 UI 组件库，包含按钮、表单、弹窗、导航等通用组件，推荐优先复用。
+
+所有组件均采用函数式声明，优先使用具名导出。

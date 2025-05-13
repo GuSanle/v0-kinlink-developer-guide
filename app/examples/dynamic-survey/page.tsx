@@ -1,7 +1,13 @@
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { CodeBlock } from "@/components/code-block"
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CodeBlock } from "@/components/code-block";
+import {
+  HighlightTabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../highlight-tabs";
 
 export default function DynamicSurveyPage() {
   return (
@@ -12,13 +18,16 @@ export default function DynamicSurveyPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight">Dynamic Survey Builder</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Dynamic Survey Builder
+        </h1>
       </div>
 
       <div className="prose prose-blue dark:prose-invert max-w-none">
         <p className="lead">
-          This example demonstrates how to create a dynamic survey that adapts to user responses with conditional
-          questions, branching logic, and real-time validation.
+          This example demonstrates how to create a dynamic survey that adapts
+          to user responses with conditional questions, branching logic, and
+          real-time validation.
         </p>
 
         <h2>Key Features</h2>
@@ -32,8 +41,9 @@ export default function DynamicSurveyPage() {
 
         <h2>Implementation</h2>
         <p>
-          The dynamic survey is implemented using the Kinlink API to manage question visibility, validation, and
-          branching logic. Here's the complete code:
+          The dynamic survey is implemented using the Kinlink API to manage
+          question visibility, validation, and branching logic. Here's the
+          complete code:
         </p>
 
         <CodeBlock
@@ -383,14 +393,14 @@ export default function DynamicSurveyPage() {
 })();`}
           language="javascript"
           filename="dynamic-survey.js"
-          showLineNumbers={true}
         />
 
         <h2>How It Works</h2>
         <p>
-          This example creates a dynamic customer satisfaction survey that adapts to the user's responses. The survey
-          includes different question types (radio buttons, checkboxes, text inputs, etc.) and uses conditional logic to
-          show or hide questions based on previous answers.
+          This example creates a dynamic customer satisfaction survey that
+          adapts to the user's responses. The survey includes different question
+          types (radio buttons, checkboxes, text inputs, etc.) and uses
+          conditional logic to show or hide questions based on previous answers.
         </p>
 
         <h3>Survey Configuration</h3>
@@ -404,35 +414,43 @@ export default function DynamicSurveyPage() {
         <h3>Key Implementation Details</h3>
         <ul>
           <li>
-            <strong>Conditional Questions:</strong> Questions are shown or hidden based on previous answers
+            <strong>Conditional Questions:</strong> Questions are shown or
+            hidden based on previous answers
           </li>
           <li>
-            <strong>Custom Validation:</strong> Each question can have its own validation rules
+            <strong>Custom Validation:</strong> Each question can have its own
+            validation rules
           </li>
           <li>
-            <strong>Dynamic UI:</strong> Rating questions have custom styling and interactive behavior
+            <strong>Dynamic UI:</strong> Rating questions have custom styling
+            and interactive behavior
           </li>
           <li>
-            <strong>Form Submission:</strong> Only visible and required questions are validated before submission
+            <strong>Form Submission:</strong> Only visible and required
+            questions are validated before submission
           </li>
         </ul>
 
         <h2>Best Practices</h2>
         <ul>
           <li>
-            <strong>Progressive Disclosure:</strong> Only show questions that are relevant to the user
+            <strong>Progressive Disclosure:</strong> Only show questions that
+            are relevant to the user
           </li>
           <li>
-            <strong>Clear Instructions:</strong> Provide clear instructions and indicate required fields
+            <strong>Clear Instructions:</strong> Provide clear instructions and
+            indicate required fields
           </li>
           <li>
             <strong>Immediate Feedback:</strong> Validate responses in real-time
           </li>
           <li>
-            <strong>Logical Flow:</strong> Organize questions in a logical sequence
+            <strong>Logical Flow:</strong> Organize questions in a logical
+            sequence
           </li>
           <li>
-            <strong>Responsive Design:</strong> Ensure the survey works well on all devices
+            <strong>Responsive Design:</strong> Ensure the survey works well on
+            all devices
           </li>
         </ul>
 
@@ -456,5 +474,5 @@ export default function DynamicSurveyPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
