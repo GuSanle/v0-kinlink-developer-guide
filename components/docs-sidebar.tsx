@@ -15,10 +15,6 @@ export function DocsSidebar() {
           title: "介绍",
           href: "/docs",
         },
-        {
-          title: "安装",
-          href: "/docs/installation",
-        },
       ],
     },
     {
