@@ -1,12 +1,16 @@
-import Link from "next/link"
-import { CodeBlock } from "@/components/code-block"
+import Link from "next/link";
+import { CodeBlock } from "@/components/code-block";
 
 export default function ApiReferencePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">API参考</h1>
-        <p className="mt-2 text-lg text-muted-foreground">Kinlink JavaScript API的综合文档。</p>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          API参考
+        </h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          Kinlink JavaScript API的综合文档。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -18,24 +22,34 @@ export default function ApiReferencePage() {
         <h2>核心API</h2>
 
         <p>
-          Kinlink API可通过全局<code>window.kinlink</code>对象访问，该对象提供对以下核心API的访问：
+          Kinlink API可通过全局<code>window.kinlink</code>
+          对象访问，该对象提供对以下核心API的访问：
         </p>
 
         <ul>
           <li>
-            <Link href="/docs/api-reference/form-api" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/form-api"
+              className="font-medium underline underline-offset-4"
+            >
               formApi
             </Link>{" "}
             - 用于操作表单字段和值的函数
           </li>
           <li>
-            <Link href="/docs/api-reference/layout-api" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/layout-api"
+              className="font-medium underline underline-offset-4"
+            >
               layoutApi
             </Link>{" "}
             - 用于控制表单布局的函数
           </li>
           <li>
-            <Link href="/docs/api-reference/events" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/events"
+              className="font-medium underline underline-offset-4"
+            >
               events
             </Link>{" "}
             - 用于响应表单事件的事件系统
@@ -83,7 +97,10 @@ window.kinlink = {
 
         <h2>API使用入门</h2>
 
-        <p>要使用Kinlink API，您通常会编写在表单加载时或特定事件发生时运行的JavaScript代码。以下是一个简单的示例：</p>
+        <p>
+          要使用Kinlink
+          API，您通常会编写在表单加载时或特定事件发生时运行的JavaScript代码。以下是一个简单的示例：
+        </p>
 
         <CodeBlock
           code={`(function() {
@@ -119,29 +136,37 @@ window.kinlink = {
 })();`}
           language="javascript"
           filename="example-usage.js"
-          showLineNumbers={true}
         />
 
         <p>浏览特定的API部分，了解每个函数和事件的详细文档：</p>
 
         <ul>
           <li>
-            <Link href="/docs/api-reference/form-api" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/form-api"
+              className="font-medium underline underline-offset-4"
+            >
               表单API
             </Link>
           </li>
           <li>
-            <Link href="/docs/api-reference/layout-api" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/layout-api"
+              className="font-medium underline underline-offset-4"
+            >
               布局API
             </Link>
           </li>
           <li>
-            <Link href="/docs/api-reference/events" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/api-reference/events"
+              className="font-medium underline underline-offset-4"
+            >
               事件
             </Link>
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }

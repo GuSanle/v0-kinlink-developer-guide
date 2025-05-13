@@ -1,15 +1,21 @@
-import { CodeBlock } from "@/components/code-block"
+import { CodeBlock } from "@/components/code-block";
 
 export default function MobileAdaptationPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">移动端适配指南</h1>
-        <p className="mt-2 text-lg text-muted-foreground">了解如何为移动设备优化Kinlink表单。</p>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          移动端适配指南
+        </h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          了解如何为移动设备优化Kinlink表单。
+        </p>
       </div>
 
       <div className="docs-content">
-        <p>为现代Web应用程序创建良好的移动体验至关重要。Kinlink提供了多种API和技术，帮助您为移动设备优化表单。</p>
+        <p>
+          为现代Web应用程序创建良好的移动体验至关重要。Kinlink提供了多种API和技术，帮助您为移动设备优化表单。
+        </p>
 
         <h2>检测移动设备</h2>
 
@@ -25,11 +31,15 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
           language="javascript"
         />
 
-        <p>此函数使用媒体查询来检查视口宽度是否小于或等于575px，这是Kinlink中移动设备的标准断点。</p>
+        <p>
+          此函数使用媒体查询来检查视口宽度是否小于或等于575px，这是Kinlink中移动设备的标准断点。
+        </p>
 
         <h2>移动端特定布局</h2>
 
-        <p>移动设备的屏幕空间有限，因此优化表单布局对移动设备很重要。以下是一些技巧：</p>
+        <p>
+          移动设备的屏幕空间有限，因此优化表单布局对移动设备很重要。以下是一些技巧：
+        </p>
 
         <h3>简化表单</h3>
 
@@ -73,7 +83,9 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
 
         <h2>移动端表单操作栏</h2>
 
-        <p>Kinlink提供了一个固定在屏幕底部的移动端特定表单操作栏。这对于在移动设备上提供表单操作的便捷访问非常有用。</p>
+        <p>
+          Kinlink提供了一个固定在屏幕底部的移动端特定表单操作栏。这对于在移动设备上提供表单操作的便捷访问非常有用。
+        </p>
 
         <h3>管理移动端表单操作栏</h3>
 
@@ -137,7 +149,6 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
 }`}
           language="javascript"
           filename="custom-mobile-action-bar.js"
-          showLineNumbers={true}
         />
 
         <h2>响应式布局调整</h2>
@@ -173,20 +184,25 @@ cleanup();`}
             <strong>简化表单：</strong> 在移动端隐藏非必要字段并简化复杂输入。
           </li>
           <li>
-            <strong>使用更大的触摸目标：</strong> 使按钮和输入框在移动端更大、更容易点击。
+            <strong>使用更大的触摸目标：</strong>{" "}
+            使按钮和输入框在移动端更大、更容易点击。
           </li>
           <li>
-            <strong>为竖屏方向优化：</strong> 大多数移动用户会在竖屏方向使用您的表单。
+            <strong>为竖屏方向优化：</strong>{" "}
+            大多数移动用户会在竖屏方向使用您的表单。
           </li>
           <li>
-            <strong>减少输入：</strong> 使用下拉菜单、单选按钮和其他需要较少输入的输入类型。
+            <strong>减少输入：</strong>{" "}
+            使用下拉菜单、单选按钮和其他需要较少输入的输入类型。
           </li>
           <li>
-            <strong>使用适当的输入类型：</strong> 为每个字段使用适当的输入类型（例如，<code>tel</code>用于电话号码，
+            <strong>使用适当的输入类型：</strong>{" "}
+            为每个字段使用适当的输入类型（例如，<code>tel</code>用于电话号码，
             <code>email</code>用于电子邮件地址）。
           </li>
           <li>
-            <strong>在真实设备上测试：</strong> 在真实移动设备上测试您的表单，以确保良好的用户体验。
+            <strong>在真实设备上测试：</strong>{" "}
+            在真实移动设备上测试您的表单，以确保良好的用户体验。
           </li>
         </ul>
 
@@ -275,9 +291,8 @@ cleanup();`}
 })();`}
           language="javascript"
           filename="complete-mobile-adaptation.js"
-          showLineNumbers={true}
         />
       </div>
     </div>
-  )
+  );
 }

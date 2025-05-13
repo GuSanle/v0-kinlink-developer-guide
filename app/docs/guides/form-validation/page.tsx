@@ -1,11 +1,15 @@
-import { CodeBlock } from "@/components/code-block"
+import { CodeBlock } from "@/components/code-block";
 
 export default function FormValidationPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">表单验证</h1>
-        <p className="mt-2 text-lg text-muted-foreground">了解如何为Kinlink表单实现自定义验证。</p>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          表单验证
+        </h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          了解如何为Kinlink表单实现自定义验证。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -53,7 +57,6 @@ kinlink.formApi.addFieldValidator('email', (value) => {
 });`}
           language="javascript"
           filename="add-validator.js"
-          showLineNumbers={true}
         />
 
         <p>
@@ -105,7 +108,6 @@ function validatePassword(value) {
 }`}
           language="javascript"
           filename="form-loaded-validators.js"
-          showLineNumbers={true}
         />
 
         <h2>移除验证器</h2>
@@ -137,7 +139,6 @@ const noError = kinlink.formApi.validateField('email', 'user@example.com');
 console.log(noError); // 输出: undefined (验证通过)`}
           language="javascript"
           filename="validate-field.js"
-          showLineNumbers={true}
         />
 
         <h2>验证整个表单</h2>
@@ -159,11 +160,11 @@ console.log(result);
 // }`}
           language="javascript"
           filename="validate-form.js"
-          showLineNumbers={true}
         />
 
         <p>
-          这在<code>BEFORE_SUBMIT</code>事件处理程序中特别有用，可以在存在验证错误时阻止提交：
+          这在<code>BEFORE_SUBMIT</code>
+          事件处理程序中特别有用，可以在存在验证错误时阻止提交：
         </p>
 
         <CodeBlock
@@ -186,7 +187,6 @@ console.log(result);
 });`}
           language="javascript"
           filename="before-submit-validation.js"
-          showLineNumbers={true}
         />
 
         <h2>手动设置错误消息</h2>
@@ -209,7 +209,6 @@ kinlink.formApi.setFieldsErrors({
 });`}
           language="javascript"
           filename="set-field-errors.js"
-          showLineNumbers={true}
         />
 
         <h2>常见验证模式</h2>
@@ -287,7 +286,6 @@ form.addFieldValidator('password', (value) => {
 });`}
           language="javascript"
           filename="password-validation.js"
-          showLineNumbers={true}
         />
 
         <h3>数值范围验证</h3>
@@ -313,7 +311,6 @@ form.addFieldValidator('age', (value) => {
 });`}
           language="javascript"
           filename="range-validation.js"
-          showLineNumbers={true}
         />
 
         <h3>日期验证</h3>
@@ -340,7 +337,6 @@ form.addFieldValidator('eventDate', (value) => {
 });`}
           language="javascript"
           filename="date-validation.js"
-          showLineNumbers={true}
         />
 
         <h3>条件验证</h3>
@@ -365,13 +361,13 @@ form.addFieldValidator('otherEmail', (value) => {
 });`}
           language="javascript"
           filename="conditional-validation.js"
-          showLineNumbers={true}
         />
 
         <h2>异步验证</h2>
 
         <p>
-          对于需要服务器端检查的验证（如检查用户名是否已被使用），您可以在<code>FIELD_CHANGE</code>
+          对于需要服务器端检查的验证（如检查用户名是否已被使用），您可以在
+          <code>FIELD_CHANGE</code>
           事件处理程序中使用异步验证：
         </p>
 
@@ -413,7 +409,6 @@ form.addFieldValidator('otherEmail', (value) => {
 });`}
           language="javascript"
           filename="async-validation.js"
-          showLineNumbers={true}
         />
 
         <h2>完整示例</h2>
@@ -609,33 +604,37 @@ form.addFieldValidator('otherEmail', (value) => {
 })();`}
           language="javascript"
           filename="complete-validation-example.js"
-          showLineNumbers={true}
         />
 
         <h2>最佳实践</h2>
 
         <ul>
           <li>
-            <strong>尽早验证，频繁验证：</strong> 在用户与字段交互后立即验证，以提供即时反馈。
+            <strong>尽早验证，频繁验证：</strong>{" "}
+            在用户与字段交互后立即验证，以提供即时反馈。
           </li>
           <li>
-            <strong>错误消息要具体：</strong> 提供清晰、具体的错误消息，告诉用户确切的问题和如何修复。
+            <strong>错误消息要具体：</strong>{" "}
+            提供清晰、具体的错误消息，告诉用户确切的问题和如何修复。
           </li>
           <li>
             <strong>处理空值：</strong>{" "}
             决定是否应验证空值或跳过。对于必填字段，验证空值；对于可选字段，如果值为空则跳过验证。
           </li>
           <li>
-            <strong>使用视觉提示：</strong> 使用颜色、图标和样式来指示验证状态（错误、成功、加载）。
+            <strong>使用视觉提示：</strong>{" "}
+            使用颜色、图标和样式来指示验证状态（错误、成功、加载）。
           </li>
           <li>
-            <strong>考虑可访问性：</strong> 确保所有用户都能访问验证错误，包括使用屏幕阅读器的用户。
+            <strong>考虑可访问性：</strong>{" "}
+            确保所有用户都能访问验证错误，包括使用屏幕阅读器的用户。
           </li>
           <li>
-            <strong>测试边缘情况：</strong> 使用边缘情况测试您的验证，如空字符串、特殊字符和非常长的输入。
+            <strong>测试边缘情况：</strong>{" "}
+            使用边缘情况测试您的验证，如空字符串、特殊字符和非常长的输入。
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }

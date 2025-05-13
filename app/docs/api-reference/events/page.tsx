@@ -1,11 +1,13 @@
-import { CodeBlock } from "@/components/code-block"
+import { CodeBlock } from "@/components/code-block";
 
 export default function EventsPage() {
   return (
     <div className="space-y-6">
       <div>
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">事件</h1>
-        <p className="mt-2 text-lg text-muted-foreground">用于响应表单生命周期事件的事件系统。</p>
+        <p className="mt-2 text-lg text-muted-foreground">
+          用于响应表单生命周期事件的事件系统。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -37,7 +39,8 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
         <h2>可用事件</h2>
 
         <p>
-          Kinlink提供了几个预定义的事件，您可以监听这些事件。这些事件可通过<code>kinlink.FormEvents</code>对象获取。
+          Kinlink提供了几个预定义的事件，您可以监听这些事件。这些事件可通过
+          <code>kinlink.FormEvents</code>对象获取。
         </p>
 
         <h3>FORM_LOADED</h3>
@@ -62,7 +65,9 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
         />
 
         <h3>FIELD_CHANGE</h3>
-        <p>在字段值变化时触发。这对于实现字段联动和基于用户输入的动态行为非常有用。</p>
+        <p>
+          在字段值变化时触发。这对于实现字段联动和基于用户输入的动态行为非常有用。
+        </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
   const { fieldName, value } = data;
@@ -86,11 +91,12 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 });`}
           language="javascript"
           filename="field-change-event.js"
-          showLineNumbers={true}
         />
 
         <h3>BEFORE_SUBMIT</h3>
-        <p>在表单提交前触发。这使您有机会执行最终验证、修改提交数据或在必要时阻止提交。</p>
+        <p>
+          在表单提交前触发。这使您有机会执行最终验证、修改提交数据或在必要时阻止提交。
+        </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
   const { values } = data;
@@ -112,11 +118,12 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 });`}
           language="javascript"
           filename="before-submit-event.js"
-          showLineNumbers={true}
         />
 
         <h3>AFTER_SUBMIT</h3>
-        <p>在表单提交后触发。这对于显示成功消息、重定向用户或执行其他提交后操作非常有用。</p>
+        <p>
+          在表单提交后触发。这对于显示成功消息、重定向用户或执行其他提交后操作非常有用。
+        </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
   const { result, success } = data;
@@ -137,12 +144,13 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 });`}
           language="javascript"
           filename="after-submit-event.js"
-          showLineNumbers={true}
         />
 
         <h2>事件回调参数</h2>
 
-        <p>每种事件类型为其回调函数提供不同的参数。以下是每个事件回调接收的详细说明：</p>
+        <p>
+          每种事件类型为其回调函数提供不同的参数。以下是每个事件回调接收的详细说明：
+        </p>
 
         <h3>FORM_LOADED 回调</h3>
         <p>回调接收一个简单对象，表示表单已加载。没有特定的属性可以访问。</p>
@@ -156,7 +164,8 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 
         <h3>FIELD_CHANGE 回调</h3>
         <p>
-          回调接收一个带有<code>fieldName</code>和<code>value</code>属性的对象，表示哪个字段发生了变化及其新值。
+          回调接收一个带有<code>fieldName</code>和<code>value</code>
+          属性的对象，表示哪个字段发生了变化及其新值。
         </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
@@ -171,7 +180,8 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 
         <h3>BEFORE_SUBMIT 回调</h3>
         <p>
-          回调接收一个带有<code>values</code>属性的对象，这是提交数据的引用。您可以修改此对象以更改提交内容。
+          回调接收一个带有<code>values</code>
+          属性的对象，这是提交数据的引用。您可以修改此对象以更改提交内容。
         </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
@@ -188,7 +198,8 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 
         <h3>AFTER_SUBMIT 回调</h3>
         <p>
-          回调接收一个带有<code>result</code>和<code>success</code>属性的对象，表示服务器的响应以及提交是否成功。
+          回调接收一个带有<code>result</code>和<code>success</code>
+          属性的对象，表示服务器的响应以及提交是否成功。
         </p>
         <CodeBlock
           code={`kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
@@ -296,7 +307,6 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
 })();`}
           language="javascript"
           filename="complete-events-example.js"
-          showLineNumbers={true}
         />
 
         <h2>最佳实践</h2>
@@ -311,7 +321,8 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
             在FORM_LOADED事件处理程序中执行所有表单初始化，以确保表单已准备就绪。
           </li>
           <li>
-            <strong>保持FIELD_CHANGE处理程序高效：</strong> 字段变化处理程序频繁运行，因此保持它们高效以维持良好的性能。
+            <strong>保持FIELD_CHANGE处理程序高效：</strong>{" "}
+            字段变化处理程序频繁运行，因此保持它们高效以维持良好的性能。
           </li>
           <li>
             <strong>从BEFORE_SUBMIT返回布尔值：</strong>{" "}
@@ -324,5 +335,5 @@ kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
         </ul>
       </div>
     </div>
-  )
+  );
 }

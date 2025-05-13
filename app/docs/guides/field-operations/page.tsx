@@ -1,11 +1,15 @@
-import { CodeBlock } from "@/components/code-block"
+import { CodeBlock } from "@/components/code-block";
 
 export default function FieldOperationsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">字段操作</h1>
-        <p className="mt-2 text-lg text-muted-foreground">了解如何使用Kinlink API操作表单字段。</p>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          字段操作
+        </h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          了解如何使用Kinlink API操作表单字段。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -16,7 +20,9 @@ export default function FieldOperationsPage() {
 
         <h2>获取和设置字段值</h2>
 
-        <p>最常见的操作之一是获取和设置字段值。这对于实现字段联动、计算和其他动态行为非常有用。</p>
+        <p>
+          最常见的操作之一是获取和设置字段值。这对于实现字段联动、计算和其他动态行为非常有用。
+        </p>
 
         <h3>获取字段值</h3>
 
@@ -66,12 +72,13 @@ kinlink.formApi.setFieldsValue({
 });`}
           language="javascript"
           filename="calculate-total.js"
-          showLineNumbers={true}
         />
 
         <h2>显示和隐藏字段</h2>
 
-        <p>您可以根据用户输入或其他条件动态显示和隐藏字段。这对于创建能够适应用户需求的条件表单非常有用。</p>
+        <p>
+          您可以根据用户输入或其他条件动态显示和隐藏字段。这对于创建能够适应用户需求的条件表单非常有用。
+        </p>
 
         <h3>隐藏字段</h3>
 
@@ -133,7 +140,6 @@ kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
 });`}
           language="javascript"
           filename="conditional-fields.js"
-          showLineNumbers={true}
         />
 
         <h2>启用和禁用字段</h2>
@@ -189,7 +195,6 @@ kinlink.formApi.enableField('total');`}
 });`}
           language="javascript"
           filename="conditional-enabling.js"
-          showLineNumbers={true}
         />
 
         <h2>样式设置</h2>
@@ -221,7 +226,6 @@ kinlink.formApi.setFieldsLabelStyles({
 });`}
           language="javascript"
           filename="style-field-labels.js"
-          showLineNumbers={true}
         />
 
         <h3>设置字段组件样式</h3>
@@ -247,7 +251,6 @@ kinlink.formApi.setFieldsComponentStyles({
 });`}
           language="javascript"
           filename="style-field-components.js"
-          showLineNumbers={true}
         />
 
         <h3>更改字段标签</h3>
@@ -284,29 +287,34 @@ kinlink.formApi.resetFieldLabelText('name');`}
 });`}
           language="javascript"
           filename="highlight-required-fields.js"
-          showLineNumbers={true}
         />
 
         <h2>最佳实践</h2>
 
         <ul>
           <li>
-            <strong>在FORM_LOADED中初始化：</strong> 在FORM_LOADED事件处理程序中设置初始字段状态。
+            <strong>在FORM_LOADED中初始化：</strong>{" "}
+            在FORM_LOADED事件处理程序中设置初始字段状态。
           </li>
           <li>
-            <strong>分组相关操作：</strong> 显示/隐藏多个字段时，将操作分组以提高可读性。
+            <strong>分组相关操作：</strong>{" "}
+            显示/隐藏多个字段时，将操作分组以提高可读性。
           </li>
           <li>
-            <strong>使用字段联动：</strong> 在FIELD_CHANGE事件处理程序中实现字段联动，创建动态表单。
+            <strong>使用字段联动：</strong>{" "}
+            在FIELD_CHANGE事件处理程序中实现字段联动，创建动态表单。
           </li>
           <li>
-            <strong>禁用计算字段：</strong> 始终禁用计算或自动填充的字段，以防止用户编辑。
+            <strong>禁用计算字段：</strong>{" "}
+            始终禁用计算或自动填充的字段，以防止用户编辑。
           </li>
           <li>
-            <strong>使用一致的样式：</strong> 对类似字段应用一致的样式，创建统一的用户体验。
+            <strong>使用一致的样式：</strong>{" "}
+            对类似字段应用一致的样式，创建统一的用户体验。
           </li>
           <li>
-            <strong>考虑移动用户：</strong> 记住字段操作也会影响移动用户。在移动设备上测试您的表单。
+            <strong>考虑移动用户：</strong>{" "}
+            记住字段操作也会影响移动用户。在移动设备上测试您的表单。
           </li>
         </ul>
 
@@ -397,9 +405,8 @@ kinlink.formApi.resetFieldLabelText('name');`}
 })();`}
           language="javascript"
           filename="complete-field-operations.js"
-          showLineNumbers={true}
         />
       </div>
     </div>
-  )
+  );
 }

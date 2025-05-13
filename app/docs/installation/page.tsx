@@ -1,12 +1,14 @@
-import Link from "next/link"
-import { CodeBlock } from "@/components/code-block"
+import Link from "next/link";
+import { CodeBlock } from "@/components/code-block";
 
 export default function InstallationPage() {
   return (
     <div className="space-y-6">
       <div>
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">安装</h1>
-        <p className="mt-2 text-lg text-muted-foreground">了解如何为您的Kintone实例设置Kinlink。</p>
+        <p className="mt-2 text-lg text-muted-foreground">
+          了解如何为您的Kintone实例设置Kinlink。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -31,7 +33,10 @@ export default function InstallationPage() {
         <ol>
           <li>
             访问{" "}
-            <a href="https://kinlink.io/signup" className="font-medium underline underline-offset-4">
+            <a
+              href="https://kinlink.io/signup"
+              className="font-medium underline underline-offset-4"
+            >
               Kinlink注册页面
             </a>
           </li>
@@ -66,7 +71,9 @@ export default function InstallationPage() {
 
         <h2>步骤3：创建Kinlink表单</h2>
 
-        <p>现在您已经连接了Kintone实例，您可以创建一个映射到Kintone应用程序的Kinlink表单：</p>
+        <p>
+          现在您已经连接了Kintone实例，您可以创建一个映射到Kintone应用程序的Kinlink表单：
+        </p>
 
         <ol>
           <li>在Kinlink仪表板中，点击"创建表单"</li>
@@ -125,12 +132,14 @@ export default function InstallationPage() {
 })();`}
           language="javascript"
           filename="kinlink-custom-script.js"
-          showLineNumbers={true}
         />
 
         <p>
           有关JavaScript API的更多信息，请参阅{" "}
-          <Link href="/docs/api-reference" className="font-medium underline underline-offset-4">
+          <Link
+            href="/docs/api-reference"
+            className="font-medium underline underline-offset-4"
+          >
             API参考
           </Link>
           。
@@ -162,22 +171,34 @@ export default function InstallationPage() {
 
         <ul>
           <li>
-            <Link href="/docs/guides/field-operations" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/guides/field-operations"
+              className="font-medium underline underline-offset-4"
+            >
               了解字段操作
             </Link>
           </li>
           <li>
-            <Link href="/docs/guides/form-validation" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/guides/form-validation"
+              className="font-medium underline underline-offset-4"
+            >
               设置表单验证
             </Link>
           </li>
           <li>
-            <Link href="/docs/guides/mobile-adaptation" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/guides/mobile-adaptation"
+              className="font-medium underline underline-offset-4"
+            >
               为移动设备优化表单
             </Link>
           </li>
           <li>
-            <Link href="/docs/examples/field-linking" className="font-medium underline underline-offset-4">
+            <Link
+              href="/docs/examples/field-linking"
+              className="font-medium underline underline-offset-4"
+            >
               查看字段联动示例
             </Link>
           </li>
@@ -197,12 +218,15 @@ export default function InstallationPage() {
 
         <p>
           如果您仍然遇到问题，请联系{" "}
-          <a href="mailto:support@kinlink.io" className="font-medium underline underline-offset-4">
+          <a
+            href="mailto:support@kinlink.io"
+            className="font-medium underline underline-offset-4"
+          >
             Kinlink支持
           </a>
           。
         </p>
       </div>
     </div>
-  )
+  );
 }

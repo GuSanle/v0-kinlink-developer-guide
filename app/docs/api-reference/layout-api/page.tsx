@@ -1,11 +1,15 @@
-import { CodeBlock } from "@/components/code-block"
+import { CodeBlock } from "@/components/code-block";
 
 export default function LayoutApiPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">布局API</h1>
-        <p className="mt-2 text-lg text-muted-foreground">用于控制表单布局和UI元素的函数。</p>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+          布局API
+        </h1>
+        <p className="mt-2 text-lg text-muted-foreground">
+          用于控制表单布局和UI元素的函数。
+        </p>
       </div>
 
       <div className="docs-content">
@@ -115,7 +119,9 @@ kinlink.layoutApi.showSubmitButton();`}
 
         <h2>移动端特定控制</h2>
 
-        <p>Kinlink为移动设备提供了特殊控制。这些对于在小屏幕上创建更好的用户体验特别有用。</p>
+        <p>
+          Kinlink为移动设备提供了特殊控制。这些对于在小屏幕上创建更好的用户体验特别有用。
+        </p>
 
         <h3>checkIsMobileDevice()</h3>
         <p>检查当前设备是否为移动设备（视口宽度 ≤ 575px）。</p>
@@ -184,7 +190,9 @@ console.log(contentHeight); // 输出: 600 (像素)`}
         />
 
         <h3>onLayoutChange(callback)</h3>
-        <p>注册一个回调函数，在布局变化时调用（例如，当页眉、页脚或操作栏显示或隐藏时）。</p>
+        <p>
+          注册一个回调函数，在布局变化时调用（例如，当页眉、页脚或操作栏显示或隐藏时）。
+        </p>
         <CodeBlock
           code={`// 注册布局变化监听器
 const cleanup = kinlink.layoutApi.onLayoutChange((detail) => {
@@ -199,7 +207,6 @@ const cleanup = kinlink.layoutApi.onLayoutChange((detail) => {
 // 稍后，当不再需要监听器时
 cleanup();`}
           language="javascript"
-          showLineNumbers={true}
         />
 
         <h2>示例：响应式布局</h2>
@@ -247,26 +254,29 @@ cleanup();`}
 })();`}
           language="javascript"
           filename="responsive-layout.js"
-          showLineNumbers={true}
         />
 
         <h2>最佳实践</h2>
 
         <ul>
           <li>
-            <strong>首先检查设备类型：</strong> 在应用移动端特定优化之前，始终检查设备是否为移动设备。
+            <strong>首先检查设备类型：</strong>{" "}
+            在应用移动端特定优化之前，始终检查设备是否为移动设备。
           </li>
           <li>
-            <strong>监听布局变化：</strong> 使用<code>onLayoutChange</code>回调动态响应布局变化。
+            <strong>监听布局变化：</strong> 使用<code>onLayoutChange</code>
+            回调动态响应布局变化。
           </li>
           <li>
-            <strong>计算可用空间：</strong> 使用<code>getContentAreaHeight</code>确定表单内容可用的空间。
+            <strong>计算可用空间：</strong> 使用
+            <code>getContentAreaHeight</code>确定表单内容可用的空间。
           </li>
           <li>
-            <strong>清理监听器：</strong> 记得清理注册的任何监听器，以防止内存泄漏。
+            <strong>清理监听器：</strong>{" "}
+            记得清理注册的任何监听器，以防止内存泄漏。
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }
