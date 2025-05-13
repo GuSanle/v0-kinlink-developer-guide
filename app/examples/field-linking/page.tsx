@@ -8,13 +8,103 @@ import {
   TabsList,
   TabsTrigger,
 } from "../highlight-tabs";
+import { Metadata } from "next";
+import { Tabs } from "@/components/ui/tabs";
 
-export const metadata = {
-  title: "字段联动示例 - Kinlink开发者",
-  description: "学习如何使用字段联动和条件逻辑创建动态表单。",
+export const metadata: Metadata = {
+  title: "字段联动 - Kinlink开发者",
+  description: "学习如何使用字段联动和条件逻辑创建动态表单",
 };
 
 export default function FieldLinkingPage() {
+  const sampleCode = `/**
+ * 示例7: 字段联动
+ * 功能：根据某个字段的值变化自动控制其他字段的状态
+ */
+(function () {
+  // 表单加载时的初始设置
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 性别字段联动初始化
+      updateFieldsByGender(kinlink.formApi.getFieldValue('单选框_0'));
+    } catch (error) {
+      console.error('字段联动初始化失败:', error);
+    }
+  });
+
+  // 监听字段变化事件
+  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+    try {
+      const { fieldName, value } = data;
+
+      // 根据性别字段变化联动其他字段
+      if (fieldName === '单选框_0') {
+        updateFieldsByGender(value);
+      }
+
+      // 根据集合场所的选择联动其他信息
+      if (fieldName === '下拉菜单') {
+        updateByMeetingPlace(value);
+      }
+
+      // 联动设置案件编号与案件名称
+      if (fieldName === 'Lookup_0' && value) {
+        // 假设这里会自动通过Lookup功能填充关联字段
+        // 如果没有自动填充，可以手动设置相关值
+        console.log('案件编号已更新:', value);
+      }
+    } catch (error) {
+      console.error('字段联动处理失败:', error);
+    }
+  });
+
+  // 性别联动函数
+  function updateFieldsByGender(gender) {
+    const form = kinlink.formApi;
+
+    if (gender === '男') {
+      // 对于男性，修改标签样式
+      form.setFieldLabelStyle('单行文本框_8', {
+        color: '#3498db',
+      });
+      form.setFieldLabelStyle('单行文本框_9', {
+        color: '#3498db',
+      });
+    } else if (gender === '女') {
+      // 对于女性，修改标签样式
+      form.setFieldLabelStyle('单行文本框_8', {
+        color: '#e74c3c',
+      });
+      form.setFieldLabelStyle('单行文本框_9', {
+        color: '#e74c3c',
+      });
+    }
+
+    // 可以在这里添加其他基于性别的联动逻辑
+    console.log('性别联动已处理:', gender);
+  }
+
+  // 集合场所联动函数
+  function updateByMeetingPlace(place) {
+    const form = kinlink.formApi;
+
+    // 根据不同集合场所设置不同信息
+    if (place === 'A') {
+      form.showInfo('A场所的集合时间为上午9:00');
+
+      // 显示A场所特定字段（如果有）
+      // form.showField('A场所注意事项');
+    } else if (place === 'B') {
+      form.showInfo('B场所的集合时间为上午10:30');
+
+      // 显示B场所特定字段（如果有）
+      // form.showField('B场所注意事项');
+    }
+
+    console.log('集合场所联动已处理:', place);
+  }
+})();`;
+
   return (
     <div className="container py-6 lg:py-10">
       <div className="flex items-center gap-4 mb-8">
@@ -23,7 +113,7 @@ export default function FieldLinkingPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight">字段联动示例</h1>
+        <h1 className="text-3xl font-bold tracking-tight">字段联动</h1>
       </div>
 
       <div className="prose prose-blue dark:prose-invert max-w-none">
@@ -79,104 +169,7 @@ export default function FieldLinkingPage() {
             </p>
 
             <CodeBlock
-              code={`(function() {
-  // 表单加载时初始化
-  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
-    const form = kinlink.formApi;
-    
-    // 初始隐藏附加字段
-    form.hideField('additionalInfo');
-    form.hideField('premiumOptions');
-    
-    // 设置数量和价格字段
-    form.setFieldValue('quantity', 1);
-    form.setFieldValue('price', 10);
-    form.setFieldValue('total', 10);
-    
-    // 禁用总计字段（它是计算得出的）
-    form.disableField('total');
-    
-    // 添加验证器
-    form.addFieldValidator('quantity', (value) => {
-      if (!value || value < 1) {
-        return '数量必须至少为1';
-      }
-      return undefined;
-    });
-    
-    form.addFieldValidator('price', (value) => {
-      if (!value || value <= 0) {
-        return '价格必须大于0';
-      }
-      return undefined;
-    });
-  });
-  
-  // 处理字段变化
-  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
-    const { fieldName, value } = data;
-    const form = kinlink.formApi;
-    
-    // 处理产品类型变化
-    if (fieldName === 'productType') {
-      if (value === 'premium') {
-        form.showField('additionalInfo');
-        form.showField('premiumOptions');
-        
-        // 为高级产品添加额外验证器
-        form.addFieldValidator('additionalInfo', (value) => {
-          if (!value || value.length < 10) {
-            return '请提供详细信息（至少10个字符）';
-          }
-          return undefined;
-        });
-      } else {
-        form.hideField('additionalInfo');
-        form.hideField('premiumOptions');
-        
-        // 当字段隐藏时移除验证器
-        form.removeFieldValidator('additionalInfo');
-      }
-    }
-    
-    // 当数量或价格变化时计算总计
-    if (fieldName === 'quantity' || fieldName === 'price') {
-      const quantity = Number(form.getFieldValue('quantity')) || 0;
-      const price = Number(form.getFieldValue('price')) || 0;
-      const total = quantity * price;
-      
-      form.setFieldValue('total', total);
-    }
-    
-    // 如果选择了高级选项则应用折扣
-    if (fieldName === 'premiumOptions' && value === 'discount') {
-      const total = Number(form.getFieldValue('total')) || 0;
-      const discountedTotal = total * 0.9; // 10%折扣
-      
-      form.setFieldValue('total', discountedTotal);
-      form.showSuccess('已应用10%折扣！');
-    }
-  });
-  
-  // 提交前验证表单
-  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
-    const { values } = data;
-    const form = kinlink.formApi;
-    
-    // 执行最终验证
-    const validationResult = form.validateForm();
-    
-    if (!validationResult.isValid) {
-      form.showError('请在提交前修复验证错误。');
-      return false; // 阻止提交
-    }
-    
-    // 向提交添加时间戳
-    values.submittedAt = new Date().toISOString();
-    
-    return true; // 允许提交
-  });
-})();`}
+              code={sampleCode}
               language="javascript"
               filename="field-linking-example.js"
             />

@@ -40,6 +40,10 @@ export function DocsSidebar() {
           title: "事件",
           href: "/docs/api-reference/events",
         },
+        {
+          title: "代理API",
+          href: "/docs/api-reference/proxy",
+        },
       ],
     },
     {

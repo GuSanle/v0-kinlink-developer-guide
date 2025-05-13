@@ -1,0 +1,285 @@
+import { Metadata } from "next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "消息提示演示 - Kinlink开发者",
+  description: "学习如何使用各类消息提示功能",
+};
+
+export default function MessageNotificationPage() {
+  const sampleCode = `/**
+ * 示例10: 消息提示演示
+ * 功能：展示各类消息提示功能
+ */
+(function () {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 创建消息演示控制面板
+      const demoPanel = document.createElement('div');
+      demoPanel.style.margin = '15px 0';
+      demoPanel.style.padding = '15px';
+      demoPanel.style.backgroundColor = '#f8f9fa';
+      demoPanel.style.border = '1px solid #dee2e6';
+      demoPanel.style.borderRadius = '8px';
+
+      // 标题
+      const title = document.createElement('h3');
+      title.textContent = '消息提示演示';
+      title.style.marginTop = '0';
+      title.style.marginBottom = '15px';
+      demoPanel.appendChild(title);
+
+      // 消息类型数组
+      const messageTypes = [
+        { type: 'success', label: '成功消息', color: '#27ae60' },
+        { type: 'error', label: '错误消息', color: '#e74c3c' },
+        { type: 'info', label: '信息提示', color: '#3498db' },
+        { type: 'warning', label: '警告消息', color: '#f39c12' },
+      ];
+
+      // 为每种消息类型创建按钮
+      messageTypes.forEach((item) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = item.label;
+        button.style.marginRight = '10px';
+        button.style.marginBottom = '10px';
+        button.style.padding = '8px 16px';
+        button.style.backgroundColor = item.color;
+        button.style.color = 'white';
+        button.style.border = 'none';
+        button.style.borderRadius = '4px';
+        button.style.cursor = 'pointer';
+
+        // 点击按钮显示对应类型的消息
+        button.addEventListener('click', () => {
+          const message = \`这是一条\${item.label}（\${new Date().toLocaleTimeString()}）\`;
+
+          // 根据消息类型调用不同的方法
+          switch (item.type) {
+            case 'success':
+              kinlink.formApi.showSuccess(message);
+              break;
+            case 'error':
+              kinlink.formApi.showError(message);
+              break;
+            case 'info':
+              kinlink.formApi.showInfo(message);
+              break;
+            case 'warning':
+              kinlink.formApi.showWarning(message);
+              break;
+            default:
+              // 使用通用方法
+              kinlink.formApi.showMessage(item.type, message);
+          }
+        });
+
+        demoPanel.appendChild(button);
+      });
+
+      // 创建持续时间控制
+      const durationControl = document.createElement('div');
+      durationControl.style.marginTop = '15px';
+
+      const durationLabel = document.createElement('label');
+      durationLabel.textContent = '显示时间(秒): ';
+      durationControl.appendChild(durationLabel);
+
+      const durationInput = document.createElement('input');
+      durationInput.type = 'number';
+      durationInput.min = '1';
+      durationInput.max = '10';
+      durationInput.value = '3';
+      durationInput.style.width = '50px';
+      durationInput.style.marginRight = '15px';
+      durationControl.appendChild(durationInput);
+
+      // 创建自定义消息按钮
+      const customButton = document.createElement('button');
+      customButton.type = 'button';
+      customButton.textContent = '显示自定义时长消息';
+      customButton.style.padding = '8px 16px';
+      customButton.style.backgroundColor = '#9b59b6';
+      customButton.style.color = 'white';
+      customButton.style.border = 'none';
+      customButton.style.borderRadius = '4px';
+      customButton.style.cursor = 'pointer';
+
+      customButton.addEventListener('click', () => {
+        const duration = parseInt(durationInput.value, 10);
+        const message = \`此消息将显示\${duration}秒钟\`;
+        kinlink.formApi.showInfo(message, duration);
+      });
+
+      durationControl.appendChild(customButton);
+      demoPanel.appendChild(durationControl);
+
+      // 创建清除所有消息的按钮
+      const clearButton = document.createElement('button');
+      clearButton.type = 'button';
+      clearButton.textContent = '清除所有消息';
+      clearButton.style.marginTop = '15px';
+      clearButton.style.padding = '8px 16px';
+      clearButton.style.backgroundColor = '#7f8c8d';
+      clearButton.style.color = 'white';
+      clearButton.style.border = 'none';
+      clearButton.style.borderRadius = '4px';
+      clearButton.style.cursor = 'pointer';
+
+      clearButton.addEventListener('click', () => {
+        kinlink.formApi.clearAllMessages();
+      });
+
+      demoPanel.appendChild(clearButton);
+
+      // 将演示面板添加到页面
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(demoPanel, formElement.firstChild);
+    } catch (error) {
+      console.error('初始化消息提示演示失败:', error);
+    }
+  });
+})();
+`;
+
+  return (
+    <div className="container py-6 lg:py-10">
+      <div className="flex items-center gap-4 mb-8">
+        <Link href="/examples">
+          <Button variant="outline" size="icon">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+        </Link>
+        <h1 className="text-3xl font-bold tracking-tight">消息提示演示</h1>
+      </div>
+
+      <div className="my-8 space-y-6">
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
+          <p>
+            此示例演示如何使用Kinlink
+            API显示各种类型的消息提示，包括成功、错误、信息和警告消息。消息提示是向用户提供反馈和通知的重要方式，可以提升表单的用户体验。
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>显示成功消息（绿色）</li>
+            <li>显示错误消息（红色）</li>
+            <li>显示信息提示（蓝色）</li>
+            <li>显示警告消息（黄色）</li>
+            <li>自定义消息显示时长</li>
+            <li>清除所有消息</li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">消息类型说明</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-green-50 border border-green-200 rounded-md">
+              <h3 className="font-semibold text-green-800">
+                成功消息 (Success)
+              </h3>
+              <p className="text-green-700">
+                用于通知用户操作已成功完成，如数据保存、表单提交等。使用绿色突出积极结果。
+              </p>
+            </div>
+            <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+              <h3 className="font-semibold text-red-800">错误消息 (Error)</h3>
+              <p className="text-red-700">
+                用于通知用户出现错误或操作失败，如验证失败、提交错误等。使用红色突出需要用户注意的问题。
+              </p>
+            </div>
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
+              <h3 className="font-semibold text-blue-800">信息提示 (Info)</h3>
+              <p className="text-blue-700">
+                用于提供中性的信息或指导，如提示当前状态、使用指南等。使用蓝色表示纯信息性内容。
+              </p>
+            </div>
+            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+              <h3 className="font-semibold text-yellow-800">
+                警告消息 (Warning)
+              </h3>
+              <p className="text-yellow-700">
+                用于提醒用户潜在问题或需要注意的事项，如字段即将过期、输入可能有误等。使用黄色表示需要关注但不是错误的情况。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
+          <Tabs defaultValue="javascript">
+            <TabsList>
+              <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+            </TabsList>
+            <TabsContent value="javascript">
+              <CodeBlock code={sampleCode} language="javascript" />
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+          <p>
+            将代码复制到您的Kinlink自定义JavaScript中，加载表单后将显示一个消息提示演示面板，您可以点击不同按钮测试各种消息类型。
+          </p>
+          <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
+            <h3 className="font-semibold text-yellow-800">注意事项</h3>
+            <p className="text-yellow-800">
+              消息默认显示在页面顶部，并在指定时间后自动消失。不要同时显示过多消息，以免干扰用户体验。对于重要提示，可以使用较长的显示时间。
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+          <p>此示例使用了以下Kinlink API：</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>
+              <code>kinlink.formApi.showSuccess(message, duration)</code> -
+              显示成功消息
+            </li>
+            <li>
+              <code>kinlink.formApi.showError(message, duration)</code> -
+              显示错误消息
+            </li>
+            <li>
+              <code>kinlink.formApi.showInfo(message, duration)</code> -
+              显示信息提示
+            </li>
+            <li>
+              <code>kinlink.formApi.showWarning(message, duration)</code> -
+              显示警告消息
+            </li>
+            <li>
+              <code>kinlink.formApi.showMessage(type, message, duration)</code>{" "}
+              - 通用显示消息方法
+            </li>
+            <li>
+              <code>kinlink.formApi.clearAllMessages()</code> - 清除所有消息
+            </li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>表单提交成功或失败的反馈</li>
+            <li>字段验证结果的通知</li>
+            <li>操作完成状态的提示</li>
+            <li>系统状态变化的通知</li>
+            <li>需要用户注意的特殊事项提醒</li>
+            <li>自动保存或数据同步的状态指示</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}

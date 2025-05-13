@@ -54,6 +54,15 @@ export default function ApiReferencePage() {
             </Link>{" "}
             - 用于响应表单事件的事件系统
           </li>
+          <li>
+            <Link
+              href="/docs/api-reference/proxy"
+              className="font-medium underline underline-offset-4"
+            >
+              proxy
+            </Link>{" "}
+            - 用于安全调用外部API的代理服务
+          </li>
         </ul>
 
         <CodeBlock
@@ -86,6 +95,9 @@ window.kinlink = {
   FormEvents: {
     FORM_LOADED, FIELD_CHANGE, BEFORE_SUBMIT, AFTER_SUBMIT
   },
+  
+  // Proxy for external API calls
+  proxy: (url, method, headers, body) => Promise<any>,
   
   // Other properties
   version: "1.0.0",
@@ -163,6 +175,14 @@ window.kinlink = {
               className="font-medium underline underline-offset-4"
             >
               事件
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/docs/api-reference/proxy"
+              className="font-medium underline underline-offset-4"
+            >
+              代理
             </Link>
           </li>
         </ul>

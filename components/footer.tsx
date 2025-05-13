@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -14,14 +14,6 @@ export default function Footer() {
         </div>
         <div className="flex gap-4">
           <Link
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            GitHub
-          </Link>
-          <Link
             href="/docs"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
@@ -30,5 +22,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

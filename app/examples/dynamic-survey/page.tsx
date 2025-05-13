@@ -18,9 +18,7 @@ export default function DynamicSurveyPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Dynamic Survey Builder
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">动态调查</h1>
       </div>
 
       <div className="prose prose-blue dark:prose-invert max-w-none">
