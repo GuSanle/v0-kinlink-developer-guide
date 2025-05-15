@@ -1,0 +1,283 @@
+import { CodeBlock } from "@/components/code-block";
+
+# 布局API
+
+<div className="mt-2 text-lg text-muted-foreground">
+  用于控制表单布局和UI元素的函数。
+</div>
+
+布局API（`kinlink.layoutApi`）提供了用于控制表单布局元素（如页眉、页脚和操作栏）的函数。此API帮助您自定义Kinlink表单的外观和行为，特别是针对不同设备类型。
+
+## 页眉控制
+
+### `getHeaderHeight()`
+
+获取页眉元素的当前高度。
+
+<CodeBlock
+  code={`// 获取页眉的高度
+const headerHeight = kinlink.layoutApi.getHeaderHeight();
+console.log(headerHeight); // 输出: 64 (像素)`}
+  language="javascript"
+/>
+
+### `isHeaderVisible()`
+
+检查页眉元素当前是否可见。
+
+<CodeBlock
+  code={`// 检查页眉是否可见
+const isVisible = kinlink.layoutApi.isHeaderVisible();
+console.log(isVisible); // 输出: true 或 false`}
+  language="javascript"
+/>
+
+### `hideHeader()`
+
+隐藏页眉元素。
+
+<CodeBlock
+  code={`// 隐藏页眉
+kinlink.layoutApi.hideHeader();`}
+  language="javascript"
+/>
+
+### `showHeader()`
+
+显示先前隐藏的页眉元素。
+
+<CodeBlock
+  code={`// 显示页眉
+kinlink.layoutApi.showHeader();`}
+  language="javascript"
+/>
+
+## 页脚控制
+
+### `getFooterHeight()`
+
+获取页脚元素的当前高度。
+
+<CodeBlock
+  code={`// 获取页脚的高度
+const footerHeight = kinlink.layoutApi.getFooterHeight();
+console.log(footerHeight); // 输出: 48 (像素)`}
+  language="javascript"
+/>
+
+### `isFooterVisible()`
+
+检查页脚元素当前是否可见。
+
+<CodeBlock
+  code={`// 检查页脚是否可见
+const isVisible = kinlink.layoutApi.isFooterVisible();
+console.log(isVisible); // 输出: true 或 false`}
+  language="javascript"
+/>
+
+### `hideFooter()`
+
+隐藏页脚元素。
+
+<CodeBlock
+  code={`// 隐藏页脚
+kinlink.layoutApi.hideFooter();`}
+  language="javascript"
+/>
+
+### `showFooter()`
+
+显示先前隐藏的页脚元素。
+
+<CodeBlock
+  code={`// 显示页脚
+kinlink.layoutApi.showFooter();`}
+  language="javascript"
+/>
+
+## 提交按钮控制
+
+### `isSubmitButtonVisible()`
+
+检查提交按钮当前是否可见。
+
+<CodeBlock
+  code={`// 检查提交按钮是否可见
+const isVisible = kinlink.layoutApi.isSubmitButtonVisible();
+console.log(isVisible); // 输出: true 或 false`}
+  language="javascript"
+/>
+
+### `hideSubmitButton()`
+
+隐藏提交按钮。
+
+<CodeBlock
+  code={`// 隐藏提交按钮
+kinlink.layoutApi.hideSubmitButton();`}
+  language="javascript"
+/>
+
+### `showSubmitButton()`
+
+显示先前隐藏的提交按钮。
+
+<CodeBlock
+  code={`// 显示提交按钮
+kinlink.layoutApi.showSubmitButton();`}
+  language="javascript"
+/>
+
+## 移动端特定控制
+
+Kinlink为移动设备提供了特殊控制。这些对于在小屏幕上创建更好的用户体验特别有用。
+
+### `checkIsMobileDevice()`
+
+检查当前设备是否为移动设备（视口宽度 ≤ 575px）。
+
+<CodeBlock
+  code={`// 检查当前设备是否为移动设备
+if (kinlink.layoutApi.checkIsMobileDevice()) {
+  // 应用移动端特定的自定义设置
+  console.log('在移动设备上运行');
+} else {
+  console.log('在桌面设备上运行');
+}`}
+  language="javascript"
+/>
+
+### `mobileIsFormActionBarVisible()`
+
+检查移动表单操作栏当前是否可见。
+
+<CodeBlock
+  code={`// 检查移动表单操作栏是否可见
+const isVisible = kinlink.layoutApi.mobileIsFormActionBarVisible();
+console.log(isVisible); // 输出: true 或 false`}
+  language="javascript"
+/>
+
+### `mobileHideFormActionBar()`
+
+隐藏移动表单操作栏。
+
+<CodeBlock
+  code={`// 隐藏移动表单操作栏
+kinlink.layoutApi.mobileHideFormActionBar();`}
+  language="javascript"
+/>
+
+### `mobileShowFormActionBar()`
+
+显示先前隐藏的移动表单操作栏。
+
+<CodeBlock
+  code={`// 显示移动表单操作栏
+kinlink.layoutApi.mobileShowFormActionBar();`}
+  language="javascript"
+/>
+
+### `toggleFormActionBar()`
+
+切换移动表单操作栏的可见性。
+
+<CodeBlock
+  code={`// 切换移动表单操作栏
+kinlink.layoutApi.toggleFormActionBar();`}
+  language="javascript"
+/>
+
+### `mobileGetFormActionBarHeight()`
+
+获取移动表单操作栏的当前高度。
+
+<CodeBlock
+  code={`// 获取移动表单操作栏的高度
+const height = kinlink.layoutApi.mobileGetFormActionBarHeight();
+console.log(height); // 输出: 70 (像素)`}
+  language="javascript"
+/>
+
+## 通用布局工具
+
+### `getContentAreaHeight()`
+
+计算表单内容区域的可用高度，考虑页眉、页脚和操作栏的高度。
+
+<CodeBlock
+  code={`// 获取可用内容区域高度
+const contentHeight = kinlink.layoutApi.getContentAreaHeight();
+console.log(contentHeight); // 输出: 600 (像素)`}
+  language="javascript"
+/>
+
+### `onLayoutChange(callback)`
+
+注册一个回调函数，在布局变化时调用（例如，当页眉、页脚或操作栏显示或隐藏时）。
+
+<CodeBlock
+  code={`// 注册布局变化监听器
+const cleanup = kinlink.layoutApi.onLayoutChange((detail) => {
+  console.log('布局已变化:', detail);
+  // detail = { element: 'header', visible: false, height: 0 }
+  
+  // 根据变化重新计算布局
+  const contentHeight = kinlink.layoutApi.getContentAreaHeight();
+  console.log('新内容高度:', contentHeight);
+});
+
+// 稍后，当不再需要监听器时
+cleanup();`}
+language="javascript"
+/>
+
+## 示例：响应式布局
+
+以下是如何使用布局API创建适应不同设备类型的响应式表单的示例：
+
+<CodeBlock
+  code={`(function() {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    const isMobile = kinlink.layoutApi.checkIsMobileDevice();
+    
+    if (isMobile) {
+      // 移动布局优化
+      
+      // 隐藏页眉以节省空间
+      kinlink.layoutApi.hideHeader();
+      
+      // 确保移动操作栏可见
+      kinlink.layoutApi.mobileShowFormActionBar();
+      
+      // 监听方向变化
+      window.addEventListener('resize', () => {
+        const contentHeight = kinlink.layoutApi.getContentAreaHeight();
+        console.log('调整大小后的内容高度:', contentHeight);
+        
+        // 根据需要调整布局
+        // ...
+      });
+    } else {
+      // 桌面布局
+      
+      // 显示页眉和页脚
+      kinlink.layoutApi.showHeader();
+      kinlink.layoutApi.showFooter();
+      
+      // 监听布局变化
+      kinlink.layoutApi.onLayoutChange((detail) => {
+        console.log('布局元素已变化:', detail);
+        
+        // 根据需要调整布局
+        // ...
+      });
+    }
+    
+    console.log('响应式布局已初始化');
+  });
+})();`}
+  language="javascript"
+  filename="responsive-layout-example.js"
+/>

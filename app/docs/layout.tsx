@@ -1,12 +1,12 @@
-import type React from "react"
-import { DocsSidebar } from "@/components/docs-sidebar"
-import { CodeHighlighter } from "@/components/code-highlighter"
-import { ClientCodeHighlighter } from "@/components/client-code-highlighter"
+import type React from "react";
+import { DocsSidebar } from "@/components/docs-sidebar";
+import { CodeHighlighter } from "@/components/code-highlighter";
+import { ClientCodeHighlighter } from "@/components/client-code-highlighter";
 
 export default function DocsLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
@@ -16,11 +16,11 @@ export default function DocsLayout({
         </div>
       </aside>
       <main className="relative py-6 lg:gap-10 lg:py-8">
-        <div className="mx-auto w-full min-w-0">
+        <div className="prose dark:prose-invert mx-auto w-full min-w-0">
           <ClientCodeHighlighter />
           <CodeHighlighter>{children}</CodeHighlighter>
         </div>
       </main>
     </div>
-  )
+  );
 }

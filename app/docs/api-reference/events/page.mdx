@@ -1,0 +1,304 @@
+ 
+import { CodeBlock } from "@/components/code-block";
+
+# 事件
+
+<div className="mt-2 text-lg text-muted-foreground">
+  用于响应表单生命周期事件的事件系统。
+</div>
+
+Kinlink事件系统允许您响应各种表单生命周期事件，例如表单加载时、字段值变化时以及表单提交前后。这使您能够创建动态和交互式表单。
+
+## 事件注册
+
+### `on(eventName, callback)`
+
+注册一个回调函数，在指定事件发生时调用。
+
+<CodeBlock
+  code={`// 注册事件监听器
+const listenerId = kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+  console.log('表单已加载');
+  // 在此初始化表单逻辑
+});`}
+  language="javascript"
+/>
+
+### `off(eventName, listenerId)`
+
+移除先前注册的事件监听器。
+
+<CodeBlock
+  code={`// 移除事件监听器
+kinlink.events.off(kinlink.FormEvents.FORM_LOADED, listenerId);`}
+  language="javascript"
+/>
+
+## 可用事件
+
+Kinlink提供了几个预定义的事件，您可以监听这些事件。这些事件可通过 `kinlink.FormEvents` 对象获取。
+
+### `FORM_LOADED`
+
+在表单加载完成并准备好交互时触发。这是初始化表单逻辑的理想位置。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, (data) => {
+  // data是一个简单对象，表示表单已加载
+  const form = kinlink.formApi;
+  
+  // 初始化表单逻辑
+  form.hideField('additionalInfo');
+  form.addFieldValidator('email', (value) => {
+    if (!value) return;
+    if (!/^\\\\w+@\\\\w+\\\\.\\\\w+$/.test(value)) {
+      return '请输入有效的电子邮件地址';
+    }
+    return undefined; // 验证通过
+  });
+});`}
+  language="javascript"
+  filename="form-loaded-event.js"
+/>
+
+### `FIELD_CHANGE`
+
+在字段值变化时触发。这对于实现字段联动和基于用户输入的动态行为非常有用。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  const form = kinlink.formApi;
+  
+  // 实现字段联动逻辑
+  if (fieldName === 'productType') {
+    if (value === 'premium') {
+      form.showField('additionalInfo');
+    } else {
+      form.hideField('additionalInfo');
+    }
+  }
+  
+  // 计算派生值
+  if (fieldName === 'quantity' || fieldName === 'price') {
+    const quantity = Number(form.getFieldValue('quantity')) || 0;
+    const price = Number(form.getFieldValue('price')) || 0;
+    form.setFieldValue('total', quantity * price);
+  }
+});`}
+  language="javascript"
+  filename="field-change-event.js"
+/>
+
+### `BEFORE_SUBMIT`
+
+在表单提交前触发。这使您有机会执行最终验证、修改提交数据或在必要时阻止提交。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
+  const { values } = data;
+  const form = kinlink.formApi;
+  
+  // 执行最终验证
+  const validationResult = form.validateForm();
+  if (!validationResult.isValid) {
+    form.showError('请在提交前修复验证错误。');
+    return false; // 阻止提交
+  }
+  
+  // 修改提交数据
+  values.submittedAt = new Date().toISOString();
+  values.browser = navigator.userAgent;
+  
+  // 允许提交
+  return true;
+});`}
+  language="javascript"
+  filename="before-submit-event.js"
+/>
+
+### `AFTER_SUBMIT`
+
+在表单提交后触发。这对于显示成功消息、重定向用户或执行其他提交后操作非常有用。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
+  const { result, success } = data;
+  
+  if (success) {
+    // 显示成功消息
+    kinlink.formApi.showSuccess('表单提交成功！');
+    
+    // 延迟后重定向
+    setTimeout(() => {
+      window.location.href = '/thank-you';
+    }, 2000);
+  } else {
+    // 处理提交失败
+    kinlink.formApi.showError('提交表单失败。请重试。');
+    console.error('提交错误:', result);
+  }
+});`}
+  language="javascript"
+  filename="after-submit-event.js"
+/>
+
+## 事件回调参数
+
+每种事件类型为其回调函数提供不同的参数。以下是每个事件回调接收的详细说明：
+
+### `FORM_LOADED` 回调
+
+回调接收一个简单对象，表示表单已加载。没有特定的属性可以访问。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, (data) => {
+  // data是一个简单对象
+  console.log('表单已加载');
+});`}
+  language="javascript"
+/>
+
+### `FIELD_CHANGE` 回调
+
+回调接收一个带有 \`fieldName\` 和 \`value\` 属性的对象，表示哪个字段发生了变化及其新值。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  console.log(\`字段 \${fieldName} 变为 \${value}\`);
+  
+  // 注意：在此修改'value'不会影响表单
+  // 使用kinlink.formApi.setFieldValue()来更改字段值
+});`}
+  language="javascript"
+/>
+
+### `BEFORE_SUBMIT` 回调
+
+回调接收一个带有 \`values\` 属性的对象，这是提交数据的引用。您可以修改此对象以更改提交内容。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
+  const { values } = data;
+  
+  // 您可以修改提交数据
+  values.timestamp = Date.now();
+  
+  // 返回false阻止提交，或返回true允许提交
+  return true;
+});`}
+  language="javascript"
+/>
+
+### `AFTER_SUBMIT` 回调
+
+回调接收一个带有 \`result\` 和 \`success\` 属性的对象，表示服务器的响应以及提交是否成功。
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
+  const { result, success } = data;
+  
+  if (success) {
+    console.log('提交成功:', result);
+  } else {
+    console.error('提交失败:', result);
+  }
+});`}
+  language="javascript"
+/>
+
+## 完整示例
+
+以下是使用所有可用事件的完整示例：
+
+<CodeBlock
+  code={`(function() {
+  // 表单初始化
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    const form = kinlink.formApi;
+    
+    // 初始化表单状态
+    form.hideField('additionalInfo');
+    form.setFieldValue('quantity', 1);
+    form.setFieldValue('price', 10);
+    form.setFieldValue('total', 10);
+    
+    // 禁用计算字段
+    form.disableField('total');
+    
+    // 添加验证器
+    form.addFieldValidator('email', (value) => {
+      if (!value) return;
+      if (!/^\\\\w+@\\\\w+\\\\.\\\\w+$/.test(value)) {
+        return '请输入有效的电子邮件地址';
+      }
+      return undefined;
+    });
+    
+    console.log('表单已初始化');
+  });
+  
+  // 字段联动
+  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+    const { fieldName, value } = data;
+    const form = kinlink.formApi;
+    
+    if (fieldName === 'productType') {
+      if (value === 'premium') {
+        form.showField('additionalInfo');
+      } else {
+        form.hideField('additionalInfo');
+      }
+    }
+    
+    if (fieldName === 'quantity' || fieldName === 'price') {
+      const quantity = Number(form.getFieldValue('quantity')) || 0;
+      const price = Number(form.getFieldValue('price')) || 0;
+      const total = quantity * price;
+      form.setFieldValue('total', total);
+    }
+    
+    console.log(\`字段 \${fieldName} 变为: \${value}\`);
+  });
+  
+  // 提交前处理
+  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
+    const { values } = data;
+    const form = kinlink.formApi;
+    
+    const validationResult = form.validateForm();
+    if (!validationResult.isValid) {
+      form.showError('请在提交前修复所有错误。');
+      return false; // 阻止提交
+    }
+    
+    // 添加额外数据
+    values.submittedFrom = 'web';
+    values.timestamp = new Date().toISOString();
+    
+    console.log('准备提交:', values);
+    return true; // 允许提交
+  });
+  
+  // 提交后处理
+  kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
+    const { result, success } = data;
+    
+    if (success) {
+      kinlink.formApi.showSuccess('表单提交成功！');
+      console.log('提交结果:', result);
+      // 可选择重定向或重置表单
+      // kinlink.formApi.resetForm();
+      // window.location.href = '/thank-you';
+    } else {
+      kinlink.formApi.showError('提交表单失败。');
+      console.error('提交错误:', result);
+    }
+  });
+  
+  console.log('Kinlink 事件监听器已设置。');
+})();`}
+  language="javascript"
+  filename="full-event-example.js"
+/>
