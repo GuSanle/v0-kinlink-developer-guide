@@ -178,46 +178,717 @@ export default function FieldLinkingPage() {
             <p>此示例假设表单具有以下字段：</p>
 
             <CodeBlock
-              code={`<form>
-  <div data-field="productType">
-    <label>产品类型</label>
-    <select>
-      <option value="standard">标准</option>
-      <option value="premium">高级</option>
-    </select>
-  </div>
-  
-  <div data-field="quantity">
-    <label>数量</label>
-    <input type="number" min="1" />
-  </div>
-  
-  <div data-field="price">
-    <label>价格</label>
-    <input type="number" min="0" step="0.01" />
-  </div>
-  
-  <div data-field="total">
-    <label>总计</label>
-    <input type="number" readonly />
-  </div>
-  
-  <div data-field="additionalInfo">
-    <label>附加信息</label>
-    <textarea></textarea>
-  </div>
-  
-  <div data-field="premiumOptions">
-    <label>高级选项</label>
-    <select>
-      <option value="">选择一个选项</option>
-      <option value="discount">应用10%折扣</option>
-      <option value="express">快递配送</option>
-    </select>
-  </div>
-  
-  <button type="submit">提交订单</button>
-</form>`}
+              code={`{
+    "revision": "901",
+    "properties": {
+        "レコード番号": {
+            "type": "RECORD_NUMBER",
+            "code": "レコード番号",
+            "label": "レコード番号",
+            "noLabel": false
+        },
+        "表格": {
+            "type": "SUBTABLE",
+            "code": "表格",
+            "noLabel": false,
+            "label": "表格",
+            "fields": {
+                "单行文本框_4": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "单行文本框_4",
+                    "label": "单行文本框",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "多选_1": {
+                    "type": "MULTI_SELECT",
+                    "code": "多选_1",
+                    "label": "多选",
+                    "noLabel": false,
+                    "required": false,
+                    "options": {
+                        "sample1": {
+                            "label": "sample1",
+                            "index": "0"
+                        },
+                        "sample4": {
+                            "label": "sample4",
+                            "index": "3"
+                        },
+                        "sample3": {
+                            "label": "sample3",
+                            "index": "2"
+                        },
+                        "sample2": {
+                            "label": "sample2",
+                            "index": "1"
+                        }
+                    },
+                    "defaultValue": []
+                }
+            }
+        },
+        "更新者": {
+            "type": "MODIFIER",
+            "code": "更新者",
+            "label": "更新者",
+            "noLabel": false
+        },
+        "ステータス": {
+            "type": "STATUS",
+            "code": "ステータス",
+            "label": "ステータス",
+            "enabled": true
+        },
+        "カテゴリー": {
+            "type": "CATEGORY",
+            "code": "カテゴリー",
+            "label": "カテゴリー",
+            "enabled": false
+        },
+        "附件_0": {
+            "type": "FILE",
+            "code": "附件_0",
+            "label": "パスポート写真",
+            "noLabel": false,
+            "required": false,
+            "thumbnailSize": "150"
+        },
+        "单行文本框_0": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "单行文本框_0",
+            "label": "案件名",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "单行文本框_10": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "单行文本框_10",
+            "label": "会社名",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "单行文本框_11": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "单行文本框_11",
+            "label": "パスポート番号／身分証番号",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "日期_1": {
+            "type": "DATE",
+            "code": "日期_1",
+            "label": "生年月日",
+            "noLabel": false,
+            "required": false,
+            "unique": false,
+            "defaultValue": "",
+            "defaultNowValue": false
+        },
+        "日期_2": {
+            "type": "DATE",
+            "code": "日期_2",
+            "label": "パスポート有効期限",
+            "noLabel": false,
+            "required": false,
+            "unique": false,
+            "defaultValue": "",
+            "defaultNowValue": false
+        },
+        "作業者": {
+            "type": "STATUS_ASSIGNEE",
+            "code": "作業者",
+            "label": "作業者",
+            "enabled": true
+        },
+        "作成者": {
+            "type": "CREATOR",
+            "code": "作成者",
+            "label": "作成者",
+            "noLabel": false
+        },
+        "单行文本框_9": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "单行文本框_9",
+            "label": "ローマ字名",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "下拉菜单": {
+            "type": "DROP_DOWN",
+            "code": "下拉菜单",
+            "label": "集合場所",
+            "noLabel": false,
+            "required": false,
+            "options": {
+                "x x x 3q": {
+                    "label": "x x x 3q",
+                    "index": "28"
+                },
+                "65 x x x2 q": {
+                    "label": "65 x x x2 q",
+                    "index": "26"
+                },
+                "x x12 x q": {
+                    "label": "x x12 x q",
+                    "index": "38"
+                },
+                "x x x q7678": {
+                    "label": "x x x q7678",
+                    "index": "50"
+                },
+                "x 2x x q54": {
+                    "label": "x 2x x q54",
+                    "index": "18"
+                },
+                "x x x q123": {
+                    "label": "x x x q123",
+                    "index": "12"
+                },
+                "x x x q65": {
+                    "label": "x x x q65",
+                    "index": "48"
+                },
+                "x x x5433 q": {
+                    "label": "x x x5433 q",
+                    "index": "42"
+                },
+                "7 x x x q": {
+                    "label": "7 x x x q",
+                    "index": "8"
+                },
+                "x 8x x q": {
+                    "label": "x 8x x q",
+                    "index": "24"
+                },
+                "x 4x x q": {
+                    "label": "x 4x x q",
+                    "index": "20"
+                },
+                "x x x 87q": {
+                    "label": "x x x 87q",
+                    "index": "46"
+                },
+                "x x 33x q": {
+                    "label": "x x 33x q",
+                    "index": "40"
+                },
+                "x x x 67q": {
+                    "label": "x x x 67q",
+                    "index": "33"
+                },
+                "65 x x x q9": {
+                    "label": "65 x x x q9",
+                    "index": "47"
+                },
+                "x x x q17": {
+                    "label": "x x x q17",
+                    "index": "16"
+                },
+                "x x x q16": {
+                    "label": "x x x q16",
+                    "index": "15"
+                },
+                "x x x q15": {
+                    "label": "x x x q15",
+                    "index": "14"
+                },
+                "x x x q14": {
+                    "label": "x x x q14",
+                    "index": "13"
+                },
+                "x x43 x q": {
+                    "label": "x x43 x q",
+                    "index": "43"
+                },
+                "12 x x x q": {
+                    "label": "12 x x x q",
+                    "index": "11"
+                },
+                "x x x333 q x x x q": {
+                    "label": "x x x333 q x x x q",
+                    "index": "41"
+                },
+                "A": {
+                    "label": "A",
+                    "index": "0"
+                },
+                "8 x x x q": {
+                    "label": "8 x x x q",
+                    "index": "9"
+                },
+                "x11 x x q243": {
+                    "label": "x11 x x q243",
+                    "index": "37"
+                },
+                "B": {
+                    "label": "B",
+                    "index": "1"
+                },
+                "x 5x x q": {
+                    "label": "x 5x x q",
+                    "index": "21"
+                },
+                "x x x q4": {
+                    "label": "x x x q4",
+                    "index": "5"
+                },
+                "x x x q3": {
+                    "label": "x x x q3",
+                    "index": "4"
+                },
+                "x x x45 q": {
+                    "label": "x x x45 q",
+                    "index": "49"
+                },
+                "x x x q2": {
+                    "label": "x x x q2",
+                    "index": "3"
+                },
+                "x7 x x q": {
+                    "label": "x7 x x q",
+                    "index": "23"
+                },
+                "x x x q1": {
+                    "label": "x x x q1",
+                    "index": "2"
+                },
+                "x x x q6": {
+                    "label": "x x x q6",
+                    "index": "7"
+                },
+                "x x x q5": {
+                    "label": "x x x q5",
+                    "index": "6"
+                },
+                "54 x x x q6": {
+                    "label": "54 x x x q6",
+                    "index": "32"
+                },
+                "x x x 8q54": {
+                    "label": "x x x 8q54",
+                    "index": "34"
+                },
+                "x x x q x x x4 q x x x q": {
+                    "label": "x x x q x x x4 q x x x q",
+                    "index": "29"
+                },
+                "x x x132 q x x x q": {
+                    "label": "x x x132 q x x x q",
+                    "index": "39"
+                },
+                "x 3x x q": {
+                    "label": "x 3x x q",
+                    "index": "19"
+                },
+                "x x x 65q": {
+                    "label": "x x x 65q",
+                    "index": "44"
+                },
+                "x x x q9": {
+                    "label": "x x x q9",
+                    "index": "10"
+                },
+                "x x x q76": {
+                    "label": "x x x q76",
+                    "index": "45"
+                },
+                "x 9x x q": {
+                    "label": "x 9x x q",
+                    "index": "25"
+                },
+                "x x x 10q76": {
+                    "label": "x x x 10q76",
+                    "index": "36"
+                },
+                "x 6x x q": {
+                    "label": "x 6x x q",
+                    "index": "22"
+                },
+                "x 1x x q5": {
+                    "label": "x 1x x q5",
+                    "index": "17"
+                },
+                "x x x5 q544": {
+                    "label": "x x x5 q544",
+                    "index": "30"
+                },
+                "x x x q x x x q x x x q": {
+                    "label": "x x x q x x x q x x x q",
+                    "index": "27"
+                },
+                "x x x 9q65": {
+                    "label": "x x x 9q65",
+                    "index": "35"
+                },
+                "x x 56x q": {
+                    "label": "x x 56x q",
+                    "index": "31"
+                }
+            },
+            "defaultValue": ""
+        },
+        "文字列__1行__0": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "文字列__1行__0",
+            "label": "漢字姓",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "文字列__1行__1": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "文字列__1行__1",
+            "label": "漢字名",
+            "noLabel": false,
+            "required": true,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "单行文本框_8": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "单行文本框_8",
+            "label": "ローマ字姓",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "更新日時": {
+            "type": "UPDATED_TIME",
+            "code": "更新日時",
+            "label": "更新日時",
+            "noLabel": false
+        },
+        "单选框_0": {
+            "type": "RADIO_BUTTON",
+            "code": "单选框_0",
+            "label": "性別",
+            "noLabel": false,
+            "required": true,
+            "options": {
+                "女": {
+                    "label": "女",
+                    "index": "1"
+                },
+                "男": {
+                    "label": "男",
+                    "index": "0"
+                }
+            },
+            "defaultValue": "男",
+            "align": "HORIZONTAL"
+        },
+        "文字列__1行__2": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "文字列__1行__2",
+            "label": "携帯電話",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "文字列__1行__3": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "文字列__1行__3",
+            "label": "Eメールアドレス",
+            "noLabel": false,
+            "required": false,
+            "minLength": "",
+            "maxLength": "",
+            "expression": "",
+            "hideExpression": false,
+            "unique": false,
+            "defaultValue": ""
+        },
+        "选择用户": {
+            "type": "USER_SELECT",
+            "code": "选择用户",
+            "label": "担当者",
+            "noLabel": false,
+            "required": false,
+            "entities": [],
+            "defaultValue": []
+        },
+        "表格_13": {
+            "type": "SUBTABLE",
+            "code": "表格_13",
+            "noLabel": false,
+            "label": "同行者",
+            "fields": {
+                "文字列__1行__4": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "文字列__1行__4",
+                    "label": "漢字姓",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "单行文本框_3": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "单行文本框_3",
+                    "label": "パスポート番号／身分証番号",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "附件": {
+                    "type": "FILE",
+                    "code": "附件",
+                    "label": "パスポート写真",
+                    "noLabel": false,
+                    "required": true,
+                    "thumbnailSize": "150"
+                },
+                "单行文本框": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "单行文本框",
+                    "label": "ローマ字姓",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "文字列__1行__5": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "文字列__1行__5",
+                    "label": "携帯電話",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "单行文本框_1": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "单行文本框_1",
+                    "label": "ローマ字名",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "单行文本框_2": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "单行文本框_2",
+                    "label": "会社名",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "文字列__1行__6": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "文字列__1行__6",
+                    "label": "Eメールアドレス",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "日期": {
+                    "type": "DATE",
+                    "code": "日期",
+                    "label": "パスポート有効期限",
+                    "noLabel": false,
+                    "required": false,
+                    "unique": false,
+                    "defaultValue": "",
+                    "defaultNowValue": false
+                },
+                "文字列__1行_": {
+                    "type": "SINGLE_LINE_TEXT",
+                    "code": "文字列__1行_",
+                    "label": "漢字名",
+                    "noLabel": false,
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "expression": "",
+                    "hideExpression": false,
+                    "unique": false,
+                    "defaultValue": ""
+                },
+                "单选框": {
+                    "type": "RADIO_BUTTON",
+                    "code": "单选框",
+                    "label": "性別",
+                    "noLabel": false,
+                    "required": true,
+                    "options": {
+                        "女": {
+                            "label": "女",
+                            "index": "1"
+                        },
+                        "男": {
+                            "label": "男",
+                            "index": "0"
+                        }
+                    },
+                    "defaultValue": "男",
+                    "align": "HORIZONTAL"
+                },
+                "复选框_0": {
+                    "type": "CHECK_BOX",
+                    "code": "复选框_0",
+                    "label": "复选框",
+                    "noLabel": false,
+                    "required": false,
+                    "options": {
+                        "sa1": {
+                            "label": "sa1",
+                            "index": "0"
+                        },
+                        "sa2": {
+                            "label": "sa2",
+                            "index": "1"
+                        }
+                    },
+                    "defaultValue": [],
+                    "align": "HORIZONTAL"
+                }
+            }
+        },
+        "Lookup_0": {
+            "type": "SINGLE_LINE_TEXT",
+            "code": "Lookup_0",
+            "label": "案件编号",
+            "noLabel": false,
+            "required": false,
+            "lookup": null
+        },
+        "选择用户_1": {
+            "type": "USER_SELECT",
+            "code": "选择用户_1",
+            "label": "副担当者",
+            "noLabel": false,
+            "required": false,
+            "entities": [],
+            "defaultValue": []
+        },
+        "多选_0": {
+            "type": "MULTI_SELECT",
+            "code": "多选_0",
+            "label": "このツアーはどこでお知りになりましたか",
+            "noLabel": false,
+            "required": false,
+            "options": {
+                "Wechat JTB日本語サイト": {
+                    "label": "Wechat JTB日本語サイト",
+                    "index": "0"
+                },
+                "その他JTB上海からのご案内": {
+                    "label": "その他JTB上海からのご案内",
+                    "index": "1"
+                },
+                "らくらくプレス": {
+                    "label": "らくらくプレス",
+                    "index": "2"
+                },
+                "Whenever": {
+                    "label": "Whenever",
+                    "index": "3"
+                },
+                "ジャピオン": {
+                    "label": "ジャピオン",
+                    "index": "4"
+                }
+            },
+            "defaultValue": []
+        },
+        "作成日時": {
+            "type": "CREATED_TIME",
+            "code": "作成日時",
+            "label": "作成日時",
+            "noLabel": false
+        },
+        "选择组织": {
+            "type": "ORGANIZATION_SELECT",
+            "code": "选择组织",
+            "label": "担当部署",
+            "noLabel": false,
+            "required": false,
+            "entities": [],
+            "defaultValue": []
+        }
+    }
+}`}
               language="html"
               filename="form-structure.html"
             />
