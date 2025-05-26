@@ -1,0 +1,208 @@
+import { Metadata } from "next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "表单提交处理 - Kinlink开发者",
+  description: "学习如何在表单提交前后处理数据",
+};
+
+const sampleCode = `/**
+ * 示例9: 表单提交前后处理（自动修改数据示例）
+ * 功能：在表单提交前自动修改数据，如自动补全、格式化、添加新字段
+ * 所有提示统一用 showMessage
+ */
+(function () {
+  // 表单加载时初始化
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 创建提交按钮
+      const submitButton = document.createElement('button');
+      submitButton.type = 'button';
+      submitButton.textContent = '测试提交表单';
+      submitButton.style.margin = '10px 0';
+      submitButton.style.padding = '8px 16px';
+      submitButton.style.backgroundColor = '#3498db';
+      submitButton.style.color = 'white';
+      submitButton.style.border = 'none';
+      submitButton.style.borderRadius = '4px';
+      submitButton.style.cursor = 'pointer';
+
+      submitButton.addEventListener('click', () => {
+        // 触发表单提交
+        kinlink.formApi.submit();
+      });
+
+      // 添加按钮到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(submitButton, formElement.firstChild);
+    } catch (error) {
+      console.error('初始化提交按钮失败:', error);
+    }
+  });
+
+  // 表单提交前处理（自动修改数据）
+  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
+    try {
+      const { values } = data;
+      // 自动补全：如果没有填写公司名，自动补全为"未填写"
+      if (!values['单行文本框_10']) {
+        values['单行文本框_10'] = '未填写';
+        kinlink.formApi.showMessage(
+          'info',
+          '公司名未填写，已自动补全为"未填写"',
+          3,
+        );
+      }
+      // 自动格式化：手机号去除空格
+      if (values['文字列__1行__2']) {
+        values['文字列__1行__2'] = values['文字列__1行__2'].replace(/\\s+/g, '');
+        kinlink.formApi.showMessage('info', '手机号已自动去除空格', 3);
+      }
+      // 添加新字段：提交时间戳
+      values['_autoSubmitTime'] = new Date().toISOString();
+      kinlink.formApi.showMessage('info', '已自动添加提交时间戳', 3);
+      // 允许提交
+      return true;
+    } catch (error) {
+      console.error('表单提交前处理失败:', error);
+      kinlink.formApi.showMessage('error', '提交前处理发生错误', 3);
+      return false;
+    }
+  });
+
+  // 表单提交后处理
+  kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
+    try {
+      const { success, result } = data;
+      console.log('表单提交结果:', success, result);
+      if (success) {
+        kinlink.formApi.showMessage('success', '表单提交成功!', 3);
+      } else {
+        kinlink.formApi.showMessage('error', '表单提交失败，请稍后重试', 5);
+        console.error('提交失败原因:', result);
+      }
+    } catch (error) {
+      console.error('表单提交后处理失败:', error);
+      kinlink.formApi.showMessage('error', '提交后处理发生错误', 3);
+    }
+  });
+})();
+`;
+
+const proxyExample = `/**
+ * 示例: 表单提交时API代理请求示例
+ * 功能：表单提交时发送数据到kintone API
+ */
+(function () {
+  // 监听表单提交前事件
+  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, async (data) => {
+    try {
+      const { values } = data;
+      // 使用kinlink.proxy发送数据到kintone API
+      const res = await kinlink.proxy(
+        'https://pokemon36.cybozu.cn/k/v1/record.json',
+        'POST',
+        { 'Content-Type': 'application/json' },
+        {
+          app: 187,
+          record: {
+            单行文本框: { value: 'kinlink' },
+          },
+        },
+      );
+      console.log(res, 'res');
+      // 返回true允许表单继续提交
+      return true;
+    } catch (error) {
+      console.error('表单提交前处理失败:', error);
+      // 返回false阻止表单提交
+      return false;
+    }
+  });
+})();
+`;
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    # 表单提交处理
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+## 功能概述
+此示例演示如何使用Kinlink API在表单提交前后处理数据。这允许您在提交表单前自动格式化或补充数据，以及在提交后执行特定操作，如显示成功消息或处理结果。
+    </div>
+
+    <div className="space-y-4">
+## 关键事件
+* **FORM_LOADED**：表单加载完成时触发，可用于初始化UI元素
+* **BEFORE_SUBMIT**：表单提交前触发，可以修改数据或验证表单，返回true继续提交，返回false取消提交
+* **AFTER_SUBMIT**：表单提交后触发，可以处理结果或显示消息
+    </div>
+
+    <div className="space-y-4">
+## 基本提交处理示例
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock code={sampleCode} language="javascript" />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+## API代理请求示例
+以下示例展示了如何使用Kinlink的API代理功能在表单提交时向其他系统发送数据：
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock code={proxyExample} language="javascript" />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+## 常见数据处理操作
+* **数据清理**：去除多余空格、格式化电话号码或邮箱等
+* **数据补全**：为空字段设置默认值
+* **数据转换**：转换日期格式、单位转换等
+* **添加元数据**：添加时间戳、用户信息等
+* **数据关联**：根据已有字段值设置关联字段
+* **验证与确认**：执行最终验证，必要时提示用户确认
+    </div>
+
+    <div className="space-y-4">
+## 使用说明
+将代码复制到您的Kinlink自定义JavaScript中，根据您的表单字段和业务需求修改处理逻辑。
+      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
+        <h3 className="font-semibold text-yellow-800">注意事项</h3>
+        <p className="text-yellow-800">
+          在BEFORE_SUBMIT事件处理程序中，必须返回布尔值。返回true允许表单继续提交，返回false取消提交。如果包含异步操作，确保使用async/await或Promise正确处理返回值。
+        </p>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+## API参考
+此示例使用了以下Kinlink API：
+* `kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, callback)` - 监听表单提交前事件
+* `kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, callback)` - 监听表单提交后事件
+* `kinlink.formApi.submit()` - 触发表单提交
+* `kinlink.formApi.showMessage(type, message, duration)` - 显示消息
+* `kinlink.proxy(url, method, headers, body)` - 发送API代理请求
+    </div>
+  </div>
+</div>

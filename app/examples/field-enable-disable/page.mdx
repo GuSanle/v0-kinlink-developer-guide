@@ -1,0 +1,133 @@
+import { Metadata } from "next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "字段启用禁用控制 - Kinlink开发者",
+  description: "学习如何控制表单字段的启用和禁用状态",
+};
+
+const sampleCode = `/**
+ * 示例4: 字段启用/禁用控制
+ * 功能：控制表单字段的启用和禁用状态
+ */
+(function () {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 禁用特定字段
+      kinlink.formApi.disableField('单行文本框_10'); // 会社名
+      kinlink.formApi.disableField('单行文本框_8'); // ローマ字姓
+
+      // 创建控制按钮进行交互测试
+      const controlPanel = document.createElement('div');
+      controlPanel.style.margin = '10px 0';
+      controlPanel.style.padding = '10px';
+      controlPanel.style.backgroundColor = '#f8f9fa';
+      controlPanel.style.border = '1px solid #dee2e6';
+      controlPanel.style.borderRadius = '4px';
+
+      // 添加控制按钮到面板
+      const buttonStyles = 'margin-right: 10px; padding: 5px 10px;';
+
+      // 创建启用/禁用护照字段的按钮
+      const passportBtn = document.createElement('button');
+      passportBtn.textContent = '启用/禁用护照字段';
+      passportBtn.type = 'button';
+      passportBtn.style = buttonStyles;
+      passportBtn.addEventListener('click', () => {
+        const isDisabled =
+          kinlink.formApi.getFieldState('单行文本框_11').disabled;
+        if (isDisabled) {
+          kinlink.formApi.enableField('单行文本框_11');
+          kinlink.formApi.enableField('日期_2');
+          passportBtn.textContent = '禁用护照字段';
+          kinlink.formApi.showSuccess('护照字段已启用');
+        } else {
+          kinlink.formApi.disableField('单行文本框_11');
+          kinlink.formApi.disableField('日期_2');
+          passportBtn.textContent = '启用护照字段';
+          kinlink.formApi.showInfo('护照字段已禁用');
+        }
+      });
+
+      controlPanel.appendChild(passportBtn);
+
+      // 获取表单元素并添加控制面板
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(controlPanel, formElement.firstChild);
+    } catch (error) {
+      console.error('控制字段启用/禁用失败:', error);
+    }
+  });
+})();
+`;
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    # 字段启用禁用控制
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+## 功能概述
+此示例演示如何使用Kinlink API控制表单字段的启用和禁用状态。禁用的字段无法编辑但仍然可见，这与隐藏字段不同。这种功能对于创建基于条件或权限控制的表单非常有用。
+    </div>
+
+    <div className="space-y-4">
+## 关键功能
+* 禁用特定字段使其变为只读
+* 启用先前禁用的字段
+* 检查字段的禁用状态
+* 通过用户交互动态控制字段的启用/禁用状态
+    </div>
+
+    <div className="space-y-4">
+## 代码示例
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock code={sampleCode} language="javascript" />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+## 使用说明
+将代码复制到您的Kinlink自定义JavaScript中，根据您的表单字段和需求修改字段代码。您可以根据业务逻辑或用户权限控制字段的启用和禁用状态。
+      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
+        <h3 className="font-semibold text-yellow-800">注意事项</h3>
+        <p className="text-yellow-800">
+          禁用字段的值仍会被提交。如果需要完全排除某个字段，请考虑使用hideField方法隐藏该字段。
+        </p>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+## API参考
+此示例使用了以下Kinlink API：
+* `kinlink.formApi.disableField(fieldCode)` - 禁用指定字段
+* `kinlink.formApi.enableField(fieldCode)` - 启用指定字段
+* `kinlink.formApi.getFieldState(fieldCode)` - 获取字段状态，包含disabled属性
+* `kinlink.formApi.showSuccess(message)` - 显示成功消息
+* `kinlink.formApi.showInfo(message)` - 显示信息消息
+    </div>
+
+    <div className="space-y-4">
+## 常见应用场景
+* 基于用户角色或权限控制字段的可编辑性
+* 根据表单状态（如已提交、审核中等）调整字段的可编辑性
+* 基于其他字段的值控制相关字段的可编辑性
+* 创建向导式表单，根据当前步骤启用或禁用特定字段
+    </div>
+  </div>
+</div>

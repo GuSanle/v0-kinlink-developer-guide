@@ -1,0 +1,83 @@
+import { CodeBlock } from "@/components/code-block";
+
+<div className="space-y-6">
+<div>
+
+# Proxy API
+
+使用Kinlink代理服务安全地调用外部API。
+
+</div>
+
+<div className="docs-content">
+
+`kinlink.proxy` API提供了一种通过Kinlink服务端代理安全地向外部系统发起HTTP请求的方法，实现跨域、隐藏Token等安全集成场景。
+推荐在`BEFORE_SUBMIT`事件中调用，实现与外部系统的数据交互。
+
+## 方法签名
+
+<CodeBlock
+  code={`kinlink.proxy(url, method, headers, body)`}
+  language="javascript"
+/>
+
+## 参数
+
+*   `url` `{"{string}"}`
+    目标外部系统的完整URL（如第三方REST API地址）
+*   `method` `{"{string}"}`
+    HTTP方法（如'GET', 'POST', 'PUT', 'DELETE'等）
+*   `headers` `{"{object}"}`
+    请求头对象，键值对形式（如 {" { 'Content-Type': 'application/json' }"})
+*   `body` `{"{object|string|undefined}"}`
+    请求体内容。对于POST/PUT等方法，通常为对象（会自动序列化为JSON），也可为字符串或undefined
+
+## 返回值
+
+返回`Promise<any>`，解析为外部系统响应的JSON对象或原始数据。
+
+## 异常处理
+
+网络错误、服务端异常、目标系统返回错误码等，均会抛出异常（`Promise` reject）， 需用`try-catch`或 `.catch()`处理。
+
+## 示例
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, async (data) => {
+  try {
+    const { values } = data;
+    // 通过代理安全调用外部API
+    const result = await kinlink.proxy(
+      'https://api.example.com/endpoint',
+      'POST',
+      { 'Content-Type': 'application/json' },
+      { foo: 'bar', ...values }
+    );
+    // 可根据result决定是否允许提交
+    if (!result.success) {
+      kinlink.formApi.showError('外部系统校验失败');
+      return false; // 阻止表单提交
+    }
+  } catch (error) {
+    kinlink.formApi.showError('外部系统请求失败');
+    return false; // 阻止表单提交
+  }
+});`}
+  language="javascript"
+  filename="proxy-example.js"
+/>
+
+## 典型应用场景
+
+*   **跨域请求**：通过服务端代理安全访问第三方API，避免浏览器CORS限制。
+*   **隐藏敏感信息**：如Token、API Key等仅在服务端配置，前端不可见。
+*   **表单集成**：在`BEFORE_SUBMIT` 阶段校验、同步或补充外部数据。
+
+### 关于隐藏Token的原理
+
+通过`kinlink.proxy`发起的所有外部请求，实际由kinlink plugin的后端服务代理完成。
+后端会根据后台配置的目标URL自动补全所需的认证头（如Token、API Key等），前端无需也无法直接获取这些敏感信息。
+所有认证信息的配置和管理均在kinlink plugin后台完成，确保安全合规。
+
+</div>
+</div>

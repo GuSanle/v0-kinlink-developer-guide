@@ -1,0 +1,164 @@
+import { Metadata } from "next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "隐藏kintone标签 - Kinlink开发者",
+  description: "学习如何隐藏Kintone相关标签和元素",
+};
+
+const sampleCode = `/**
+ * 示例: 隐藏kintone标签
+ * 功能：隐藏表单中的kintone相关标签和元素
+ */
+(function () {
+  // 监听表单加载完成事件
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      const formApi = kinlink.formApi;
+      formApi.hideKintoneLabel();
+    } catch (error) {}
+  });
+})();
+`;
+
+const advancedSampleCode = `/**
+ * 示例: 隐藏更多kintone相关元素
+ * 功能：隐藏kintone相关标签、分组/折叠元素、页眉和操作栏
+ */
+(function () {
+  // 监听表单加载完成事件
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 隐藏kintone标签
+      kinlink.formApi.hideKintoneLabel();
+      
+      // 隐藏kintone分组/折叠元素
+      kinlink.formApi.hideKintoneCollapse();
+      
+      // 隐藏页眉
+      kinlink.layoutApi.hideHeader();
+      
+      // 在移动设备上隐藏表单操作栏
+      if (kinlink.layoutApi.checkIsMobileDevice()) {
+        kinlink.layoutApi.mobileHideFormActionBar();
+      }
+      
+      // 隐藏提交按钮
+      kinlink.layoutApi.hideSubmitButton();
+      
+      // 创建自定义提交按钮
+      const customSubmitBtn = document.createElement('button');
+      customSubmitBtn.textContent = '提交表单';
+      customSubmitBtn.style.padding = '10px 20px';
+      customSubmitBtn.style.backgroundColor = '#1890ff';
+      customSubmitBtn.style.color = 'white';
+      customSubmitBtn.style.border = 'none';
+      customSubmitBtn.style.borderRadius = '4px';
+      customSubmitBtn.style.margin = '20px 0';
+      customSubmitBtn.style.cursor = 'pointer';
+      
+      customSubmitBtn.addEventListener('click', () => {
+        kinlink.formApi.submit();
+      });
+      
+      // 添加到表单底部
+      const formElement = document.querySelector('.ant-form');
+      if (formElement) {
+        formElement.appendChild(customSubmitBtn);
+      }
+    } catch (error) {
+      console.error('隐藏kintone元素失败:', error);
+    }
+  });
+})();
+`;
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    # 隐藏kintone标签
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+## 功能概述
+此示例演示如何使用Kinlink API隐藏Kintone平台的原生标签和元素，使表单外观更加简洁和自定义化。这对于创建与您的品牌一致的表单体验非常有用。
+    </div>
+
+    <div className="space-y-4">
+## 基本示例
+以下代码展示了如何隐藏基本的Kintone标签：
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock code={sampleCode} language="javascript" />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+## 高级示例
+以下代码展示了如何隐藏更多Kintone元素并添加自定义提交按钮：
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock code={advancedSampleCode} language="javascript" />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+## 可隐藏的Kintone元素
+使用Kinlink API，您可以隐藏以下Kintone原生元素：
+* **Kintone标签**：通过`hideKintoneLabel()` 隐藏
+* **Kintone分组/折叠元素**：通过 `hideKintoneCollapse()`隐藏
+* **页眉**：通过`hideHeader()`隐藏
+* **提交按钮**：通过`hideSubmitButton()`隐藏
+* **移动设备表单操作栏**：通过 `mobileHideFormActionBar()`隐藏
+    </div>
+
+    <div className="space-y-4">
+## 使用场景
+以下是隐藏Kintone元素的常见使用场景：
+* **品牌统一**：创建符合企业品牌的表单外观
+* **简化界面**：移除不必要的元素，使表单更加简洁
+* **自定义工作流**：隐藏默认提交按钮，使用自定义按钮实现更复杂的提交逻辑
+* **嵌入式表单**：在其他页面中嵌入Kinlink表单时，隐藏不必要的平台元素
+* **移动设备优化**：为移动用户提供更简洁的界面
+    </div>
+
+    <div className="space-y-4">
+## 使用说明
+将代码复制到您的Kinlink自定义JavaScript中。您可以根据需要组合使用不同的隐藏方法。
+      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
+        <h3 className="font-semibold text-yellow-800">注意事项</h3>
+        <p className="text-yellow-800">
+          如果隐藏了默认提交按钮，请确保提供替代的提交方式，否则用户将无法提交表单。同样，请确保隐藏元素后的表单布局仍然美观和易用。
+        </p>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+## API参考
+此示例使用了以下Kinlink API：
+* `kinlink.formApi.hideKintoneLabel()` - 隐藏Kintone标签
+* `kinlink.formApi.hideKintoneCollapse()` - 隐藏Kintone分组/折叠元素
+* `kinlink.layoutApi.hideHeader()` - 隐藏页眉
+* `kinlink.layoutApi.hideSubmitButton()` - 隐藏提交按钮
+* `kinlink.layoutApi.checkIsMobileDevice()` - 检查是否为移动设备
+* `kinlink.layoutApi.mobileHideFormActionBar()` - 隐藏移动设备表单操作栏
+    </div>
+  </div>
+</div>

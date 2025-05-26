@@ -2,47 +2,32 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/code-block";
-import {
-  HighlightTabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../highlight-tabs";
 
-export default function DynamicSurveyPage() {
-  return (
-    <div className="container py-6 lg:py-10">
-      <div className="flex items-center gap-4 mb-8">
-        <Link href="/examples">
-          <Button variant="outline" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight">动态调查问卷</h1>
-      </div>
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    # 动态调查问卷
+  </div>
 
-      <div className="prose prose-blue dark:prose-invert max-w-none">
-        <p className="lead">
-          此示例演示了如何创建一个动态调查问卷，该问卷能根据用户的回答，通过条件问题、分支逻辑和实时验证来动态调整。
-        </p>
+  <div className="prose prose-blue dark:prose-invert max-w-none">
+此示例演示了如何创建一个动态调查问卷，该问卷能根据用户的回答，通过条件问题、分支逻辑和实时验证来动态调整。
 
-        <h2>主要特性</h2>
-        <ul>
-          <li>条件性问题：根据先前的答案显示不同的问题</li>
-          <li>分支逻辑：根据用户回答创建不同的调查路径</li>
-          <li>实时响应验证：即时验证用户输入</li>
-          <li>动态问题生成：根据用户数据生成问题</li>
-          <li>进度跟踪与导航：显示调查进度并允许用户导航</li>
-        </ul>
+## 主要特性
+* 条件性问题：根据先前的答案显示不同的问题
+* 分支逻辑：根据用户回答创建不同的调查路径
+* 实时响应验证：即时验证用户输入
+* 动态问题生成：根据用户数据生成问题
+* 进度跟踪与导航：显示调查进度并允许用户导航
 
-        <h2>实现方式</h2>
-        <p>
-          动态调查问卷使用 Kinlink API
-          来管理问题的可见性、验证和分支逻辑。以下是完整的实现代码：
-        </p>
+## 实现方式
+此动态调查问卷使用 Kinlink API 来管理问题的可见性、验证和分支逻辑。以下是完整的实现代码：
 
-        <CodeBlock
-          code={`(function() {
+    <CodeBlock
+      code={`(function() {
   // 问卷配置
   const SURVEY_CONFIG = {
     title: \'客户满意度调查\',
@@ -426,94 +411,60 @@ export default function DynamicSurveyPage() {
     }
   });
 })();`}
-          language="javascript"
-          filename="dynamic-survey.js"
-        />
+      language="javascript"
+      filename="dynamic-survey.js"
+    />
 
-        <h2>工作原理</h2>
-        <p>
-          此示例创建了一个动态客户满意度调查，该调查会根据用户的回答进行调整。调查包含不同类型的问题（单选按钮、复选框、文本输入等），并使用条件逻辑根据先前的回答显示或隐藏问题。
-        </p>
+    ## 工作原理
+    此示例创建了一个动态客户满意度调查，该调查会根据用户的回答进行调整。调查包含不同类型的问题（单选按钮、复选框、文本输入等），并使用条件逻辑根据先前的回答显示或隐藏问题。
 
-        <h3>问卷配置</h3>
-        <p>问卷通过一个 JavaScript 对象进行配置，该对象定义了：</p>
-        <ul>
-          <li>问卷的标题和描述信息</li>
-          <li>问题的具体内容，包括类型、选项和验证规则</li>
-          <li>
-            用于显示/隐藏问题的条件逻辑 (<code>showIf</code> 函数)
-          </li>
-        </ul>
+    ### 问卷配置
+    问卷通过一个 JavaScript 对象进行配置，该对象定义了：
+    * 问卷的标题和描述信息
+    * 问题的具体内容，包括类型、选项和验证规则
+    * 用于显示/隐藏问题的条件逻辑 (`showIf` 函数)
 
-        <h3>关键实现细节</h3>
-        <ul>
-          <li>
-            <strong>条件性问题 (Conditional Questions):</strong> 问题字段根据{" "}
-            <code>showIf</code> 函数的返回值和依赖的字段值来决定显示或隐藏。
-          </li>
-          <li>
-            <strong>自定义验证 (Custom Validation):</strong>{" "}
-            每个问题都可以定义自己的验证规则 (<code>validator</code>{" "}
-            函数)，并在提交前进行检查。对于必填项，也提供了统一的验证逻辑。
-          </li>
-          <li>
-            <strong>动态用户界面 (Dynamic UI):</strong> 评分类型的问题通过
-            JavaScript 动态添加了自定义的交互样式，提升了用户体验。
-          </li>
-          <li>
-            <strong>表单提交处理 (Form Submission):</strong> 在表单提交前 (
-            <code>BEFORE_SUBMIT</code>{" "}
-            事件)，仅对当前可见且必填的问题进行验证。提交成功或失败后 (
-            <code>AFTER_SUBMIT</code> 事件)，会向用户显示相应的提示信息。
-          </li>
-        </ul>
+    ### 关键实现细节
+    * **条件性问题 (Conditional Questions):** 问题字段根据{" "}
+      `showIf` 函数的返回值和依赖的字段值来决定显示或隐藏。
+    * **自定义验证 (Custom Validation):**{" "}
+      每个问题都可以定义自己的验证规则 (`validator`{" "}
+      函数)，并在提交前进行检查。对于必填项，也提供了统一的验证逻辑。
+    * **动态用户界面 (Dynamic UI):** 评分类型的问题通过
+      JavaScript 动态添加了自定义的交互样式，提升了用户体验。
+    * **表单提交处理 (Form Submission):** 在表单提交前 (
+      `BEFORE_SUBMIT`{" "}
+      事件)，仅对当前可见且必填的问题进行验证。提交成功或失败后 (
+      `AFTER_SUBMIT` 事件)，会向用户显示相应的提示信息。
 
-        <h2>最佳实践</h2>
-        <ul>
-          <li>
-            <strong>渐进式展示 (Progressive Disclosure):</strong>{" "}
-            仅向用户展示与他们相关的必要问题，避免信息过载。
-          </li>
-          <li>
-            <strong>清晰的指引 (Clear Instructions):</strong>{" "}
-            提供清晰的说明，并明确指出哪些字段是必填的（例如通过星号标记）。
-          </li>
-          <li>
-            <strong>即时反馈 (Immediate Feedback):</strong>{" "}
-            在用户输入后或提交前提供实时的验证反馈，帮助用户修正错误。
-          </li>
-          <li>
-            <strong>逻辑流程 (Logical Flow):</strong>{" "}
-            以合乎逻辑的顺序组织问题，确保调查流程顺畅自然。
-          </li>
-          <li>
-            <strong>响应式设计 (Responsive Design):</strong>{" "}
-            确保问卷在各种设备（桌面、平板、手机）上都能良好显示和操作。
-          </li>
-        </ul>
+    ## 最佳实践
+    * **渐进式展示 (Progressive Disclosure):**{" "}
+      仅向用户展示与他们相关的必要问题，避免信息过载。
+    * **清晰的指引 (Clear Instructions):**{" "}
+      提供清晰的说明，并明确指出哪些字段是必填的（例如通过星号标记）。
+    * **即时反馈 (Immediate Feedback):**{" "}
+      在用户输入后或提交前提供实时的验证反馈，帮助用户修正错误。
+    * **逻辑流程 (Logical Flow):**{" "}
+      以合乎逻辑的顺序组织问题，确保调查流程顺畅自然。
+    * **响应式设计 (Responsive Design):**{" "}
+      确保问卷在各种设备（桌面、平板、手机）上都能良好显示和操作。
 
-        <h2>定制化选项</h2>
-        <p>此示例可以通过多种方式进行定制：</p>
-        <ul>
-          <li>
-            在问卷配置 (<code>SURVEY_CONFIG</code>) 中添加或修改问题。
-          </li>
-          <li>更改问题类型、选项内容和验证规则。</li>
-          <li>自定义问题和选项的显示外观及交互行为。</li>
-          <li>实现更复杂的分支逻辑，例如根据多个答案组合跳转到不同部分。</li>
-          <li>添加进度条或步骤指示器，以改善用户导航体验。</li>
-          <li>集成外部数据源，动态生成问题选项或预填用户信息。</li>
-        </ul>
+    ## 定制化选项
+    此示例可以通过多种方式进行定制：
+    * 在问卷配置 (`SURVEY_CONFIG`) 中添加或修改问题。
+    * 更改问题类型、选项内容和验证规则。
+    * 自定义问题和选项的显示外观及交互行为。
+    * 实现更复杂的分支逻辑，例如根据多个答案组合跳转到不同部分。
+    * 添加进度条或步骤指示器，以改善用户导航体验。
+    * 集成外部数据源，动态生成问题选项或预填用户信息。
 
-        <div className="mt-8">
-          <Link href="/examples">
-            <Button variant="outline">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              返回示例列表
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <div className="mt-8">
+      <Link href="/examples">
+        <Button variant="outline">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          返回示例列表
+        </Button>
+      </Link>
     </div>
-  );
-}
+  </div>
+</div>

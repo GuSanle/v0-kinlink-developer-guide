@@ -9,176 +9,158 @@ import {
   TabsTrigger,
 } from "../highlight-tabs";
 import { Metadata } from "next";
-import { Tabs } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
-  title: "字段联动 - Kinlink开发者",
-  description: "学习如何使用字段联动和条件逻辑创建动态表单",
+  title: "自定义验证规则 - Kinlink开发者",
+  description: "学习如何为表单字段添加自定义验证规则",
 };
 
-export default function FieldLinkingPage() {
-  const sampleCode = `/**
- * 示例7: 字段联动
- * 功能：根据某个字段的值变化自动控制其他字段的状态
+const sampleCode = `/**
+ * 示例6: 自定义验证规则
+ * 功能：为表单字段添加自定义验证规则
  */
 (function () {
-  // 表单加载时的初始设置
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // 性别字段联动初始化
-      updateFieldsByGender(kinlink.formApi.getFieldValue('单选框_0'));
+      const form = kinlink.formApi;
+
+      // 为邮箱字段添加格式验证
+      form.addFieldValidator('文字列__1行__3', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(value)) {
+          return '请输入有效的邮箱地址';
+        }
+        return undefined; // 验证通过
+      });
+
+      // 为手机号字段添加格式验证
+      form.addFieldValidator('文字列__1行__2', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        // 简单的手机号验证规则（不限制国家/地区前缀）
+        const phoneRegex = /^\\+?[0-9]{7,15}$/;
+        if (!phoneRegex.test(value)) {
+          return '请输入有效的手机号码（7-15位数字，可以包含+号前缀）';
+        }
+        return undefined; // 验证通过
+      });
+
+      // 为护照有效期添加未过期验证
+      form.addFieldValidator('日期_2', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        const today = new Date();
+        const expiryDate = new Date(value);
+
+        // 确保日期有效
+        if (isNaN(expiryDate.getTime())) {
+          return '请输入有效的日期';
+        }
+
+        // 检查是否已过期
+        if (expiryDate < today) {
+          return '护照/证件已过期，请提供有效期内的证件';
+        }
+
+        // 检查是否即将过期（小于6个月）
+        const sixMonthsLater = new Date();
+        sixMonthsLater.setMonth(today.getMonth() + 6);
+
+        if (expiryDate < sixMonthsLater) {
+          // 这是警告而非错误，需手动显示
+          form.showWarning(
+            '您的护照/证件将在6个月内过期，可能影响某些国家/地区的入境要求',
+          );
+        }
+
+        return undefined; // 验证通过
+      });
+
+      // 添加手动触发验证的按钮
+      const validateButton = document.createElement('button');
+      validateButton.textContent = '验证表单';
+      validateButton.style.margin = '10px 0';
+      validateButton.style.padding = '5px 10px';
+
+      validateButton.addEventListener('click', () => {
+        const result = form.validateForm();
+        console.log('验证结果:', result);
+
+        if (result.isValid) {
+          form.showSuccess('表单验证通过');
+        } else {
+          form.showError('表单验证失败，请检查输入');
+        }
+      });
+
+      // 添加按钮到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(validateButton, formElement.firstChild);
     } catch (error) {
-      console.error('字段联动初始化失败:', error);
+      console.error('添加自定义验证规则失败:', error);
     }
   });
+})();
+`;
 
-  // 监听字段变化事件
-  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
-    try {
-      const { fieldName, value } = data;
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    # 自定义验证规则
+  </div>
 
-      // 根据性别字段变化联动其他字段
-      if (fieldName === '单选框_0') {
-        updateFieldsByGender(value);
-      }
+  <div className="my-8 space-y-6">
+    <div className="prose prose-blue dark:prose-invert max-w-none">
+学习如何为表单字段添加自定义验证规则。
 
-      // 根据集合场所的选择联动其他信息
-      if (fieldName === '下拉菜单') {
-        updateByMeetingPlace(value);
-      }
+      <HighlightTabs defaultValue="overview">
+        <TabsList className="mb-4">
+          <TabsTrigger value="overview">概述</TabsTrigger>
+          <TabsTrigger value="code">代码</TabsTrigger>
+          <TabsTrigger value="usage">使用方法</TabsTrigger>
+        </TabsList>
 
-      // 联动设置案件编号与案件名称
-      if (fieldName === 'Lookup_0' && value) {
-        // 假设这里会自动通过Lookup功能填充关联字段
-        // 如果没有自动填充，可以手动设置相关值
-        console.log('案件编号已更新:', value);
-      }
-    } catch (error) {
-      console.error('字段联动处理失败:', error);
-    }
-  });
+        <TabsContent value="overview" className="space-y-4">
+          ## 您将学到什么
+          * 如何为表单字段创建自定义验证规则
+          * 如何实现带有视觉指示器的密码强度验证
+          * 如何执行异步验证（例如，检查用户名是否可用）
+          * 如何为用户提供实时反馈
 
-  // 性别联动函数
-  function updateFieldsByGender(gender) {
-    const form = kinlink.formApi;
+          ## 主要特性
+          * **密码强度验证：** 显示密码强度的视觉指示器
+          * **异步验证：** 实时检查用户名可用性
+          * **自定义错误消息：** 提供清晰、具体的错误消息
+          * **视觉反馈：** 基于验证状态的颜色编码输入
 
-    if (gender === '男') {
-      // 对于男性，修改标签样式
-      form.setFieldLabelStyle('单行文本框_8', {
-        color: '#3498db',
-      });
-      form.setFieldLabelStyle('单行文本框_9', {
-        color: '#3498db',
-      });
-    } else if (gender === '女') {
-      // 对于女性，修改标签样式
-      form.setFieldLabelStyle('单行文本框_8', {
-        color: '#e74c3c',
-      });
-      form.setFieldLabelStyle('单行文本框_9', {
-        color: '#e74c3c',
-      });
-    }
+          ## 使用场景
+          * 带有用户名可用性检查的注册表单
+          * 带有强度要求的密码创建表单
+          * 带有复杂验证规则的表单
+          * 需要针对外部数据源验证的表单
+        </TabsContent>
 
-    // 可以在这里添加其他基于性别的联动逻辑
-    console.log('性别联动已处理:', gender);
-  }
+        <TabsContent value="code">
+          ## 完整示例
+          此代码演示了注册表单中的高级验证技术，包括密码强度验证和异步用户名检查。
 
-  // 集合场所联动函数
-  function updateByMeetingPlace(place) {
-    const form = kinlink.formApi;
+          <CodeBlock
+            code={sampleCode}
+            language="javascript"
+            filename="custom-validation-example.js"
+          />
 
-    // 根据不同集合场所设置不同信息
-    if (place === 'A') {
-      form.showInfo('A场所的集合时间为上午9:00');
+          ### 表单结构
+          此示例假设表单具有以下字段：
 
-      // 显示A场所特定字段（如果有）
-      // form.showField('A场所注意事项');
-    } else if (place === 'B') {
-      form.showInfo('B场所的集合时间为上午10:30');
-
-      // 显示B场所特定字段（如果有）
-      // form.showField('B场所注意事项');
-    }
-
-    console.log('集合场所联动已处理:', place);
-  }
-})();`;
-
-  return (
-    <div className="container py-6 lg:py-10">
-      <div className="flex items-center gap-4 mb-8">
-        <Link href="/examples">
-          <Button variant="outline" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight">字段联动</h1>
-      </div>
-
-      <div className="prose prose-blue dark:prose-invert max-w-none">
-        <p className="lead">
-          本示例演示如何使用字段联动和条件逻辑创建动态表单。您将学习如何基于用户输入显示/隐藏字段、自动计算值，以及根据表单状态应用不同的验证规则。
-        </p>
-
-        <HighlightTabs defaultValue="overview">
-          <TabsList className="mb-4">
-            <TabsTrigger value="overview">概述</TabsTrigger>
-            <TabsTrigger value="code">代码</TabsTrigger>
-            <TabsTrigger value="usage">使用方法</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-4">
-            <h2>您将学到什么</h2>
-            <ul>
-              <li>如何基于下拉选择显示和隐藏字段</li>
-              <li>如何基于数量和价格输入计算总计</li>
-              <li>如何根据表单状态应用不同的验证规则</li>
-              <li>如何创建响应式和交互式表单体验</li>
-            </ul>
-
-            <h2>主要特性</h2>
-            <ul>
-              <li>
-                <strong>动态字段可见性：</strong> 基于用户选择显示或隐藏字段
-              </li>
-              <li>
-                <strong>自动计算：</strong> 自动计算总计并应用折扣
-              </li>
-              <li>
-                <strong>条件验证：</strong> 根据表单状态应用不同的验证规则
-              </li>
-              <li>
-                <strong>视觉反馈：</strong> 为用户提供清晰的视觉反馈
-              </li>
-            </ul>
-
-            <h2>使用场景</h2>
-            <ul>
-              <li>带有产品选项和定价的订单表单</li>
-              <li>基于用户类型有不同路径的注册表单</li>
-              <li>带有条件问题的调查表单</li>
-              <li>带有动态部分的申请表单</li>
-            </ul>
-          </TabsContent>
-
-          <TabsContent value="code">
-            <h2>完整示例</h2>
-            <p>
-              此代码演示了产品订单表单中的字段联动。它基于产品类型显示/隐藏字段，计算总计，并应用折扣。
-            </p>
-
-            <CodeBlock
-              code={sampleCode}
-              language="javascript"
-              filename="field-linking-example.js"
-            />
-
-            <h3>表单结构</h3>
-            <p>此示例假设表单具有以下字段：</p>
-
-            <CodeBlock
-              code={`{
+          <CodeBlock
+            code={`{
     "revision": "901",
     "properties": {
         "レコード番号": {
@@ -889,73 +871,53 @@ export default function FieldLinkingPage() {
         }
     }
 }`}
-              language="html"
-              filename="form-structure.html"
-            />
-          </TabsContent>
+            language="html"
+            filename="form-structure.html"
+          />
+        </TabsContent>
 
-          <TabsContent value="usage">
-            <h2>如何使用此示例</h2>
+        <TabsContent value="usage">
+          ## 如何使用此示例
 
-            <h3>步骤1：创建您的表单</h3>
-            <p>
-              首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。
-            </p>
+          ### 步骤1：创建您的表单
+          首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。
 
-            <h3>步骤2：添加JavaScript代码</h3>
-            <p>
-              从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。
-            </p>
+          ### 步骤2：添加JavaScript代码
+          从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。
 
-            <h3>步骤3：测试您的表单</h3>
-            <p>预览您的表单并测试以下功能：</p>
-            <ul>
-              <li>在标准和高级之间更改产品类型</li>
-              <li>输入不同的数量和价格以查看总计更新</li>
-              <li>为高级产品选择折扣选项</li>
-              <li>使用有效和无效数据提交表单</li>
-            </ul>
+          ### 步骤3：测试您的表单
+          预览您的表单并测试以下功能：
+          * 输入不同的用户名以查看可用性检查的运行情况
+          * 尝试输入不同强度的密码，查看强度指示器的变化
+          * 测试密码确认匹配
+          * 使用有效和无效数据提交表单
 
-            <h3>自定义选项</h3>
-            <p>您可以通过多种方式自定义此示例：</p>
-            <ul>
-              <li>添加更多具有不同字段和选项的产品类型</li>
-              <li>实现不同的折扣率或计算方法</li>
-              <li>为特定字段添加更多验证规则</li>
-              <li>自定义成功和错误消息</li>
-            </ul>
+          ### 自定义选项
+          您可以通过多种方式自定义此示例：
+          * 修改密码强度要求
+          * 更改强度指示器的视觉外观
+          * 添加更多具有自定义验证规则的字段
+          * 实现用户名可用性检查的真实API调用
 
-            <h3>最佳实践</h3>
-            <ul>
-              <li>
-                <strong>清晰的用户反馈：</strong>{" "}
-                当字段出现或消失时，始终提供清晰的反馈
-              </li>
-              <li>
-                <strong>一致的验证：</strong> 确保验证规则一致且有意义
-              </li>
-              <li>
-                <strong>性能：</strong> 注意可能影响性能的复杂计算
-              </li>
-              <li>
-                <strong>无障碍：</strong> 确保在字段显示或隐藏时表单仍然可访问
-              </li>
-            </ul>
-          </TabsContent>
-        </HighlightTabs>
+          ### 最佳实践
+          * **实时反馈：** 在用户输入时提供即时反馈
+          * **清晰的错误消息：** 使错误消息具体且有帮助
+          * **视觉提示：** 使用颜色和指示器显示验证状态
+          * **性能：** 防抖API调用以防止过多请求
+        </TabsContent>
+      </HighlightTabs>
 
-        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-          <Link href="/examples">
-            <Button variant="outline">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              返回示例
-            </Button>
-          </Link>
-          <Link href="/docs/api-reference/form-api">
-            <Button variant="secondary">查看表单API文档</Button>
-          </Link>
-        </div>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4">
+        <Link href="/examples">
+          <Button variant="outline">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            返回示例
+          </Button>
+        </Link>
+        <Link href="/docs/guides/form-validation">
+          <Button variant="secondary">查看表单验证指南</Button>
+        </Link>
       </div>
     </div>
-  );
-}
+  </div>
+</div>
