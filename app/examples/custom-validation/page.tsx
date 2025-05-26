@@ -890,8 +890,8 @@ export default function CustomValidationPage() {
         }
     }
 }`}
-                language="html"
-                filename="form-structure.html"
+                language="json"
+                filename="form.json"
               />
             </TabsContent>
 
