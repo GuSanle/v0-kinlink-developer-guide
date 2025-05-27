@@ -1,0 +1,633 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight">多步骤表单</h1>
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
+      <div>
+        此示例演示如何使用Kinlink
+        API创建多步骤表单，包括步骤导航、进度指示器、分步验证和提交前摘要页面。多步骤表单可以将复杂的表单分解为更易于管理的部分，提高用户体验。
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>步骤配置和字段分组</li>
+        <li>步骤导航和进度指示器</li>
+        <li>每步字段验证</li>
+        <li>提交前摘要页面</li>
+        <li>自定义UI和操作按钮</li>
+        <li>移动端适配</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
+      <div>
+        此示例展示了多步骤表单的完整实现，包括步骤配置、导航控制、验证逻辑和摘要页面。
+      </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/13-多步骤表单提交处理.js"
+          className="text-blue-600 hover:underline ml-1"
+          download="13-多步骤表单提交处理.js"
+        >
+          13-多步骤表单提交处理.js
+        </a>
+      </div>
+              <Tabs defaultValue="complete">
+        <TabsList>
+          <TabsTrigger value="complete">完整示例</TabsTrigger>
+          <TabsTrigger value="config">步骤配置</TabsTrigger>
+          <TabsTrigger value="navigation">步骤导航</TabsTrigger>
+          <TabsTrigger value="validation">表单验证</TabsTrigger>
+          <TabsTrigger value="summary">摘要页面</TabsTrigger>
+        </TabsList>
+        <TabsContent value="complete">
+          <CodeBlock
+            code={`/**
+ * 示例13: 多步骤表单提交处理
+ * 功能：创建多步骤表单，包括步骤导航、进度指示器、分步验证和提交前摘要页面
+ */
+(function () {
+  // 步骤配置
+  const steps = [
+    {
+      title: '基本信息',
+      icon: '📋',
+      fields: [
+        '文字列__1行__0',
+        '文字列__1行__1',
+        '单行文本框_8',
+        '单行文本框_9',
+        '单选框_0',
+        '日期_1',
+        '多选_0',
+        '表格',
+        '表格_13',
+      ],
+    },
+    {
+      title: '联系方式',
+      icon: '📞',
+      fields: ['文字列__1行__2', '文字列__1行__3', '单行文本框_10', '下拉菜单'],
+    },
+    {
+      title: '证件信息',
+      icon: '📝',
+      fields: ['单行文本框_11', '日期_2', '附件_0'],
+    },
+    {
+      title: '确认提交',
+      icon: '✅',
+      fields: [], // 最后一步显示所有信息摘要，不指定具体字段
+    },
+  ];
+
+  // 当前步骤
+  let currentStep = 0;
+
+  // 表单加载完成时的初始化
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 隐藏官方UI元素
+      kinlink.formApi.hideKintoneLabel();
+      kinlink.formApi.hideKintoneCollapse();
+      kinlink.layoutApi.hideSubmitButton();
+      kinlink.layoutApi.hideHeader();
+      
+      if (kinlink.layoutApi.checkIsMobileDevice()) {
+        kinlink.layoutApi.mobileHideFormActionBar();
+      }
+
+      // 创建自定义UI
+      createCustomUI();
+      showStep(currentStep);
+      applyGlobalStyles();
+
+      // 注册提交后事件处理
+      kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (data) => {
+        if (data && data.success) {
+          showSuccessScreen();
+        }
+      });
+    } catch (error) {
+      console.error('多步骤表单初始化失败:', error);
+    }
+  });
+
+  // 创建自定义UI
+  function createCustomUI() {
+    createHeader();
+    createStepNavigation();
+    createButtons();
+    createSuccessScreen();
+  }
+
+  // 创建页面头部
+  function createHeader() {
+    const header = document.createElement('div');
+    header.id = 'multi-step-header';
+    header.style.cssText = \`
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    \`;
+
+    header.innerHTML = \`
+      <h1 style="margin: 0; font-size: 2rem; font-weight: bold;">申请表单</h1>
+      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">请按步骤完成信息填写</p>
+    \`;
+
+    const formElement = document.querySelector('.ant-form') || document.body;
+    formElement.insertBefore(header, formElement.firstChild);
+  }
+
+  // 显示特定步骤
+  function showStep(stepIndex) {
+    const form = kinlink.formApi;
+
+    // 隐藏所有字段
+    steps.forEach((step) => {
+      step.fields.forEach((field) => {
+        form.visuallyHideField(field);
+      });
+    });
+
+    // 如果是最后一步，显示摘要页面
+    if (stepIndex === steps.length - 1) {
+      showSummaryPage();
+    } else {
+      // 显示当前步骤的字段
+      steps[stepIndex].fields.forEach((field) => {
+        form.showField(field);
+      });
+      hideSummaryPage();
+    }
+
+    // 更新UI状态
+    updateStepNavigation(stepIndex);
+    updateButtons(stepIndex);
+    currentStep = stepIndex;
+  }
+
+  // 验证当前步骤
+  function validateCurrentStep() {
+    const form = kinlink.formApi;
+    const currentStepFields = steps[currentStep].fields;
+    const values = form.getAllValues();
+    let isValid = true;
+
+    currentStepFields.forEach((field) => {
+      const fieldConfig = kinlink.formFields[field];
+      if (fieldConfig && fieldConfig.required && !values[field]) {
+        form.setFieldError(field, \`\${fieldConfig.label}は必須項目です\`);
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
+      kinlink.formApi.showError('必須項目をご入力ください', 3);
+    }
+
+    return isValid;
+  }
+
+  // 导航到指定步骤
+  function navigateToStep(stepIndex) {
+    if (stepIndex >= 0 && stepIndex < steps.length) {
+      showStep(stepIndex);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  // 显示摘要页面
+  function showSummaryPage() {
+    let summaryDiv = document.getElementById('step-summary-view');
+    if (summaryDiv) summaryDiv.remove();
+
+    summaryDiv = document.createElement('div');
+    summaryDiv.id = 'step-summary-view';
+    summaryDiv.style.cssText = \`
+      margin: 32px 0 0 0;
+      background: #fafbfc;
+      border-radius: 8px;
+      box-shadow: 0 1px 8px 0 rgba(0,0,0,0.03);
+      padding: 32px 24px;
+    \`;
+
+    const title = document.createElement('h3');
+    title.textContent = '入力内容の確認';
+    title.style.cssText = \`
+      margin: 0 0 24px 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    \`;
+    summaryDiv.appendChild(title);
+
+    // 获取所有表单值并按步骤显示
+    const values = kinlink.formApi.getAllValues();
+    
+    steps.slice(0, -1).forEach((step, stepIndex) => {
+      const stepDiv = document.createElement('div');
+      stepDiv.style.marginBottom = '24px';
+
+      const stepTitle = document.createElement('h4');
+      stepTitle.textContent = \`\${step.icon} \${step.title}\`;
+      stepTitle.style.cssText = \`
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #555;
+      \`;
+      stepDiv.appendChild(stepTitle);
+
+      step.fields.forEach((field) => {
+        const value = values[field];
+        if (value) {
+          const fieldDiv = document.createElement('div');
+          fieldDiv.style.cssText = \`
+            display: flex;
+            margin-bottom: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+          \`;
+
+          const label = document.createElement('span');
+          label.textContent = field + ':';
+          label.style.cssText = \`
+            min-width: 120px;
+            font-weight: 500;
+            color: #666;
+          \`;
+
+          const valueSpan = document.createElement('span');
+          valueSpan.textContent = Array.isArray(value) ? value.join(', ') : value;
+          valueSpan.style.color = '#333';
+
+          fieldDiv.appendChild(label);
+          fieldDiv.appendChild(valueSpan);
+          stepDiv.appendChild(fieldDiv);
+        }
+      });
+
+      summaryDiv.appendChild(stepDiv);
+    });
+
+    const formElement = document.querySelector('.ant-form') || document.body;
+    formElement.appendChild(summaryDiv);
+  }
+
+  // 应用全局样式
+  function applyGlobalStyles() {
+    const style = document.createElement('style');
+    style.textContent = \`
+      .multi-step-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .step-navigation {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      
+      .step-item {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+        padding: 10px 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .step-item.active {
+        background: #667eea;
+        color: white;
+      }
+      
+      .step-item.completed {
+        background: #48bb78;
+        color: white;
+      }
+      
+      .step-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        gap: 1rem;
+      }
+      
+      @media (max-width: 768px) {
+        .step-navigation {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .step-item {
+          margin: 5px 0;
+          width: 100%;
+          max-width: 300px;
+          justify-content: center;
+        }
+        
+        .step-buttons {
+          flex-direction: column;
+        }
+      }
+    \`;
+    document.head.appendChild(style);
+  }
+})();`}
+            language="javascript"
+          />
+        </TabsContent>
+        <TabsContent value="config">
+          <CodeBlock
+            code={`// 步骤配置
+const steps = [
+  {
+    title: '基本信息',
+    icon: '📋',
+    fields: [
+      '文字列__1行__0',
+      '文字列__1行__1',
+      '单行文本框_8',
+      '单行文本框_9',
+      '单选框_0',
+      '日期_1',
+      '多选_0',
+      '表格',
+      '表格_13',
+    ],
+  },
+  {
+    title: '联系方式',
+    icon: '📞',
+    fields: ['文字列__1行__2', '文字列__1行__3', '单行文本框_10', '下拉菜单'],
+  },
+  {
+    title: '证件信息',
+    icon: '📝',
+    fields: ['单行文本框_11', '日期_2', '附件_0'],
+  },
+  {
+    title: '确认提交',
+    icon: '✅',
+    fields: [], // 最后一步显示所有信息摘要，不指定具体字段
+  },
+];
+
+// 当前步骤
+let currentStep = 0;`}
+            language="javascript"
+          />
+        </TabsContent>
+        <TabsContent value="navigation">
+          <CodeBlock
+            code={`// 显示特定步骤
+function showStep(stepIndex) {
+  const form = kinlink.formApi;
+
+  // 隐藏所有字段
+  steps.forEach((step) => {
+    step.fields.forEach((field) => {
+      form.visuallyHideField(field);
+    });
+  });
+
+  // 如果是最后一步，显示一览页面
+  if (stepIndex === steps.length - 1) {
+    showSummaryPage();
+  } else {
+    // 显示当前步骤的字段
+    steps[stepIndex].fields.forEach((field) => {
+      form.showField(field);
+    });
+    // 隐藏一览页面（如果存在）
+    hideSummaryPage();
+  }
+
+  // 更新步骤导航
+  updateStepNavigation(stepIndex);
+
+  // 更新按钮状态
+  updateButtons(stepIndex);
+
+  // 更新当前步骤
+  currentStep = stepIndex;
+}
+
+// 导航到指定步骤
+function navigateToStep(stepIndex) {
+  if (stepIndex >= 0 && stepIndex < steps.length) {
+    showStep(stepIndex);
+
+    // 滚动到页面顶部
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+}`}
+            language="javascript"
+          />
+        </TabsContent>
+        <TabsContent value="validation">
+          <CodeBlock
+            code={`// 验证当前步骤
+function validateCurrentStep() {
+  const form = kinlink.formApi;
+  const currentStepFields = steps[currentStep].fields;
+  const values = form.getAllValues();
+  let isValid = true;
+
+  // 简单验证示例 - 实际项目中应根据业务需求完善
+  currentStepFields.forEach((field) => {
+    const fieldConfig = kinlink.formFields[field];
+
+    // 验证必填字段
+    if (fieldConfig && fieldConfig.required && !values[field]) {
+      form.setFieldError(field, \`\${fieldConfig.label}は必須項目です\`);
+      isValid = false;
+    }
+  });
+
+  if (!isValid) {
+    kinlink.formApi.showError('必須項目をご入力ください', 3);
+  }
+
+  return isValid;
+}`}
+            language="javascript"
+          />
+        </TabsContent>
+        <TabsContent value="summary">
+          <CodeBlock
+            code={`// 显示一览页面（最后一步）
+function showSummaryPage() {
+  // 先移除之前的一览页面
+  let summaryDiv = document.getElementById('step-summary-view');
+  if (summaryDiv) summaryDiv.remove();
+
+  summaryDiv = document.createElement('div');
+  summaryDiv.id = 'step-summary-view';
+  summaryDiv.style.margin = '32px 0 0 0';
+  summaryDiv.style.background = '#fafbfc';
+  summaryDiv.style.borderRadius = '8px';
+  summaryDiv.style.boxShadow = '0 1px 8px 0 rgba(0,0,0,0.03)';
+  summaryDiv.style.padding = '32px 24px';
+
+  const title = document.createElement('h3');
+  title.textContent = '入力内容の確認';
+  title.style.margin = '0 0 24px 0';
+  title.style.fontSize = '20px';
+  title.style.fontWeight = 'bold';
+  title.style.color = '#333';
+  summaryDiv.appendChild(title);
+
+  // 获取所有表单值
+  const values = kinlink.formApi.getAllValues();
+
+  // 按步骤分组显示
+  steps.slice(0, -1).forEach((step, stepIndex) => {
+    const stepDiv = document.createElement('div');
+    stepDiv.style.marginBottom = '24px';
+
+    const stepTitle = document.createElement('h4');
+    stepTitle.textContent = \`\${step.icon} \${step.title}\`;
+    stepTitle.style.margin = '0 0 12px 0';
+    stepTitle.style.fontSize = '16px';
+    stepTitle.style.fontWeight = 'bold';
+    stepTitle.style.color = '#555';
+    stepDiv.appendChild(stepTitle);
+
+    step.fields.forEach((field) => {
+      const value = values[field];
+      if (value) {
+        const fieldDiv = document.createElement('div');
+        fieldDiv.style.display = 'flex';
+        fieldDiv.style.marginBottom = '8px';
+        fieldDiv.style.padding = '8px 0';
+        fieldDiv.style.borderBottom = '1px solid #eee';
+
+        const label = document.createElement('span');
+        label.textContent = field + ':';
+        label.style.minWidth = '120px';
+        label.style.fontWeight = '500';
+        label.style.color = '#666';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.textContent = Array.isArray(value) ? value.join(', ') : value;
+        valueSpan.style.color = '#333';
+
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(valueSpan);
+        stepDiv.appendChild(fieldDiv);
+      }
+    });
+
+    summaryDiv.appendChild(stepDiv);
+  });
+
+  // 插入到表单中
+  const formElement = document.querySelector('.ant-form') || document.body;
+  formElement.appendChild(summaryDiv);
+}`}
+            language="javascript"
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">实现特性</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>
+          <strong>响应式设计</strong>：自动适配移动端和桌面端
+        </li>
+        <li>
+          <strong>进度指示</strong>：清晰显示当前步骤和总体进度
+        </li>
+        <li>
+          <strong>分步验证</strong>：每步完成时验证当前步骤的字段
+        </li>
+        <li>
+          <strong>数据摘要</strong>：最后一步显示所有输入数据的摘要
+        </li>
+        <li>
+          <strong>灵活导航</strong>：支持前进、后退和直接跳转到特定步骤
+        </li>
+        <li>
+          <strong>自定义样式</strong>：可以根据品牌需求自定义外观
+        </li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+      <ol className="list-decimal pl-6 space-y-2">
+        <li>根据您的表单字段修改步骤配置</li>
+        <li>调整验证规则以匹配您的业务需求</li>
+        <li>自定义步骤标题和图标</li>
+        <li>根据需要修改样式和布局</li>
+        <li>测试所有步骤的导航和验证功能</li>
+      </ol>
+      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
+        <h3 className="font-semibold text-yellow-800">注意事项</h3>
+        <div className="text-yellow-800">
+          确保在每个步骤中包含所有必要的字段，并为每个步骤设置适当的验证规则。在移动设备上测试导航和用户体验。
+        </div>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+      <div>此示例使用了以下Kinlink API：</div>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>
+          <code>kinlink.formApi.visuallyHideField(fieldCode)</code> - 视觉隐藏字段
+        </li>
+        <li>
+          <code>kinlink.formApi.showField(fieldCode)</code> - 显示字段
+        </li>
+        <li>
+          <code>kinlink.formApi.getAllValues()</code> - 获取所有表单值
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldError(fieldCode, message)</code> - 设置字段错误
+        </li>
+        <li>
+          <code>kinlink.formApi.showError(message, duration)</code> - 显示错误消息
+        </li>
+        <li>
+          <code>kinlink.formApi.submit()</code> - 提交表单
+        </li>
+      </ul>
+    </div>
+  </div>
+</div> 

@@ -1,61 +1,47 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/code-block";
-import {
-  HighlightTabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../highlight-tabs";
-import { Tabs } from "@/components/ui/tabs";
 
-<div className="flex items-center gap-4 mb-8">
-  <Link href="/examples">
-    <Button variant="outline" size="icon">
-      <ArrowLeft className="h-4 w-4" />
-    </Button>
-  </Link>
-  <h1 className="text-3xl font-bold tracking-tight">自定义验证规则</h1>
-</div>
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight">自定义验证规则</h1>
+  </div>
 
-<div className="my-8 space-y-6">
-  <div className="prose prose-blue dark:prose-invert max-w-none">
-    <div className="lead">学习如何为表单字段添加自定义验证规则。</div>
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
+      <div>
+        此示例演示如何为表单字段添加自定义验证规则。您将学习如何实现邮箱格式验证、手机号验证、日期有效性检查等常见验证场景，并提供实时反馈给用户。
+      </div>
+    </div>
 
-    <HighlightTabs defaultValue="overview">
-      <TabsList className="mb-4">
-        <TabsTrigger value="overview">概述</TabsTrigger>
-        <TabsTrigger value="code">代码</TabsTrigger>
-        <TabsTrigger value="usage">使用方法</TabsTrigger>
-      </TabsList>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>邮箱格式验证</li>
+        <li>手机号码格式验证</li>
+        <li>护照有效期验证</li>
+        <li>自定义错误消息显示</li>
+        <li>手动触发表单验证</li>
+      </ul>
+    </div>
 
-      <TabsContent value="overview" className="space-y-4">
-        ## 您将学到什么
-        - 如何为表单字段创建自定义验证规则
-        - 如何实现带有视觉指示器的密码强度验证
-        - 如何执行异步验证（例如，检查用户名是否可用）
-        - 如何为用户提供实时反馈
-
-        ## 主要特性
-        - **密码强度验证：** 显示密码强度的视觉指示器
-        - **异步验证：** 实时检查用户名可用性
-        - **自定义错误消息：** 提供清晰、具体的错误消息
-        - **视觉反馈：** 基于验证状态的颜色编码输入
-
-        ## 使用场景
-        - 带有用户名可用性检查的注册表单
-        - 带有强度要求的密码创建表单
-        - 带有复杂验证规则的表单
-        - 需要针对外部数据源验证的表单
-      </TabsContent>
-
-      <TabsContent value="code">
-        ## 完整示例
-        <div>此代码演示了注册表单中的高级验证技术，包括密码强度验证和异步用户名检查。</div>
-
-        <CodeBlock
-          code={`/**
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock 
+            code={`/**
  * 示例6: 自定义验证规则
  * 功能：为表单字段添加自定义验证规则
  */
@@ -142,89 +128,69 @@ import { Tabs } from "@/components/ui/tabs";
       console.error('添加自定义验证规则失败:', error);
     }
   });
-})();
-`}
-          language="javascript"
-          filename="custom-validation-example.js"
-        />
+})();`} 
+            language="javascript" 
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
 
-        ### 表单结构
-        <div>此示例假设表单具有以下字段：</div>
-
-        <CodeBlock
-          code={`<form>
-<div data-field="username">
-  <label>用户名</label>
-  <input type="text" />
-</div>
-
-<div data-field="password">
-  <label>密码</label>
-  <input type="password" />
-  {/* 密码强度指示器将插入到这里 */}
-</div>
-
-<div data-field="confirmPassword">
-  <label>确认密码</label>
-  <input type="password" />
-</div>
-
-<button type="submit">注册</button>
-</form>`}
-          language="html"
-          filename="form-structure.html"
-        />
-      </TabsContent>
-
-      <TabsContent value="usage">
-        ## 如何使用此示例
-
-        ### 步骤1：创建您的表单
-        <div>
-          首先，在您的Kinlink仪表板中创建一个具有表单结构中所示字段的表单。确保使用与示例代码中相同的字段名称。
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+      <div>
+        将代码复制到您的Kinlink自定义JavaScript中，根据您的表单字段修改字段代码。此示例假设表单包含邮箱、手机号和护照有效期字段。
+      </div>
+      <div className="p-4 border rounded-md bg-blue-50 border-blue-200">
+        <h3 className="font-semibold text-blue-800">提示</h3>
+        <div className="text-blue-800">
+          您可以为任何字段添加自定义验证规则。验证函数返回错误消息字符串表示验证失败，返回undefined表示验证通过。
         </div>
+      </div>
+    </div>
 
-        ### 步骤2：添加JavaScript代码
-        <div>
-          从"代码"选项卡复制JavaScript代码，并将其粘贴到Kinlink表单的自定义JavaScript部分。
-        </div>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+      <div>此示例使用了以下Kinlink API：</div>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>
+          <code>kinlink.formApi.addFieldValidator(fieldCode, validatorFunction)</code> -
+          为指定字段添加自定义验证规则
+        </li>
+        <li>
+          <code>kinlink.formApi.validateForm()</code> - 手动触发整个表单的验证
+        </li>
+        <li>
+          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
+        </li>
+        <li>
+          <code>kinlink.formApi.showError(message)</code> - 显示错误消息
+        </li>
+        <li>
+          <code>kinlink.formApi.showWarning(message)</code> - 显示警告消息
+        </li>
+      </ul>
+    </div>
 
-        ### 步骤3：测试您的表单
-        <div>预览您的表单并测试以下功能：</div>
-        - 输入不同的用户名以查看可用性检查的运行情况
-        - 尝试输入不同强度的密码，查看强度指示器的变化
-        - 测试密码确认匹配
-        - 使用有效和无效数据提交表单
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>用户注册表单的邮箱和密码验证</li>
+        <li>联系信息表单的手机号和地址验证</li>
+        <li>身份验证表单的证件号码和有效期验证</li>
+        <li>业务表单的自定义业务规则验证</li>
+        <li>多步骤表单的分步验证</li>
+      </ul>
+    </div>
 
-        ### 自定义选项
-        <div>您可以通过多种方式自定义此示例：</div>
-        - 修改密码强度要求
-        - 更改强度指示器的视觉外观
-        - 添加更多具有自定义验证规则的字段
-        - 实现用户名可用性检查的真实API调用
-
-        ### 最佳实践
-        - **实时反馈：** 在用户输入时提供即时反馈
-        - **清晰的错误消息：** 使错误消息具体且有帮助
-        - **视觉提示：** 使用颜色和指示器显示验证状态
-        - **性能：** 防抖API调用以防止过多请求
-        - **可访问性：** 确保验证消息和指示器对所有用户都是可访问的
-
-        ## 相关指南
-
-        - [高级表单验证技术](/docs/guides/form-validation)
-        - [使用Kinlink API](/docs/api-reference/form-api)
-        - [构建交互式表单](/docs/guides/interactive-forms)
-
-        <div className="mt-8 not-prose">
-          <Link href="/examples">
-            <Button variant="outline">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              返回示例
-            </Button>
-          </Link>
-        </div>
-      </TabsContent>
-    </HighlightTabs>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>提供清晰、具体的错误消息</li>
+        <li>对于非必填字段，空值时不进行验证</li>
+        <li>使用正则表达式进行格式验证</li>
+        <li>为即将过期的数据提供警告而非错误</li>
+        <li>在验证失败时提供修正建议</li>
+      </ul>
+    </div>
   </div>
 </div> 

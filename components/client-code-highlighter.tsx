@@ -13,7 +13,7 @@ declare global {
 
 /**
  * 全局代码高亮处理组件
- * 自动处理页面中所有的代码块
+ * 自动处理页面中所有的代码块（跳过已处理的）
  */
 export function ClientCodeHighlighter() {
   const pathname = usePathname();
@@ -22,7 +22,10 @@ export function ClientCodeHighlighter() {
     // 初始加载和路径变化时进行高亮处理
     const applyHighlight = () => {
       try {
-        const codeBlocks = document.querySelectorAll("pre code");
+        // 只处理没有 data-highlighted 属性的代码块
+        const codeBlocks = document.querySelectorAll(
+          "pre code:not([data-highlighted])"
+        );
         if (codeBlocks.length > 0) {
           codeBlocks.forEach((block) => {
             try {
