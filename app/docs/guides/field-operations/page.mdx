@@ -1,0 +1,240 @@
+import { CodeBlock } from "@/components/code-block";
+
+# 字段操作
+
+<div className="mt-2 text-lg text-muted-foreground">
+  了解如何使用Kinlink API操作表单字段。
+</div>
+
+Kinlink API提供了一系列丰富的函数用于操作表单字段。本指南涵盖了最常见的字段操作，包括获取和设置字段值、显示和隐藏字段、启用和禁用字段以及样式设置。
+
+## 获取和设置字段值
+
+最常见的操作之一是获取和设置字段值。这对于实现字段联动、计算和其他动态行为非常有用。
+
+### 获取字段值
+
+<CodeBlock
+  code={`// 获取单个字段的值
+const name = kinlink.formApi.getFieldValue('name');
+console.log(name); // 输出: "John Doe"
+
+// 获取所有表单值
+const allValues = kinlink.formApi.getAllValues();
+console.log(allValues); // 输出: { name: "John Doe", email: "john@example.com", ... }`}
+  language="javascript"
+  filename="get-field-values.js"
+/>
+
+### 设置字段值
+
+<CodeBlock
+  code={`// 设置单个字段的值
+kinlink.formApi.setFieldValue('name', 'Jane Smith');
+
+// 一次设置多个字段值
+kinlink.formApi.setFieldsValue({
+  name: 'Jane Smith',
+  email: 'jane@example.com',
+  age: 30
+});`}
+  language="javascript"
+  filename="set-field-values.js"
+/>
+
+### 示例：计算总额
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName } = data;
+  const form = kinlink.formApi;
+  
+  // 当数量或价格变化时重新计算总额
+  if (fieldName === 'quantity' || fieldName === 'price') {
+    const quantity = Number(form.getFieldValue('quantity')) || 0;
+    const price = Number(form.getFieldValue('price')) || 0;
+    const total = quantity * price;
+    
+    form.setFieldValue('total', total);
+  }
+});`}
+  language="javascript"
+  filename="calculate-total.js"
+/>
+
+## 显示和隐藏字段
+
+您可以根据用户输入或其他条件动态显示和隐藏字段。这对于创建能够适应用户需求的条件表单非常有用。
+
+### 隐藏字段
+
+<CodeBlock
+  code={`// 完全隐藏字段（不会被提交）
+kinlink.formApi.hideField('additionalInfo');
+
+// 视觉上隐藏字段但在提交时保留其值
+kinlink.formApi.visuallyHideField('hiddenId');`}
+  language="javascript"
+  filename="hide-fields.js"
+/>
+
+### 显示字段
+
+<CodeBlock
+  code={`// 显示之前隐藏的字段
+kinlink.formApi.showField('additionalInfo');`}
+  language="javascript"
+  filename="show-fields.js"
+/>
+
+### 检查字段状态
+
+<CodeBlock
+  code={`// 检查字段是否可见、启用等
+const state = kinlink.formApi.getFieldState('name');
+console.log(state); // 输出: { visible: true, disabled: false, excludeFromSubmit: false }`}
+  language="javascript"
+  filename="check-field-state.js"
+/>
+
+### 示例：条件字段
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+  // 初始隐藏字段
+  kinlink.formApi.hideField('businessName');
+  kinlink.formApi.hideField('personalId');
+});
+
+kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  const form = kinlink.formApi;
+  
+  // 根据客户类型显示/隐藏字段
+  if (fieldName === 'customerType') {
+    if (value === 'business') {
+      form.showField('businessName');
+      form.hideField('personalId');
+    } else if (value === 'individual') {
+      form.hideField('businessName');
+      form.showField('personalId');
+    } else {
+      form.hideField('businessName');
+      form.hideField('personalId');
+    }
+  }
+});`}
+  language="javascript"
+  filename="conditional-fields.js"
+/>
+
+## 启用和禁用字段
+
+您可以启用和禁用字段来控制用户是否可以编辑它们。这对于只读字段、计算字段或只在特定条件下可编辑的字段非常有用。
+
+### 禁用字段
+
+<CodeBlock
+  code={`// 禁用字段（使其只读）
+kinlink.formApi.disableField('total');`}
+  language="javascript"
+  filename="disable-field.js"
+/>
+
+### 启用字段
+
+<CodeBlock
+  code={`// 启用之前禁用的字段
+kinlink.formApi.enableField('total');`}
+  language="javascript"
+  filename="enable-field.js"
+/>
+
+### 示例：条件启用/禁用
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  const { fieldName, value } = data;
+  const form = kinlink.formApi;
+  
+  // 根据支付方式启用/禁用字段
+  if (fieldName === 'paymentMethod') {
+    if (value === 'creditCard') {
+      form.enableField('cardNumber');
+      form.enableField('expiryDate');
+      form.enableField('cvv');
+      form.disableField('bankAccount');
+    } else if (value === 'bankTransfer') {
+      form.disableField('cardNumber');
+      form.disableField('expiryDate');
+      form.disableField('cvv');
+      form.enableField('bankAccount');
+    } else {
+      form.disableField('cardNumber');
+      form.disableField('expiryDate');
+      form.disableField('cvv');
+      form.disableField('bankAccount');
+    }
+  }
+});`}
+  language="javascript"
+  filename="conditional-enabling.js"
+/>
+
+## 样式设置
+
+您可以通过为字段标签和组件设置样式来自定义字段的外观。这对于突出显示重要字段、创建视觉层次结构或适应您的品牌指南非常有用。
+
+### 设置字段标签样式
+
+<CodeBlock
+  code={`// 设置字段标签的样式
+kinlink.formApi.setFieldLabelStyle('name', {
+  color: 'red',
+  fontWeight: 'bold'
+});
+
+// 获取字段标签的当前样式
+const labelStyle = kinlink.formApi.getFieldLabelStyle('name');
+console.log(labelStyle); // 输出: { color: "red", fontWeight: "bold" }
+
+// 重置字段标签的样式
+kinlink.formApi.resetFieldLabelStyle('name');
+
+// 设置多个字段标签的样式
+kinlink.formApi.setFieldsLabelStyles({
+  name: { color: 'red', fontWeight: 'bold' },
+  email: { color: 'blue', fontStyle: 'italic' }
+});`}
+  language="javascript"
+  filename="style-field-labels.js"
+/>
+
+### 设置字段组件样式
+
+<CodeBlock
+  code={`// 设置字段组件的样式（输入框、选择框等）
+kinlink.formApi.setFieldComponentStyle('name', {
+  backgroundColor: '#f0f0f0',
+  padding: '10px'
+});
+
+// 获取字段组件的当前样式
+const componentStyle = kinlink.formApi.getFieldComponentStyle('name');
+console.log(componentStyle); // 输出: { backgroundColor: "#f0f0f0", padding: "10px" }
+
+// 重置字段组件的样式
+kinlink.formApi.resetFieldComponentStyle('name');
+
+// 设置多个字段组件的样式
+kinlink.formApi.setFieldsComponentStyles({
+  name: { backgroundColor: '#f0f0f0', padding: '10px' },
+  email: { backgroundColor: '#e0e0e0', padding: '8px' }
+});`}
+  language="javascript"
+  filename="style-field-components.js"
+/>
+
+## 总结
+
+Kinlink API为管理表单字段提供了强大而灵活的工具集。通过利用这些函数，您可以创建高度动态和交互式的表单，以满足您的特定需求。 

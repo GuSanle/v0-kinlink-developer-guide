@@ -1,0 +1,370 @@
+import { CodeBlock } from "@/components/code-block";
+
+# 表单验证
+
+<div className="mt-2 text-lg text-muted-foreground">
+  了解如何为Kinlink表单实现自定义验证。
+</div>
+
+表单验证对于确保用户提交准确和完整的数据至关重要。Kinlink提供了一个强大的验证系统，允许您为表单字段定义自定义验证规则。本指南介绍如何使用Kinlink API实现各种类型的验证。
+
+## 基本验证概念
+
+Kinlink表单有两种类型的验证：
+
+1.  **内置验证：** 基于表单配置中的字段类型和必填设置
+2.  **自定义验证：** 使用Kinlink JavaScript API定义
+
+本指南重点介绍自定义验证，它使您能够完全控制表单字段的验证规则。
+
+## 添加自定义验证器
+
+您可以使用`addFieldValidator`方法为任何字段添加自定义验证器。验证器是一个函数，它接收字段值作为输入，并返回错误消息（如果验证失败）或 `undefined`（如果验证通过）。
+
+<CodeBlock
+  code={`// 为电子邮件字段添加自定义验证器
+kinlink.formApi.addFieldValidator('email', (value) => {
+  // 如果字段为空则跳过验证
+  if (!value) return;
+  
+  // 检查值是否为有效的电子邮件地址
+  if (!/^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$/.test(value)) {
+    return '请输入有效的电子邮件地址';
+  }
+  
+  // 如果验证通过则返回undefined
+  return undefined;
+});`}
+  language="javascript"
+  filename="add-validator.js"
+/>
+
+您通常在`FORM_LOADED`事件处理程序中添加验证器：
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+  const form = kinlink.formApi;
+  
+  // 为各种字段添加验证器
+  form.addFieldValidator('email', validateEmail);
+  form.addFieldValidator('phone', validatePhone);
+  form.addFieldValidator('password', validatePassword);
+});
+
+// 验证器函数
+function validateEmail(value) {
+  if (!value) return;
+  if (!/^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$/.test(value)) {
+    return '请输入有效的电子邮件地址';
+  }
+  return undefined;
+}
+
+function validatePhone(value) {
+  if (!value) return;
+  if (!/^\\d{10}$/.test(value.replace(/\\D/g, ''))) {
+    return '请输入10位电话号码';
+  }
+  return undefined;
+}
+
+function validatePassword(value) {
+  if (!value) return;
+  if (value.length < 8) {
+    return '密码长度必须至少为8个字符';
+  }
+  if (!/[A-Z]/.test(value)) {
+    return '密码必须包含至少一个大写字母';
+  }
+  if (!/[a-z]/.test(value)) {
+    return '密码必须包含至少一个小写字母';
+  }
+  if (!/\\d/.test(value)) {
+    return '密码必须包含至少一个数字';
+  }
+  return undefined;
+}`}
+  language="javascript"
+  filename="form-loaded-validators.js"
+/>
+
+## 移除验证器
+
+您可以使用`removeFieldValidator`方法移除自定义验证器：
+
+<CodeBlock
+  code={`// 从电子邮件字段移除验证器
+kinlink.formApi.removeFieldValidator('email');`}
+  language="javascript"
+  filename="remove-validator.js"
+/>
+
+## 手动验证字段
+
+您可以使用`validateField`方法手动验证字段：
+
+<CodeBlock
+  code={`// 验证电子邮件字段
+const error = kinlink.formApi.validateField('email', 'invalid-email');
+console.log(error); // 输出: "请输入有效的电子邮件地址"
+
+// 使用有效值验证
+const noError = kinlink.formApi.validateField('email', 'user@example.com');
+console.log(noError); // 输出: undefined (验证通过)`}
+  language="javascript"
+  filename="validate-field.js"
+/>
+
+## 验证整个表单
+
+您可以使用`validateForm`方法验证整个表单：
+
+<CodeBlock
+  code={`// 验证整个表单
+const result = kinlink.formApi.validateForm();
+console.log(result);
+// 输出: {
+//   errors: {
+//     email: "请输入有效的电子邮件地址",
+//     phone: "请输入10位电话号码"
+//   },
+//   isValid: false
+// }`}
+  language="javascript"
+  filename="validate-form.js"
+/>
+
+这在`BEFORE_SUBMIT`事件处理程序中特别有用，可以在存在验证错误时阻止提交：
+
+<CodeBlock
+  code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
+  const form = kinlink.formApi;
+  
+  // 验证整个表单
+  const validationResult = form.validateForm();
+  
+  if (!validationResult.isValid) {
+    // 显示错误消息
+    form.showError('提交前请修复验证错误。');
+    
+    // 阻止表单提交
+    return false;
+  }
+  
+  // 允许表单提交
+  return true;
+});`}
+  language="javascript"
+  filename="before-submit-validation.js"
+/>
+
+## 手动设置错误消息
+
+您可以使用`setFieldError`方法手动设置字段的错误消息：
+
+<CodeBlock
+  code={`// 为电子邮件字段设置错误消息
+kinlink.formApi.setFieldError('email', '此电子邮件已被注册');
+
+// 清除错误消息
+kinlink.formApi.clearFieldError('email');
+
+// 为多个字段设置错误消息
+kinlink.formApi.setFieldsErrors({
+  email: '此电子邮件已被注册',
+  username: '此用户名已被使用'
+});`}
+  language="javascript"
+  filename="set-field-errors.js"
+/>
+
+## 常见验证模式
+
+以下是您可以在表单中使用的一些常见验证模式：
+
+### 必填字段
+
+<CodeBlock
+  code={`// 验证字段不为空
+form.addFieldValidator('name', (value) => {
+  if (!value || value.trim() === '') {
+    return '姓名为必填项';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="required-field.js"
+/>
+
+### 电子邮件验证
+
+<CodeBlock
+  code={`// 验证电子邮件格式
+form.addFieldValidator('email', (value) => {
+  if (!value) return;
+  if (!/^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$/.test(value)) {
+    return '请输入有效的电子邮件地址';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="email-validation.js"
+/>
+
+### 电话号码验证
+
+<CodeBlock
+  code={`// 验证电话号码格式
+form.addFieldValidator('phone', (value) => {
+  if (!value) return;
+  // 移除所有非数字字符
+  const phoneNumber = value.replace(/\\D/g, '');
+  if (!/^\\d{10,15}$/.test(phoneNumber)) {
+    return '请输入有效的电话号码（10-15位数字）';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="phone-validation.js"
+/>
+
+### 密码强度
+
+<CodeBlock
+  code={`// 验证密码强度
+form.addFieldValidator('password', (value) => {
+  if (!value) return;
+  if (value.length < 8) {
+    return '密码长度必须至少为8个字符';
+  }
+  if (!/[A-Z]/.test(value)) {
+    return '密码必须包含至少一个大写字母';
+  }
+  if (!/[a-z]/.test(value)) {
+    return '密码必须包含至少一个小写字母';
+  }
+  if (!/\\d/.test(value)) {
+    return '密码必须包含至少一个数字';
+  }
+  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(value)) {
+    return '密码必须包含至少一个特殊字符';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="password-strength.js"
+/>
+
+### 数字范围
+
+<CodeBlock
+  code={`// 验证数字是否在指定范围内
+form.addFieldValidator('age', (value) => {
+  if (value === null || value === undefined || value === '') return; // 允许空值，如果需要必填，单独添加规则
+  const age = Number(value);
+  if (isNaN(age)) {
+    return '请输入有效的年龄';
+  }
+  if (age < 18 || age > 99) {
+    return '年龄必须在18到99之间';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="number-range.js"
+/>
+
+### 字段匹配（例如，确认密码）
+
+<CodeBlock
+  code={`// 验证两个字段是否匹配
+form.addFieldValidator('confirmPassword', (value) => {
+  const password = form.getFieldValue('password');
+  if (value !== password) {
+    return '密码不匹配';
+  }
+  return undefined;
+});
+
+// 当原始密码字段更改时，也触发确认密码字段的验证
+form.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  if (data.fieldName === 'password') {
+    form.validateField('confirmPassword', form.getFieldValue('confirmPassword'));
+  }
+});`}
+  language="javascript"
+  filename="field-matching.js"
+/>
+
+### 异步验证
+
+Kinlink验证器本身不支持异步操作（即返回Promise）。如果您需要执行异步验证（例如，检查服务器上用户名是否可用），您应该在其他地方执行异步调用，然后使用`setFieldError`手动设置字段错误。
+
+<CodeBlock
+  code={`// 示例：在字段更改时进行异步用户名可用性检查
+let debounceTimer;
+kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+  if (data.fieldName === 'username') {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const username = data.value;
+      if (!username) {
+        kinlink.formApi.clearFieldError('username');
+        return;
+      }
+      try {
+        // 假设 checkUsernameAvailability 是一个返回Promise的函数
+        // const isAvailable = await checkUsernameAvailability(username);
+        // 模拟API调用
+        const isAvailable = await new Promise(resolve => setTimeout(() => resolve(!['admin', 'test'].includes(username)), 500));
+        
+        if (!isAvailable) {
+          kinlink.formApi.setFieldError('username', '此用户名已被使用');
+        } else {
+          kinlink.formApi.clearFieldError('username');
+        }
+      } catch (error) {
+        kinlink.formApi.setFieldError('username', '检查用户名时出错');
+        console.error('异步验证错误:', error);
+      }
+    }, 300); // 防抖处理
+  }
+});`}
+  language="javascript"
+  filename="async-validation-example.js"
+/>
+
+## 结合使用验证
+
+您可以为单个字段添加多个验证器，Kinlink将按顺序执行它们。如果任何验证器返回错误消息，则验证过程将停止，并显示该错误。
+
+<CodeBlock
+  code={`form.addFieldValidator('username', (value) => {
+  if (!value || value.trim() === '') {
+    return '用户名为必填项';
+  }
+  return undefined;
+});
+
+form.addFieldValidator('username', (value) => {
+  if (!value) return;
+  if (value.length < 5) {
+    return '用户名必须至少包含5个字符';
+  }
+  return undefined;
+});
+
+form.addFieldValidator('username', (value) => {
+  if (!value) return;
+  if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+    return '用户名只能包含字母、数字和下划线';
+  }
+  return undefined;
+});`}
+  language="javascript"
+  filename="multiple-validators.js"
+/>
+
+## 总结
+
+Kinlink的验证系统为您提供了保护表单数据完整性和准确性的全面工具。通过结合使用内置验证和自定义验证器，您可以为应用程序实现任何复杂的验证逻辑。 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Check, Copy } from "lucide-react";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
@@ -17,16 +17,22 @@ export function CodeBlock({
   filename,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-  const preRef = useRef<HTMLPreElement>(null);
 
+  // 禁用 highlight.js 的自动检测，防止客户端重复处理
   useEffect(() => {
-    if (!preRef.current) return;
-    const codeElement = preRef.current.querySelector("code");
-    if (!codeElement) return;
+    hljs.configure({ ignoreUnescapedHTML: true });
+  }, []);
+
+  // 在渲染时进行语法高亮，确保服务端和客户端一致
+  const highlightedCode = useMemo(() => {
     try {
-      hljs.highlightElement(codeElement as HTMLElement);
+      if (language && hljs.getLanguage(language)) {
+        return hljs.highlight(code, { language }).value;
+      }
+      return hljs.highlightAuto(code).value;
     } catch (e) {
-      // 静默处理错误
+      console.warn("语法高亮失败:", e);
+      return code;
     }
   }, [code, language]);
 
@@ -58,13 +64,12 @@ export function CodeBlock({
       >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
       </button>
-      <pre
-        ref={preRef}
-        className="overflow-x-auto p-4 text-sm font-mono bg-[#0d1117] text-neutral-300 m-0 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent"
-      >
-        <code className={language ? `language-${language}` : undefined}>
-          {code}
-        </code>
+      <pre className="overflow-x-auto p-4 text-sm font-mono bg-[#0d1117] text-neutral-300 m-0 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
+        <code
+          className={`hljs ${language ? `language-${language}` : ""}`}
+          data-highlighted="yes"
+          dangerouslySetInnerHTML={{ __html: highlightedCode }}
+        />
       </pre>
     </div>
   );

@@ -9,168 +9,165 @@ import {
   TabsTrigger,
 } from "../highlight-tabs";
 
-export default function DynamicSurveyPage() {
-  return (
-    <div className="container py-6 lg:py-10">
-      <div className="flex items-center gap-4 mb-8">
-        <Link href="/examples">
-          <Button variant="outline" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight">动态调查问卷</h1>
-      </div>
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight">动态调查</h1>
+  </div>
 
-      <div className="prose prose-blue dark:prose-invert max-w-none">
-        <p className="lead">
-          此示例演示了如何创建一个动态调查问卷，该问卷能根据用户的回答，通过条件问题、分支逻辑和实时验证来动态调整。
-        </p>
+  <div className="prose prose-blue dark:prose-invert max-w-none">
+    <div className="lead">
+      此示例演示如何创建一个动态调查表单，该表单能够根据用户响应自适应显示条件问题、分支逻辑和实时验证。
+    </div>
 
-        <h2>主要特性</h2>
-        <ul>
-          <li>条件性问题：根据先前的答案显示不同的问题</li>
-          <li>分支逻辑：根据用户回答创建不同的调查路径</li>
-          <li>实时响应验证：即时验证用户输入</li>
-          <li>动态问题生成：根据用户数据生成问题</li>
-          <li>进度跟踪与导航：显示调查进度并允许用户导航</li>
-        </ul>
+    <h2>主要特性</h2>
+    <ul>
+      <li>基于先前答案显示的条件问题</li>
+      <li>创建不同调查路径的分支逻辑</li>
+      <li>响应的实时验证</li>
+      <li>基于用户数据的动态问题生成</li>
+      <li>进度跟踪和导航</li>
+    </ul>
 
-        <h2>实现方式</h2>
-        <p>
-          动态调查问卷使用 Kinlink API
-          来管理问题的可见性、验证和分支逻辑。以下是完整的实现代码：
-        </p>
+    <h2>实现方式</h2>
+    <div>
+      动态调查使用 Kinlink API 来管理问题可见性、验证和分支逻辑。以下是完整的代码：
+    </div>
 
-        <CodeBlock
-          code={`(function() {
-  // 问卷配置
+    <CodeBlock
+      code={`(function() {
+  // Survey configuration
   const SURVEY_CONFIG = {
-    title: \'客户满意度调查\',
-    description: \'请抽出几分钟时间完成此调查，帮助我们改进产品和服务。\',
+    title: '客户满意度调查',
+    description: '请通过这个简短的调查帮助我们改进产品和服务。',
     questions: [
       {
-        id: \'customerType\',
-        text: \'您的客户类型是？\',
-        type: \'radio\',
-        options: [\'新客户\', \'老客户\', \'潜在客户\'],
+        id: 'customerType',
+        text: '您是哪种类型的客户？',
+        type: 'radio',
+        options: ['新客户', '回头客', '潜在客户'],
         required: true
       },
       {
-        id: \'productUsage\',
-        text: \'您目前使用我们的哪些产品？\',
-        type: \'checkbox\',
-        options: [\'产品 A\', \'产品 B\', \'产品 C\', \'未使用任何产品\'],
-        showIf: (values) => values.customerType === \'老客户\',
+        id: 'productUsage',
+        text: '您使用我们的哪些产品？',
+        type: 'checkbox',
+        options: ['产品 A', '产品 B', '产品 C', '无'],
+        showIf: (values) => values.customerType === '回头客',
         required: true
       },
       {
-        id: \'productInterest\',
-        text: \'您对我们的哪些产品感兴趣？\',
-        type: \'checkbox\',
-        options: [\'产品 A\', \'产品 B\', \'产品 C\', \'暂时不确定\'],
-        showIf: (values) => values.customerType === \'潜在客户\',
+        id: 'productInterest',
+        text: '您对哪些产品感兴趣？',
+        type: 'checkbox',
+        options: ['产品 A', '产品 B', '产品 C', '还不确定'],
+        showIf: (values) => values.customerType === '潜在客户',
         required: true
       },
       {
-        id: \'productASatisfaction\',
-        text: \'您对产品 A 的满意度如何？\',
-        type: \'rating\',
-        options: [\'1\', \'2\', \'3\', \'4\', \'5\'],
-        showIf: (values) => values.productUsage && values.productUsage.includes(\'产品 A\'),
+        id: 'productASatisfaction',
+        text: '您对产品 A 的满意度如何？',
+        type: 'rating',
+        options: ['1', '2', '3', '4', '5'],
+        showIf: (values) => values.productUsage && values.productUsage.includes('产品 A'),
         required: true
       },
       {
-        id: \'productBSatisfaction\',
-        text: \'您对产品 B 的满意度如何？\',
-        type: \'rating\',
-        options: [\'1\', \'2\', \'3\', \'4\', \'5\'],
-        showIf: (values) => values.productUsage && values.productUsage.includes(\'产品 B\'),
+        id: 'productBSatisfaction',
+        text: '您对产品 B 的满意度如何？',
+        type: 'rating',
+        options: ['1', '2', '3', '4', '5'],
+        showIf: (values) => values.productUsage && values.productUsage.includes('产品 B'),
         required: true
       },
       {
-        id: \'productCSatisfaction\',
-        text: \'您对产品 C 的满意度如何？\',
-        type: \'rating\',
-        options: [\'1\', \'2\', \'3\', \'4\', \'5\'],
-        showIf: (values) => values.productUsage && values.productUsage.includes(\'产品 C\'),
+        id: 'productCSatisfaction',
+        text: '您对产品 C 的满意度如何？',
+        type: 'rating',
+        options: ['1', '2', '3', '4', '5'],
+        showIf: (values) => values.productUsage && values.productUsage.includes('产品 C'),
         required: true
       },
       {
-        id: \'improvementSuggestions\',
-        text: \'对于改进我们的产品，您有什么建议吗？\',
-        type: \'textarea\',
-        showIf: (values) => values.customerType === \'老客户\',
+        id: 'improvementSuggestions',
+        text: '您对我们如何改进产品有什么建议吗？',
+        type: 'textarea',
+        showIf: (values) => values.customerType === '回头客',
         required: false
       },
       {
-        id: \'contactReason\',
-        text: \'今天是什么原因促使您联系我们？\',
-        type: \'select\',
-        options: [\'看到广告\', \'朋友推荐\', \'在线搜索\', \'其他\'],
-        showIf: (values) => values.customerType === \'新客户\' || values.customerType === \'潜在客户\',
+        id: 'contactReason',
+        text: '是什么促使您今天联系我们？',
+        type: 'select',
+        options: ['看到广告', '朋友推荐', '在线搜索', '其他'],
+        showIf: (values) => values.customerType === '新客户' || values.customerType === '潜在客户',
         required: true
       },
       {
-        id: \'otherContactReason\',
-        text: \'请具体说明原因：\',
-        type: \'text\',
-        showIf: (values) => values.contactReason === \'其他\',
+        id: 'otherContactReason',
+        text: '请具体说明原因：',
+        type: 'text',
+        showIf: (values) => values.contactReason === '其他',
         required: true
       },
       {
-        id: \'futureContact\',
-        text: \'您是否希望我们将来就产品和促销活动与您联系？\',
-        type: \'radio\',
-        options: [\'是\', \'否\'],
+        id: 'futureContact',
+        text: '您希望我们就未来的产品和促销活动联系您吗？',
+        type: 'radio',
+        options: ['是', '否'],
         required: true
       },
       {
-        id: \'contactMethod\',
-        text: \'您希望通过哪种方式联系？\',
-        type: \'radio\',
-        options: [\'电子邮件\', \'电话\', \'邮件\'],
-        showIf: (values) => values.futureContact === \'是\',
+        id: 'contactMethod',
+        text: '您希望我们通过什么方式联系您？',
+        type: 'radio',
+        options: ['邮箱', '电话', '邮寄'],
+        showIf: (values) => values.futureContact === '是',
         required: true
       },
       {
-        id: \'contactEmail\',
-        text: \'请输入您的电子邮件地址：\',
-        type: \'email\',
-        showIf: (values) => values.contactMethod === \'电子邮件\',
+        id: 'contactEmail',
+        text: '请提供您的邮箱地址：',
+        type: 'email',
+        showIf: (values) => values.contactMethod === '邮箱',
         required: true,
         validator: (value) => {
-          if (!value) return \'电子邮件是必填项\';
+          if (!value) return '邮箱地址是必填项';
           if (!/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/.test(value)) {
-            return \'请输入有效的电子邮件地址\';
+            return '请输入有效的邮箱地址';
           }
           return undefined;
         }
       },
       {
-        id: \'contactPhone\',
-        text: \'请输入您的电话号码：\',
-        type: \'tel\',
-        showIf: (values) => values.contactMethod === \'电话\',
+        id: 'contactPhone',
+        text: '请提供您的电话号码：',
+        type: 'tel',
+        showIf: (values) => values.contactMethod === '电话',
         required: true,
         validator: (value) => {
-          if (!value) return \'电话号码是必填项\';
+          if (!value) return '电话号码是必填项';
           if (!/^\\+?[\\d\\s()-]{10,20}$/.test(value)) {
-            return \'请输入有效的电话号码\';
+            return '请输入有效的电话号码';
           }
           return undefined;
         }
       },
       {
-        id: \'contactAddress\',
-        text: \'请输入您的邮寄地址：\',
-        type: \'textarea\',
-        showIf: (values) => values.contactMethod === \'邮件\',
+        id: 'contactAddress',
+        text: '请提供您的邮寄地址：',
+        type: 'textarea',
+        showIf: (values) => values.contactMethod === '邮寄',
         required: true
       },
       {
-        id: \'additionalComments\',
-        text: \'您还有其他意见或反馈吗？\',
-        type: \'textarea\',
+        id: 'additionalComments',
+        text: '您还有其他意见或反馈吗？',
+        type: 'textarea',
         required: false
       }
     ]
@@ -331,8 +328,7 @@ export default function DynamicSurveyPage() {
       } else if (question.required) {
         // 为必填项添加通用验证器
         form.addFieldValidator(question.id, (value) => {
-          const isEmpty = !value || (Array.isArray(value) && value.length === 0) || String(value).trim() === \'\';
-          if (isEmpty) {
+          if (!value || (Array.isArray(value) && value.length === 0) || value === '') {
             return \`\${question.text} 是必填项\`;
           }
           return undefined; // 验证通过返回 undefined
@@ -383,6 +379,7 @@ export default function DynamicSurveyPage() {
         const isEmpty = !fieldValue || (Array.isArray(fieldValue) && fieldValue.length === 0) || String(fieldValue).trim() === \'\';
         if (isEmpty) {
           form.setFieldError(question.id, \`\${question.text} 是必填项\`);
+          form.setFieldError(question.id, \`\${question.text} 是必填项\`);
           isValid = false;
         }
       }
@@ -398,8 +395,8 @@ export default function DynamicSurveyPage() {
     });
     
     if (!isValid) {
-      form.showError(\'请修正表单中的错误后再提交。\');
-      return false; // 阻止表单提交
+      form.showError('请在提交前修复验证错误。');
+      return false;
     }
     
     // 可以在此处向提交数据中添加额外元数据
@@ -417,103 +414,81 @@ export default function DynamicSurveyPage() {
     const form = kinlink.formApi;
     
     if (success) {
-      form.showSuccess(\'感谢您完成调查！您的反馈已成功提交。\');
-      // 可以在此处执行其他操作，例如重定向用户或重置表单
-      // form.reset(); // 如果需要重置表单
+      form.showSuccess('感谢您完成调查！');
     } else {
-      form.showError(\`提交问卷时发生错误: \${error ? error.message : \'未知错误\'}。请稍后重试。\`);
-      console.error(\'表单提交失败:\', responseData);
+      form.showError('提交调查时出现错误，请重试。');
     }
   });
 })();`}
-          language="javascript"
-          filename="dynamic-survey.js"
-        />
+      language="javascript"
+      filename="dynamic-survey.js"
+    />
 
-        <h2>工作原理</h2>
-        <p>
-          此示例创建了一个动态客户满意度调查，该调查会根据用户的回答进行调整。调查包含不同类型的问题（单选按钮、复选框、文本输入等），并使用条件逻辑根据先前的回答显示或隐藏问题。
-        </p>
-
-        <h3>问卷配置</h3>
-        <p>问卷通过一个 JavaScript 对象进行配置，该对象定义了：</p>
-        <ul>
-          <li>问卷的标题和描述信息</li>
-          <li>问题的具体内容，包括类型、选项和验证规则</li>
-          <li>
-            用于显示/隐藏问题的条件逻辑 (<code>showIf</code> 函数)
-          </li>
-        </ul>
-
-        <h3>关键实现细节</h3>
-        <ul>
-          <li>
-            <strong>条件性问题 (Conditional Questions):</strong> 问题字段根据{" "}
-            <code>showIf</code> 函数的返回值和依赖的字段值来决定显示或隐藏。
-          </li>
-          <li>
-            <strong>自定义验证 (Custom Validation):</strong>{" "}
-            每个问题都可以定义自己的验证规则 (<code>validator</code>{" "}
-            函数)，并在提交前进行检查。对于必填项，也提供了统一的验证逻辑。
-          </li>
-          <li>
-            <strong>动态用户界面 (Dynamic UI):</strong> 评分类型的问题通过
-            JavaScript 动态添加了自定义的交互样式，提升了用户体验。
-          </li>
-          <li>
-            <strong>表单提交处理 (Form Submission):</strong> 在表单提交前 (
-            <code>BEFORE_SUBMIT</code>{" "}
-            事件)，仅对当前可见且必填的问题进行验证。提交成功或失败后 (
-            <code>AFTER_SUBMIT</code> 事件)，会向用户显示相应的提示信息。
-          </li>
-        </ul>
-
-        <h2>最佳实践</h2>
-        <ul>
-          <li>
-            <strong>渐进式展示 (Progressive Disclosure):</strong>{" "}
-            仅向用户展示与他们相关的必要问题，避免信息过载。
-          </li>
-          <li>
-            <strong>清晰的指引 (Clear Instructions):</strong>{" "}
-            提供清晰的说明，并明确指出哪些字段是必填的（例如通过星号标记）。
-          </li>
-          <li>
-            <strong>即时反馈 (Immediate Feedback):</strong>{" "}
-            在用户输入后或提交前提供实时的验证反馈，帮助用户修正错误。
-          </li>
-          <li>
-            <strong>逻辑流程 (Logical Flow):</strong>{" "}
-            以合乎逻辑的顺序组织问题，确保调查流程顺畅自然。
-          </li>
-          <li>
-            <strong>响应式设计 (Responsive Design):</strong>{" "}
-            确保问卷在各种设备（桌面、平板、手机）上都能良好显示和操作。
-          </li>
-        </ul>
-
-        <h2>定制化选项</h2>
-        <p>此示例可以通过多种方式进行定制：</p>
-        <ul>
-          <li>
-            在问卷配置 (<code>SURVEY_CONFIG</code>) 中添加或修改问题。
-          </li>
-          <li>更改问题类型、选项内容和验证规则。</li>
-          <li>自定义问题和选项的显示外观及交互行为。</li>
-          <li>实现更复杂的分支逻辑，例如根据多个答案组合跳转到不同部分。</li>
-          <li>添加进度条或步骤指示器，以改善用户导航体验。</li>
-          <li>集成外部数据源，动态生成问题选项或预填用户信息。</li>
-        </ul>
-
-        <div className="mt-8">
-          <Link href="/examples">
-            <Button variant="outline">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              返回示例列表
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <h2>工作原理</h2>
+    <div>
+      此示例创建了一个动态客户满意度调查，能够根据用户的响应进行自适应。调查包含不同的问题类型（单选按钮、复选框、文本输入等），并使用条件逻辑根据先前的答案显示或隐藏问题。
     </div>
-  );
-}
+
+    <h3>调查配置</h3>
+    <div>调查使用 JavaScript 对象进行配置，该对象定义了：</div>
+    <ul>
+      <li>调查标题和描述</li>
+      <li>问题及其类型、选项和验证规则</li>
+      <li>显示/隐藏问题的条件逻辑</li>
+    </ul>
+
+    <h3>关键实现细节</h3>
+    <ul>
+      <li>
+        <strong>条件问题：</strong> 根据先前的答案显示或隐藏问题
+      </li>
+      <li>
+        <strong>自定义验证：</strong> 每个问题都可以有自己的验证规则
+      </li>
+      <li>
+        <strong>动态界面：</strong> 评分问题具有自定义样式和交互行为
+      </li>
+      <li>
+        <strong>表单提交：</strong> 只有可见和必填的问题在提交前会被验证
+      </li>
+    </ul>
+
+    <h2>最佳实践</h2>
+    <ul>
+      <li>
+        <strong>渐进式披露：</strong> 只显示与用户相关的问题
+      </li>
+      <li>
+        <strong>清晰说明：</strong> 提供清晰的说明并标明必填字段
+      </li>
+      <li>
+        <strong>即时反馈：</strong> 实时验证响应
+      </li>
+      <li>
+        <strong>逻辑流程：</strong> 按逻辑顺序组织问题
+      </li>
+      <li>
+        <strong>响应式设计：</strong> 确保调查在所有设备上都能正常工作
+      </li>
+    </ul>
+
+    <h2>自定义选项</h2>
+    <div>此示例可以通过多种方式进行自定义：</div>
+    <ul>
+      <li>在调查配置中添加或修改问题</li>
+      <li>更改问题类型和验证规则</li>
+      <li>自定义问题和选项的外观</li>
+      <li>实现更复杂的分支逻辑</li>
+      <li>添加进度跟踪和导航</li>
+    </ul>
+
+    <div className="mt-8">
+      <Link href="/examples">
+        <Button variant="outline">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          返回示例
+        </Button>
+      </Link>
+    </div>
+  </div>
+</div> 

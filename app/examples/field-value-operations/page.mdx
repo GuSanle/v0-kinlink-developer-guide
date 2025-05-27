@@ -1,0 +1,203 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight">字段值读取与设置</h1>
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
+      <div>
+        此示例演示如何使用Kinlink API读取和设置表单字段的值。这是表单操作中最基础也是最重要的功能之一，包括单个字段操作和批量字段操作。
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>设置单个字段值</li>
+        <li>批量设置多个字段值</li>
+        <li>获取单个字段值</li>
+        <li>获取所有字段值</li>
+        <li>创建交互式测试按钮</li>
+        <li>自动填充测试数据</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock 
+            code={`/**
+ * 示例5: 字段值读取与设置
+ * 功能：获取和设置表单字段的值
+ */
+(function () {
+  // 初始化表单
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 设置单个字段值
+      kinlink.formApi.setFieldValue('单行文本框_0', '测试案件');
+
+      // 批量设置多个字段值
+      kinlink.formApi.setFieldsValue({
+        文字列__1行__0: '山田',
+        文字列__1行__1: '太郎',
+        单行文本框_8: 'YAMADA',
+        单行文本框_9: 'TARO',
+        单选框_0: '男',
+        日期_1: '1990-01-01',
+      });
+
+      // 创建测试按钮，显示当前表单值
+      const showValuesButton = document.createElement('button');
+      showValuesButton.type = 'button';
+      showValuesButton.textContent = '显示当前表单值';
+      showValuesButton.style.margin = '10px 0';
+      showValuesButton.style.padding = '5px 10px';
+
+      showValuesButton.addEventListener('click', () => {
+        // 获取单个字段值
+        const name = kinlink.formApi.getFieldValue('文字列__1行__0');
+        console.log('姓氏:', name);
+
+        // 获取所有字段值
+        const allValues = kinlink.formApi.getAllValues();
+        console.log('所有字段值:', allValues);
+
+        // 显示提示信息
+        kinlink.formApi.showInfo(
+          \`当前姓名: \${name} \${kinlink.formApi.getFieldValue('文字列__1行__1')}\`,
+        );
+      });
+
+      // 添加按钮到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(showValuesButton, formElement.firstChild);
+
+      // 创建自动填充测试数据的按钮
+      const fillDataButton = document.createElement('button');
+      fillDataButton.type = 'button';
+      fillDataButton.textContent = '填充测试数据';
+      fillDataButton.style.margin = '10px 5px';
+      fillDataButton.style.padding = '5px 10px';
+
+      fillDataButton.addEventListener('click', () => {
+        kinlink.formApi.setFieldsValue({
+          文字列__1行__0: '李',
+          文字列__1行__1: '小明',
+          单行文本框_8: 'LI',
+          单行文本框_9: 'XIAOMING',
+          单行文本框_10: 'ABC株式会社',
+          单行文本框_11: 'P12345678',
+          单选框_0: '男',
+          日期_1: '1995-05-15',
+          日期_2: '2030-12-31',
+          文字列__1行__2: '13800138000',
+          文字列__1行__3: 'test@example.com',
+          下拉菜单: 'A',
+        });
+        kinlink.formApi.showSuccess('测试数据已填充');
+      });
+
+      formElement.insertBefore(fillDataButton, formElement.firstChild);
+    } catch (error) {
+      console.error('字段值操作失败:', error);
+    }
+  });
+})();`} 
+            language="javascript" 
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+      <div>
+        将代码复制到您的Kinlink自定义JavaScript中，根据您的表单字段修改字段代码。代码会在表单加载时自动设置初始值，并添加两个测试按钮用于演示字段值的读取和设置功能。
+      </div>
+      <div className="p-4 border rounded-md bg-green-50 border-green-200">
+        <h3 className="font-semibold text-green-800">功能演示</h3>
+        <div className="text-green-800">
+          代码会自动添加"显示当前表单值"和"填充测试数据"两个按钮，您可以通过这些按钮测试字段值的读取和设置功能。
+        </div>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+      <div>此示例使用了以下Kinlink API：</div>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>
+          <code>kinlink.formApi.setFieldValue(fieldCode, value)</code> -
+          设置单个字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldsValue(values)</code> - 批量设置多个字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.getFieldValue(fieldCode)</code> -
+          获取单个字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.getAllValues()</code> - 获取所有字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.showInfo(message)</code> - 显示信息消息
+        </li>
+        <li>
+          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
+        </li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">字段类型支持</h2>
+      <div>此示例演示了多种字段类型的值操作：</div>
+      <ul className="list-disc pl-6 space-y-2">
+        <li><strong>文本字段</strong>：单行文本框、多行文本框</li>
+        <li><strong>选择字段</strong>：单选框、下拉菜单</li>
+        <li><strong>日期字段</strong>：日期选择器</li>
+        <li><strong>联系信息</strong>：手机号、邮箱地址</li>
+        <li><strong>身份信息</strong>：护照号码、公司名称</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>表单数据的预填充和初始化</li>
+        <li>基于用户选择动态更新相关字段</li>
+        <li>表单数据的批量导入和导出</li>
+        <li>表单状态的保存和恢复</li>
+        <li>表单数据的验证前预处理</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>在设置字段值前确保字段已存在</li>
+        <li>使用批量操作提高性能</li>
+        <li>为用户操作提供适当的反馈</li>
+        <li>处理字段值设置可能出现的异常</li>
+        <li>在控制台输出调试信息便于开发</li>
+      </ul>
+    </div>
+  </div>
+</div> 

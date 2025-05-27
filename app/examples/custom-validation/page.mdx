@@ -1,0 +1,196 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+<div className="container py-6 lg:py-10">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples">
+      <Button variant="outline" size="icon">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight">自定义验证规则</h1>
+  </div>
+
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
+      <div>
+        此示例演示如何为表单字段添加自定义验证规则。您将学习如何实现邮箱格式验证、手机号验证、日期有效性检查等常见验证场景，并提供实时反馈给用户。
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>邮箱格式验证</li>
+        <li>手机号码格式验证</li>
+        <li>护照有效期验证</li>
+        <li>自定义错误消息显示</li>
+        <li>手动触发表单验证</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
+      <Tabs defaultValue="javascript">
+        <TabsList>
+          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+        </TabsList>
+        <TabsContent value="javascript">
+          <CodeBlock 
+            code={`/**
+ * 示例6: 自定义验证规则
+ * 功能：为表单字段添加自定义验证规则
+ */
+(function () {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      const form = kinlink.formApi;
+
+      // 为邮箱字段添加格式验证
+      form.addFieldValidator('文字列__1行__3', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(value)) {
+          return '请输入有效的邮箱地址';
+        }
+        return undefined; // 验证通过
+      });
+
+      // 为手机号字段添加格式验证
+      form.addFieldValidator('文字列__1行__2', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        // 简单的手机号验证规则（不限制国家/地区前缀）
+        const phoneRegex = /^\\+?[0-9]{7,15}$/;
+        if (!phoneRegex.test(value)) {
+          return '请输入有效的手机号码（7-15位数字，可以包含+号前缀）';
+        }
+        return undefined; // 验证通过
+      });
+
+      // 为护照有效期添加未过期验证
+      form.addFieldValidator('日期_2', (value) => {
+        if (!value) return; // 非必填，空值不验证
+
+        const today = new Date();
+        const expiryDate = new Date(value);
+
+        // 确保日期有效
+        if (isNaN(expiryDate.getTime())) {
+          return '请输入有效的日期';
+        }
+
+        // 检查是否已过期
+        if (expiryDate < today) {
+          return '护照/证件已过期，请提供有效期内的证件';
+        }
+
+        // 检查是否即将过期（小于6个月）
+        const sixMonthsLater = new Date();
+        sixMonthsLater.setMonth(today.getMonth() + 6);
+
+        if (expiryDate < sixMonthsLater) {
+          // 这是警告而非错误，需手动显示
+          form.showWarning(
+            '您的护照/证件将在6个月内过期，可能影响某些国家/地区的入境要求',
+          );
+        }
+
+        return undefined; // 验证通过
+      });
+
+      // 添加手动触发验证的按钮
+      const validateButton = document.createElement('button');
+      validateButton.textContent = '验证表单';
+      validateButton.style.margin = '10px 0';
+      validateButton.style.padding = '5px 10px';
+
+      validateButton.addEventListener('click', () => {
+        const result = form.validateForm();
+        console.log('验证结果:', result);
+
+        if (result.isValid) {
+          form.showSuccess('表单验证通过');
+        } else {
+          form.showError('表单验证失败，请检查输入');
+        }
+      });
+
+      // 添加按钮到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(validateButton, formElement.firstChild);
+    } catch (error) {
+      console.error('添加自定义验证规则失败:', error);
+    }
+  });
+})();`} 
+            language="javascript" 
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+      <div>
+        将代码复制到您的Kinlink自定义JavaScript中，根据您的表单字段修改字段代码。此示例假设表单包含邮箱、手机号和护照有效期字段。
+      </div>
+      <div className="p-4 border rounded-md bg-blue-50 border-blue-200">
+        <h3 className="font-semibold text-blue-800">提示</h3>
+        <div className="text-blue-800">
+          您可以为任何字段添加自定义验证规则。验证函数返回错误消息字符串表示验证失败，返回undefined表示验证通过。
+        </div>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+      <div>此示例使用了以下Kinlink API：</div>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>
+          <code>kinlink.formApi.addFieldValidator(fieldCode, validatorFunction)</code> -
+          为指定字段添加自定义验证规则
+        </li>
+        <li>
+          <code>kinlink.formApi.validateForm()</code> - 手动触发整个表单的验证
+        </li>
+        <li>
+          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
+        </li>
+        <li>
+          <code>kinlink.formApi.showError(message)</code> - 显示错误消息
+        </li>
+        <li>
+          <code>kinlink.formApi.showWarning(message)</code> - 显示警告消息
+        </li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>用户注册表单的邮箱和密码验证</li>
+        <li>联系信息表单的手机号和地址验证</li>
+        <li>身份验证表单的证件号码和有效期验证</li>
+        <li>业务表单的自定义业务规则验证</li>
+        <li>多步骤表单的分步验证</li>
+      </ul>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
+      <ul className="list-disc pl-6 space-y-2">
+        <li>提供清晰、具体的错误消息</li>
+        <li>对于非必填字段，空值时不进行验证</li>
+        <li>使用正则表达式进行格式验证</li>
+        <li>为即将过期的数据提供警告而非错误</li>
+        <li>在验证失败时提供修正建议</li>
+      </ul>
+    </div>
+  </div>
+</div> 

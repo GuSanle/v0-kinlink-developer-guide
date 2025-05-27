@@ -1,0 +1,113 @@
+
+import Link from "next/link";
+import { CodeBlock } from "@/components/code-block";
+
+# API参考
+
+<div className="mt-2 text-lg text-muted-foreground">
+  Kinlink JavaScript API的综合文档。
+</div>
+
+<div className="docs-content">
+
+Kinlink JavaScript API提供了一组函数和事件，允许您自定义Kinlink表单的行为。本参考文档涵盖了所有可用的API及其使用方法。
+
+## 核心API
+
+Kinlink API可通过全局`window.kinlink`对象访问，该对象提供对以下核心API的访问：
+
+- [formApi](/docs/api-reference/form-api) - 用于操作表单字段和值的函数
+- [layoutApi](/docs/api-reference/layout-api) - 用于控制表单布局的函数
+- [events](/docs/api-reference/events) - 用于响应表单事件的事件系统
+- [proxy](/docs/api-reference/proxy) - 用于安全调用外部API的代理服务
+
+<CodeBlock
+  code={`// Global Kinlink object
+window.kinlink = {
+  // Form operations API
+  formApi: {
+    getFieldValue, setFieldValue, getAllValues, setFieldsValue,
+    hideField, showField, visuallyHideField, getFieldState,
+    disableField, enableField,
+    addFieldValidator, removeFieldValidator, validateField, validateForm,
+    setFieldError, clearFieldError, setFieldsErrors,
+    // ... and more
+  },
+  
+  // Layout control API
+  layoutApi: {
+    getHeaderHeight, isHeaderVisible, hideHeader, showHeader,
+    getFooterHeight, isFooterVisible, hideFooter, showFooter,
+    isSubmitButtonVisible, hideSubmitButton, showSubmitButton,
+    // ... and more
+  },
+  
+  // Event system
+  events: {
+    on, off
+  },
+  
+  // Event types
+  FormEvents: {
+    FORM_LOADED, FIELD_CHANGE, BEFORE_SUBMIT, AFTER_SUBMIT
+  },
+  
+  // Proxy for external API calls
+  proxy: (url, method, headers, body) => Promise<any>,
+  
+  // Other properties
+  version: "1.0.0",
+  formFields: { /* field configuration */ }
+}`}
+  language="javascript"
+  filename="kinlink-api-structure.js"
+/>
+
+## API使用入门
+
+要使用Kinlink API，您通常会编写在表单加载时或特定事件发生时运行的JavaScript代码。以下是一个简单的示例：
+
+<CodeBlock
+  code={`(function() {
+  // Listen for the form loaded event
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    const form = kinlink.formApi;
+    
+    // Hide a field initially
+    form.hideField('additionalInfo');
+    
+    // Add a custom validator to the email field
+    form.addFieldValidator('email', (value) => {
+      if (!value) return;
+      if (!/^\\w+@\\w+\\.\\w+$/.test(value)) {
+        return 'Please enter a valid email address';
+      }
+      return undefined; // Validation passed
+    });
+  });
+  
+  // Listen for field changes
+  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
+    const { fieldName, value } = data;
+    const form = kinlink.formApi;
+    
+    // Show/hide the additional info field based on the type field
+    if (fieldName === 'type' && value === 'premium') {
+      form.showField('additionalInfo');
+    } else if (fieldName === 'type') {
+      form.hideField('additionalInfo');
+    }
+  });
+})();`}
+  language="javascript"
+  filename="example-usage.js"
+/>
+
+浏览特定的API部分，了解每个函数和事件的详细文档：
+
+- [表单API](/docs/api-reference/form-api)
+- [布局API](/docs/api-reference/layout-api)
+- [事件](/docs/api-reference/events)
+- [代理](/docs/api-reference/proxy)
+
+</div> 
