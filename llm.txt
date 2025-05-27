@@ -1,0 +1,119 @@
+# Kinlink Developer Guide Website
+
+## Project Overview
+
+This is a developer documentation website built with Next.js and MDX, specifically designed to provide comprehensive developer guides for the Kinlink product. Kinlink is a powerful integration system built on top of Kintone that allows developers to share and integrate Kintone data with external systems.
+
+## Tech Stack
+
+- **Framework**: Next.js 15.2.4 (React 19)
+- **Content Management**: MDX (Markdown + JSX)
+- **Styling**: Tailwind CSS + shadcn/ui component library
+- **Syntax Highlighting**: highlight.js + shiki
+- **Package Manager**: pnpm
+- **Deployment**: Vercel
+
+## Core Features
+
+### Kinlink Key Features
+1. **External Data Sharing**: Share Kintone data with external users without granting access to your Kintone instance
+2. **Customizable Forms**: Powerful JavaScript API for creating dynamic forms
+3. **Seamless Integration**: Seamlessly integrates with Kintone to extend existing application functionality
+
+### Website Structure
+
+#### Documentation Section (/docs)
+- **Installation Guide** (`/docs/installation`): Detailed setup and configuration instructions
+- **API Reference** (`/docs/api-reference`): Complete JavaScript API documentation
+  - Form API (`form-api`): Field operations, validation, value management
+  - Layout API (`layout-api`): Form layout control
+  - Event System (`events`): Form event listening and handling
+  - Proxy Service (`proxy`): Secure external API calls
+- **Developer Guides** (`/docs/guides`): Practical development guidance
+  - Field Operations (`field-operations`)
+  - Form Validation (`form-validation`)
+  - Mobile Adaptation (`mobile-adaptation`)
+
+#### Examples Section (/examples)
+Contains 15+ practical usage examples:
+- Custom Validation (`custom-validation`)
+- Dynamic Survey (`dynamic-survey`)
+- Field Enable/Disable (`field-enable-disable`)
+- Field Label Modification (`field-label-modification`)
+- Field Linking (`field-linking`)
+- Field Style Customization (`field-style-customization`)
+- Field Value Operations (`field-value-operations`)
+- Field Visibility Control (`field-visibility-control`)
+- Form Submission (`form-submission`)
+- Get Field Element (`get-field-element`)
+- Hide Kintone Label (`hide-kintone-label`)
+- Kinlink Proxy (`kinlink-proxy`)
+- Message Notification (`message-notification`)
+- Mobile Adaptation (`mobile-adaptation`)
+- Multi-step Form (`multi-step-form`)
+
+## Core API Structure
+
+```javascript
+window.kinlink = {
+  // Form Operations API
+  formApi: {
+    getFieldValue, setFieldValue, getAllValues, setFieldsValue,
+    hideField, showField, visuallyHideField, getFieldState,
+    disableField, enableField,
+    addFieldValidator, removeFieldValidator, validateField, validateForm,
+    setFieldError, clearFieldError, setFieldsErrors
+  },
+  
+  // Layout Control API
+  layoutApi: {
+    getHeaderHeight, isHeaderVisible, hideHeader, showHeader,
+    getFooterHeight, isFooterVisible, hideFooter, showFooter,
+    isSubmitButtonVisible, hideSubmitButton, showSubmitButton
+  },
+  
+  // Event System
+  events: { on, off },
+  
+  // Event Types
+  FormEvents: {
+    FORM_LOADED, FIELD_CHANGE, BEFORE_SUBMIT, AFTER_SUBMIT
+  },
+  
+  // Proxy Service
+  proxy: (url, method, headers, body) => Promise<any>
+}
+```
+
+## Installation Process
+
+1. **Register Kinlink Account**: Create an account at kinlink.io
+2. **Connect Kintone Instance**: Configure API tokens and domain
+3. **Create Kinlink Form**: Map Kintone application fields
+4. **JavaScript Customization**: Use Kinlink API to add custom behaviors
+5. **Share Form**: Share via public links, embed codes, or email invitations
+
+## Target Users
+
+- Kintone developers and administrators
+- Enterprise users who need to create external forms
+- System integrators looking to extend Kintone functionality
+- Organizations needing to share data with external users
+
+## Content Features
+
+- **Chinese Documentation**: Fully localized Chinese developer documentation
+- **Practical Examples**: Rich code examples and usage scenarios
+- **API Completeness**: Detailed API reference documentation
+- **Progressive Learning**: Complete learning path from installation to advanced usage
+- **Responsive Design**: Support for desktop and mobile device access
+
+## File Organization
+
+- `app/docs/`: Main documentation content (MDX format)
+- `app/examples/`: Example code and demonstrations
+- `components/ui/`: Reusable UI components
+- `public/samplesCodes/`: Sample code files
+- `styles/`: Global style configuration
+
+This website provides Kinlink users with a complete developer experience from beginner to expert, helping them fully leverage Kinlink's powerful features to extend Kintone applications. 
