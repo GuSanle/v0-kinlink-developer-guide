@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { ArrowRight, Code, ExternalLink, Share2, Zap } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { ArrowRight, Code, ExternalLink, Share2, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -10,10 +10,10 @@ export default function Home() {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                Kinlink开发者
+                kinlink开发者
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                使用Kinlink为您的Kintone数据构建强大的外部集成
+                使用kinlink为您的Kintone数据构建强大的外部集成
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -35,9 +35,11 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">什么是Kinlink?</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                什么是kinlink?
+              </h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Kinlink是一个构建在Kintone之上的强大集成系统，允许您与外部系统共享和集成您的Kintone数据。
+                kinlink是一个构建在Kintone之上的强大集成系统，允许您与外部系统共享和集成您的Kintone数据。
               </p>
             </div>
           </div>
@@ -53,14 +55,14 @@ export default function Home() {
               <Code className="h-12 w-12 text-primary" />
               <h3 className="text-xl font-bold">可定制表单</h3>
               <p className="text-center text-muted-foreground">
-                使用Kinlink JS API创建具有高级验证和动态行为的自定义表单。
+                使用kinlink JS API创建具有高级验证和动态行为的自定义表单。
               </p>
             </div>
             <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
               <Zap className="h-12 w-12 text-primary" />
               <h3 className="text-xl font-bold">无缝集成</h3>
               <p className="text-center text-muted-foreground">
-                使用Kinlink强大的API将您的Kintone数据与其他系统和服务集成。
+                使用kinlink强大的API将您的Kintone数据与其他系统和服务集成。
               </p>
             </div>
           </div>
@@ -71,9 +73,11 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">准备开始了吗？</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                准备开始了吗？
+              </h2>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                浏览我们的文档，了解如何使用Kinlink为您的Kintone数据构建强大的集成。
+                浏览我们的文档，了解如何使用kinlink为您的Kintone数据构建强大的集成。
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -91,5 +95,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }

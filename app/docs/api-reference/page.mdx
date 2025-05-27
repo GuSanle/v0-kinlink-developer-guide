@@ -5,16 +5,16 @@ import { CodeBlock } from "@/components/code-block";
 # API参考
 
 <div className="mt-2 text-lg text-muted-foreground">
-  Kinlink JavaScript API的综合文档。
+  kinlink JavaScript API的综合文档。
 </div>
 
 <div className="docs-content">
 
-Kinlink JavaScript API提供了一组函数和事件，允许您自定义Kinlink表单的行为。本参考文档涵盖了所有可用的API及其使用方法。
+kinlink JavaScript API提供了一组函数和事件，允许您自定义kinlink表单的行为。本参考文档涵盖了所有可用的API及其使用方法。
 
 ## 核心API
 
-Kinlink API可通过全局`window.kinlink`对象访问，该对象提供对以下核心API的访问：
+kinlink API可通过全局`window.kinlink`对象访问，该对象提供对以下核心API的访问：
 
 - [formApi](/docs/api-reference/form-api) - 用于操作表单字段和值的函数
 - [layoutApi](/docs/api-reference/layout-api) - 用于控制表单布局的函数
@@ -22,7 +22,7 @@ Kinlink API可通过全局`window.kinlink`对象访问，该对象提供对以�
 - [proxy](/docs/api-reference/proxy) - 用于安全调用外部API的代理服务
 
 <CodeBlock
-  code={`// Global Kinlink object
+  code={`// Global kinlink object
 window.kinlink = {
   // Form operations API
   formApi: {
@@ -65,7 +65,7 @@ window.kinlink = {
 
 ## API使用入门
 
-要使用Kinlink API，您通常会编写在表单加载时或特定事件发生时运行的JavaScript代码。以下是一个简单的示例：
+要使用kinlink API，您通常会编写在表单加载时或特定事件发生时运行的JavaScript代码。以下是一个简单的示例：
 
 <CodeBlock
   code={`(function() {

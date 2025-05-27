@@ -2,9 +2,9 @@ import type React from "react";
 import { ClientCodeHighlighter } from "@/components/client-code-highlighter";
 
 export const metadata = {
-  title: "Examples - Kinlink Developer",
+  title: "Examples - kinlink Developer",
   description:
-    "Browse our collection of examples to learn how to use Kinlink effectively.",
+    "Browse our collection of examples to learn how to use kinlink effectively.",
 };
 
 export default function ExamplesLayout({

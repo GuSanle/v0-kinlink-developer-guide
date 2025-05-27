@@ -3,16 +3,16 @@ import { CodeBlock } from "@/components/code-block";
 # 移动端适配指南
 
 <div className="mt-2 text-lg text-muted-foreground">
-  了解如何为移动设备优化Kinlink表单。
+  了解如何为移动设备优化kinlink表单。
 </div>
 
 <div className="docs-content">
 
-为现代Web应用程序创建良好的移动体验至关重要。Kinlink提供了多种API和技术，帮助您为移动设备优化表单。
+为现代Web应用程序创建良好的移动体验至关重要。kinlink提供了多种API和技术，帮助您为移动设备优化表单。
 
 ## 检测移动设备
 
-Kinlink提供了一个实用函数来检测当前设备是否为移动设备：
+kinlink提供了一个实用函数来检测当前设备是否为移动设备：
 
 <CodeBlock
   code={`// 检查当前设备是否为移动设备
@@ -24,7 +24,7 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   language="javascript"
 />
 
-此函数使用媒体查询来检查视口宽度是否小于或等于575px，这是Kinlink中移动设备的标准断点。
+此函数使用媒体查询来检查视口宽度是否小于或等于575px，这是kinlink中移动设备的标准断点。
 
 ## 移动端特定布局
 
@@ -72,7 +72,7 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
 
 ## 移动端表单操作栏
 
-Kinlink提供了一个固定在屏幕底部的移动端特定表单操作栏。这对于在移动设备上提供表单操作的便捷访问非常有用。
+kinlink提供了一个固定在屏幕底部的移动端特定表单操作栏。这对于在移动设备上提供表单操作的便捷访问非常有用。
 
 ### 管理移动端表单操作栏
 

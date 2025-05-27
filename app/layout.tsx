@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = {
-  title: "Kinlink Developer",
+  title: "kinlink Developer",
   description:
-    "Developer documentation for Kinlink - Kintone external integration system",
+    "Developer documentation for kinlink - Kintone external integration system",
   generator: "v0.dev",
 };
 

@@ -1,8 +1,8 @@
-# Kinlink Developer Guide Website
+# kinlink Developer Guide Website
 
 ## Project Overview
 
-This is a developer documentation website built with Next.js and MDX, specifically designed to provide comprehensive developer guides for the Kinlink product. Kinlink is a powerful integration system built on top of Kintone that allows developers to share and integrate Kintone data with external systems.
+This is a developer documentation website built with Next.js and MDX, specifically designed to provide comprehensive developer guides for the kinlink product. kinlink is a powerful integration system built on top of Kintone that allows developers to share and integrate Kintone data with external systems.
 
 ## Tech Stack
 
@@ -15,7 +15,7 @@ This is a developer documentation website built with Next.js and MDX, specifical
 
 ## Core Features
 
-### Kinlink Key Features
+### kinlink Key Features
 1. **External Data Sharing**: Share Kintone data with external users without granting access to your Kintone instance
 2. **Customizable Forms**: Powerful JavaScript API for creating dynamic forms
 3. **Seamless Integration**: Seamlessly integrates with Kintone to extend existing application functionality
@@ -47,7 +47,7 @@ Contains 15+ practical usage examples:
 - Form Submission (`form-submission`)
 - Get Field Element (`get-field-element`)
 - Hide Kintone Label (`hide-kintone-label`)
-- Kinlink Proxy (`kinlink-proxy`)
+- kinlink Proxy (`kinlink-proxy`)
 - Message Notification (`message-notification`)
 - Mobile Adaptation (`mobile-adaptation`)
 - Multi-step Form (`multi-step-form`)
@@ -87,10 +87,10 @@ window.kinlink = {
 
 ## Installation Process
 
-1. **Register Kinlink Account**: Create an account at kinlink.io
+1. **Register kinlink Account**: Create an account at kinlink.io
 2. **Connect Kintone Instance**: Configure API tokens and domain
-3. **Create Kinlink Form**: Map Kintone application fields
-4. **JavaScript Customization**: Use Kinlink API to add custom behaviors
+3. **Create kinlink Form**: Map Kintone application fields
+4. **JavaScript Customization**: Use kinlink API to add custom behaviors
 5. **Share Form**: Share via public links, embed codes, or email invitations
 
 ## Target Users
@@ -116,4 +116,4 @@ window.kinlink = {
 - `public/samplesCodes/`: Sample code files
 - `styles/`: Global style configuration
 
-This website provides Kinlink users with a complete developer experience from beginner to expert, helping them fully leverage Kinlink's powerful features to extend Kintone applications. 
+This website provides kinlink users with a complete developer experience from beginner to expert, helping them fully leverage kinlink's powerful features to extend Kintone applications. 

@@ -1,6 +1,6 @@
-# Kinlink JavaScript API 参考文档
+# kinlink JavaScript API 参考文档
 
-本文档介绍了 Kinlink 库提供的公开 JavaScript API。该 API 通过全局对象 `window.kinlink` 访问，允许开发者自定义表单行为、与表单字段和布局元素交互，并监听表单事件。
+本文档介绍了 kinlink 库提供的公开 JavaScript API。该 API 通过全局对象 `window.kinlink` 访问，允许开发者自定义表单行为、与表单字段和布局元素交互，并监听表单事件。
 
 ## 概述
 
@@ -10,14 +10,14 @@
 *   `layoutApi`: 用于控制表单布局元素（页眉、页脚、按钮等）的 API。
 *   `events`: 事件处理 API (`on`, `off`)。
 *   `FormEvents`: 只读对象，包含可用的表单事件类型常量。
-*   `version`: Kinlink 库的当前版本字符串。
+*   `version`: kinlink 库的当前版本字符串。
 *   `formFields`: (只读) 初始化时使用的 Kintone 表单字段属性对象。
 
-**注意:** 确保在调用任何 `kinlink` API 之前，表单和 Kinlink 库已完全加载。通常建议在 `kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)` 的回调函数中执行您的自定义代码。
+**注意:** 确保在调用任何 `kinlink` API 之前，表单和 kinlink 库已完全加载。通常建议在 `kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)` 的回调函数中执行您的自定义代码。
 
 ```javascript
 window.kinlink.events.on(window.kinlink.FormEvents.FORM_LOADED, function() {
-  console.log('Kinlink API is ready!');
+  console.log('kinlink API is ready!');
   // 在这里开始使用 kinlink.formApi 和 kinlink.layoutApi
   const name = window.kinlink.formApi.getFieldValue('customer_name');
   console.log('Customer Name:', name);
@@ -667,7 +667,7 @@ window.kinlink.events.on(window.kinlink.FormEvents.FORM_LOADED, function() {
 
 #### `on(eventType, callback)`
 
-订阅一个 Kinlink 表单事件。
+订阅一个 kinlink 表单事件。
 
 *   **参数:**
     *   `eventType` {string}: 事件类型（请使用 `kinlink.FormEvents` 中的常量）。
@@ -711,7 +711,7 @@ window.kinlink.events.on(window.kinlink.FormEvents.FORM_LOADED, function() {
 
 ## `kinlink.proxy`
 
-通过 Kinlink 服务端代理安全地向外部系统发起 HTTP 请求，实现跨域、隐藏 Token 等安全集成场景。**推荐在 `BEFORE_SUBMIT` 事件中调用，实现与外部系统的数据交互。**
+通过 kinlink 服务端代理安全地向外部系统发起 HTTP 请求，实现跨域、隐藏 Token 等安全集成场景。**推荐在 `BEFORE_SUBMIT` 事件中调用，实现与外部系统的数据交互。**
 
 ### 方法签名
 

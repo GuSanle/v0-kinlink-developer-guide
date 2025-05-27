@@ -111,7 +111,7 @@ const exampleCards = [
     href: "/examples/multi-step-form",
   },
   {
-    title: "Kinlink代理",
+    title: "kinlink代理",
     description: "学习如何使用API代理功能调用外部服务。",
     category: "集成",
     features: ["安全调用外部API", "处理认证和授权", "数据转换和处理"],

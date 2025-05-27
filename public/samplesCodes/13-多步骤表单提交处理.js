@@ -2,33 +2,33 @@
   // 步骤配置
   const steps = [
     {
-      title: '基本信息',
-      icon: '📋',
+      title: "基本信息",
+      icon: "📋",
       fields: [
-        '文字列__1行__0',
-        '文字列__1行__1',
-        '单行文本框_8',
-        '单行文本框_9',
-        '单选框_0',
-        '日期_1',
-        '多选_0',
-        '表格',
-        '表格_13',
+        "文字列__1行__0",
+        "文字列__1行__1",
+        "单行文本框_8",
+        "单行文本框_9",
+        "单选框_0",
+        "日期_1",
+        "多选_0",
+        "表格",
+        "表格_13",
       ],
     },
     {
-      title: '联系方式',
-      icon: '📞',
-      fields: ['文字列__1行__2', '文字列__1行__3', '单行文本框_10', '下拉菜单'],
+      title: "联系方式",
+      icon: "📞",
+      fields: ["文字列__1行__2", "文字列__1行__3", "单行文本框_10", "下拉菜单"],
     },
     {
-      title: '证件信息',
-      icon: '📝',
-      fields: ['单行文本框_11', '日期_2', '附件_0'],
+      title: "证件信息",
+      icon: "📝",
+      fields: ["单行文本框_11", "日期_2", "附件_0"],
     },
     {
-      title: '确认提交',
-      icon: '✅',
+      title: "确认提交",
+      icon: "✅",
       fields: [], // 最后一步显示所有信息摘要，不指定具体字段
     },
   ];
@@ -43,7 +43,7 @@
   let afterSubmitListenerId = null;
 
   // 附件字段名集合（可根据实际表单字段名扩展）
-  const attachmentFields = ['パスポート写真', '附件_0'];
+  const attachmentFields = ["パスポート写真", "附件_0"];
 
   // 表单加载完成时的初始化回调
   const formLoadedHandler = () => {
@@ -52,7 +52,7 @@
       !window.kinlink.formApi ||
       !window.kinlink.layoutApi
     ) {
-      console.error('Kinlink API not fully available on FORM_LOADED!');
+      console.error("kinlink API not fully available on FORM_LOADED!");
       return;
     }
     // 隐藏未用到的字段
@@ -68,60 +68,60 @@
     const layout = window.kinlink.layoutApi;
 
     if (!layout || !form) {
-      console.error('[TestJS Init] layoutApi or formApi is not available!');
+      console.error("[TestJS Init] layoutApi or formApi is not available!");
       return;
     }
 
     // 不再需要setTimeout，因为FORM_LOADED事件已确保DOM就绪
-    console.log('[TestJS Init] 执行UI初始化操作...');
+    console.log("[TestJS Init] 执行UI初始化操作...");
 
     // 直接执行Kintone元素隐藏操作
     try {
-      console.log('[TestJS] 隐藏Kintone标签...');
+      console.log("[TestJS] 隐藏Kintone标签...");
       form.hideKintoneLabel();
     } catch (e) {
-      console.error('[TestJS] 隐藏Kintone标签出错:', e);
+      console.error("[TestJS] 隐藏Kintone标签出错:", e);
     }
 
     try {
-      console.log('[TestJS] 隐藏Kintone分组/折叠元素...');
+      console.log("[TestJS] 隐藏Kintone分组/折叠元素...");
       form.hideKintoneCollapse();
     } catch (e) {
-      console.error('[TestJS] 隐藏Kintone分组/折叠元素出错:', e);
+      console.error("[TestJS] 隐藏Kintone分组/折叠元素出错:", e);
     }
 
     // 隐藏官方提交按钮
-    console.log('[TestJS] 尝试隐藏官方提交按钮...');
+    console.log("[TestJS] 尝试隐藏官方提交按钮...");
     let hideResult = null;
     let hideError = null;
     try {
       hideResult = layout.hideSubmitButton();
       console.log(
-        `[TestJS] layoutApi.hideSubmitButton()执行结果: ${hideResult}`,
+        `[TestJS] layoutApi.hideSubmitButton()执行结果: ${hideResult}`
       );
 
       // 再次检查状态
-      if (typeof layout.isSubmitButtonVisible === 'function') {
+      if (typeof layout.isSubmitButtonVisible === "function") {
         console.log(
-          '[TestJS] 通过API检查官方按钮隐藏后的可见性:',
-          layout.isSubmitButtonVisible(),
+          "[TestJS] 通过API检查官方按钮隐藏后的可见性:",
+          layout.isSubmitButtonVisible()
         );
       } else {
-        const officialButton = document.getElementById('kinlink-submit-button');
+        const officialButton = document.getElementById("kinlink-submit-button");
         if (officialButton) {
           console.log(
-            '[TestJS] 检查官方按钮(#kinlink-submit-button)隐藏后的样式:',
-            window.getComputedStyle(officialButton).display,
+            "[TestJS] 检查官方按钮(#kinlink-submit-button)隐藏后的样式:",
+            window.getComputedStyle(officialButton).display
           );
         } else {
           console.warn(
-            '[TestJS] 无法通过ID #kinlink-submit-button找到官方按钮来检查样式',
+            "[TestJS] 无法通过ID #kinlink-submit-button找到官方按钮来检查样式"
           );
         }
       }
     } catch (error) {
       hideError = error;
-      console.error('[TestJS] 调用layoutApi.hideSubmitButton()时出错:', error);
+      console.error("[TestJS] 调用layoutApi.hideSubmitButton()时出错:", error);
     }
 
     // 其他初始化操作
@@ -136,7 +136,7 @@
     applyGlobalStyles();
 
     // 注册 AFTER_SUBMIT 监听器 (确保只注册一次)
-    console.log('[TestJS Init] 注册AFTER_SUBMIT事件处理器');
+    console.log("[TestJS Init] 注册AFTER_SUBMIT事件处理器");
     registerAfterSubmitHandler();
   }
 
@@ -144,44 +144,44 @@
   function registerAfterSubmitHandler() {
     if (afterSubmitListenerId) {
       console.log(
-        '[TestJS Register] AFTER_SUBMIT listener already registered.',
+        "[TestJS Register] AFTER_SUBMIT listener already registered."
       );
       return;
     }
     console.log(
-      '[TestJS Register] Attempting to register AFTER_SUBMIT listener...',
+      "[TestJS Register] Attempting to register AFTER_SUBMIT listener..."
     );
     try {
       afterSubmitListenerId = kinlink.events.on(
         kinlink.FormEvents.AFTER_SUBMIT,
         (data) => {
-          console.log('[TestJS Event] AFTER_SUBMIT event received:', data);
+          console.log("[TestJS Event] AFTER_SUBMIT event received:", data);
           if (data && data.success) {
             console.log(
-              '[TestJS Event] Submission successful (data.success is true), calling showSuccessScreen.',
+              "[TestJS Event] Submission successful (data.success is true), calling showSuccessScreen."
             );
             showSuccessScreen();
           } else {
             console.error(
-              '[TestJS Event] Submission failed or data.success is not true.',
+              "[TestJS Event] Submission failed or data.success is not true."
             );
           }
-        },
+        }
       );
       if (afterSubmitListenerId) {
         console.log(
-          '[TestJS Register] AFTER_SUBMIT listener registered successfully with ID:',
-          afterSubmitListenerId,
+          "[TestJS Register] AFTER_SUBMIT listener registered successfully with ID:",
+          afterSubmitListenerId
         );
       } else {
         console.error(
-          '[TestJS Register] kinlink.events.on returned null/undefined, registration failed?',
+          "[TestJS Register] kinlink.events.on returned null/undefined, registration failed?"
         );
       }
     } catch (error) {
       console.error(
-        '[TestJS Register] Error during AFTER_SUBMIT listener registration:',
-        error,
+        "[TestJS Register] Error during AFTER_SUBMIT listener registration:",
+        error
       );
     }
   }
@@ -190,12 +190,12 @@
   if (
     window.kinlink &&
     window.kinlink.events &&
-    typeof window.kinlink.events.on === 'function'
+    typeof window.kinlink.events.on === "function"
   ) {
     kinlink.events.on(kinlink.FormEvents.FORM_LOADED, formLoadedHandler);
   } else {
     console.error(
-      'Failed to register FORM_LOADED listener: kinlink.events.on not available',
+      "Failed to register FORM_LOADED listener: kinlink.events.on not available"
     );
   }
 
@@ -209,8 +209,8 @@
 
   // 创建自定义头部
   function createHeader() {
-    const header = document.createElement('div');
-    header.id = 'custom-header';
+    const header = document.createElement("div");
+    header.id = "custom-header";
     header.innerHTML = `
       <div class="header-content">
         <div class="logo-area">
@@ -223,11 +223,11 @@
       </div>
     `;
 
-    const formContainer = document.querySelector('.ant-form');
+    const formContainer = document.querySelector(".ant-form");
     formContainer.parentNode.insertBefore(header, formContainer);
 
     // 添加头部样式
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       #custom-header {
         background: linear-gradient(135deg, #1890ff, #0050b3);
@@ -292,14 +292,14 @@
 
   // 创建步骤导航
   function createStepNavigation() {
-    const stepNav = document.createElement('div');
-    stepNav.id = 'step-navigation';
+    const stepNav = document.createElement("div");
+    stepNav.id = "step-navigation";
 
     let stepsHtml = '<div class="steps-container">';
 
     steps.forEach((step, index) => {
       stepsHtml += `
-        <div class="step${index === 0 ? ' active' : ''}" data-step="${index}">
+        <div class="step${index === 0 ? " active" : ""}" data-step="${index}">
           <div class="step-icon">${step.icon}</div>
           <div class="step-title">${step.title}</div>
           <div class="step-line"></div>
@@ -307,14 +307,14 @@
       `;
     });
 
-    stepsHtml += '</div>';
+    stepsHtml += "</div>";
     stepNav.innerHTML = stepsHtml;
 
-    const formContainer = document.querySelector('.ant-form');
+    const formContainer = document.querySelector(".ant-form");
     formContainer.parentNode.insertBefore(stepNav, formContainer);
 
     // 添加导航样式
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       #step-navigation {
         margin-bottom: 30px;
@@ -426,9 +426,9 @@
     document.head.appendChild(style);
 
     // 添加步骤点击事件
-    stepNav.querySelectorAll('.step').forEach((stepElement) => {
-      stepElement.addEventListener('click', function () {
-        const stepIndex = parseInt(this.getAttribute('data-step'));
+    stepNav.querySelectorAll(".step").forEach((stepElement) => {
+      stepElement.addEventListener("click", function () {
+        const stepIndex = parseInt(this.getAttribute("data-step"));
 
         // 只允许点击已完成的步骤
         if (stepIndex < currentStep) {
@@ -440,31 +440,31 @@
 
   // 创建按钮区域
   function createButtons() {
-    const buttonContainer = document.createElement('div');
-    buttonContainer.id = 'step-buttons';
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = "step-buttons";
     buttonContainer.innerHTML = `
       <button id="prev-button" class="step-button" style="display: none;">前へ</button>
       <button id="next-button" class="step-button primary">次へ</button>
       <button id="submit-button" class="step-button primary" style="display: none;">提出</button>
     `;
 
-    const formElement = document.querySelector('.ant-form');
+    const formElement = document.querySelector(".ant-form");
     if (formElement && formElement.parentNode) {
       // Check if parentNode exists
       formElement.parentNode.insertBefore(
         buttonContainer,
-        formElement.nextSibling,
+        formElement.nextSibling
       );
     } else {
       console.error(
-        'Could not find form element or its parent to insert buttons.',
+        "Could not find form element or its parent to insert buttons."
       );
       // Fallback: append to body? Or handle error
       document.body.appendChild(buttonContainer);
     }
 
     // 添加按钮样式
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       #step-buttons {
         display: flex;
@@ -530,13 +530,13 @@
     document.head.appendChild(style);
 
     // 添加按钮事件
-    document.getElementById('prev-button').addEventListener('click', () => {
+    document.getElementById("prev-button").addEventListener("click", () => {
       if (currentStep > 0) {
         navigateToStep(currentStep - 1);
       }
     });
 
-    document.getElementById('next-button').addEventListener('click', () => {
+    document.getElementById("next-button").addEventListener("click", () => {
       if (validateCurrentStep()) {
         if (currentStep < steps.length - 1) {
           navigateToStep(currentStep + 1);
@@ -544,49 +544,49 @@
       }
     });
 
-    const submitButton = document.getElementById('submit-button');
+    const submitButton = document.getElementById("submit-button");
     if (submitButton) {
-      submitButton.addEventListener('click', () => {
-        console.log('[TestJS Button] Submit button clicked.');
+      submitButton.addEventListener("click", () => {
+        console.log("[TestJS Button] Submit button clicked.");
         if (validateCurrentStep()) {
           console.log(
-            '[TestJS Button] Validation passed, calling kinlink.formApi.submit().',
+            "[TestJS Button] Validation passed, calling kinlink.formApi.submit()."
           );
           try {
             kinlink.formApi.submit();
           } catch (error) {
             console.error(
-              '[TestJS Button] Error calling kinlink.formApi.submit():',
-              error,
+              "[TestJS Button] Error calling kinlink.formApi.submit():",
+              error
             );
             if (
               kinlink.formApi &&
-              typeof kinlink.formApi.showError === 'function'
+              typeof kinlink.formApi.showError === "function"
             ) {
-              kinlink.formApi.showError('提交时发生错误，请稍后再试。');
+              kinlink.formApi.showError("提交时发生错误，请稍后再试。");
             }
           }
         } else {
-          console.log('[TestJS Button] Validation failed.');
+          console.log("[TestJS Button] Validation failed.");
         }
       });
     } else {
       console.error(
-        '[TestJS Setup] Could not find submit button to attach listener.',
+        "[TestJS Setup] Could not find submit button to attach listener."
       );
     }
   }
 
   // 创建提交成功画面
   function createSuccessScreen() {
-    const successScreen = document.createElement('div');
-    successScreen.id = 'success-screen';
-    successScreen.style.display = 'none';
+    const successScreen = document.createElement("div");
+    successScreen.id = "success-screen";
+    successScreen.style.display = "none";
 
     // 生成唯一的引用号（如果需要保留）
     const referenceNumber = `TRV-${Math.floor(10000 + Math.random() * 90000)}`;
     // 获取当前日期时间（如果需要保留）
-    const submissionTime = new Date().toLocaleString('ja-JP');
+    const submissionTime = new Date().toLocaleString("ja-JP");
 
     successScreen.innerHTML = `
       <div class="success-content">
@@ -612,7 +612,7 @@
     document.body.appendChild(successScreen);
 
     // 添加成功画面样式
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       #success-screen {
         position: fixed;
@@ -737,17 +737,17 @@
 
   // 更新步骤导航
   function updateStepNavigation(stepIndex) {
-    const stepElements = document.querySelectorAll('.step');
+    const stepElements = document.querySelectorAll(".step");
 
     stepElements.forEach((step, index) => {
-      step.classList.remove('active');
+      step.classList.remove("active");
 
       if (index < stepIndex) {
-        step.classList.add('completed');
+        step.classList.add("completed");
       } else if (index === stepIndex) {
-        step.classList.add('active');
+        step.classList.add("active");
       } else {
-        step.classList.remove('completed');
+        step.classList.remove("completed");
       }
     });
   }
@@ -755,47 +755,47 @@
   // 更新按钮状态
   function updateButtons(stepIndex) {
     console.log(
-      `[TestJS UI Update] updateButtons called for stepIndex: ${stepIndex}`,
+      `[TestJS UI Update] updateButtons called for stepIndex: ${stepIndex}`
     );
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-    const submitButton = document.getElementById('submit-button');
+    const prevButton = document.getElementById("prev-button");
+    const nextButton = document.getElementById("next-button");
+    const submitButton = document.getElementById("submit-button");
 
     if (!prevButton || !nextButton || !submitButton) {
-      console.error('[TestJS UI Update] Cannot find step buttons to update.');
+      console.error("[TestJS UI Update] Cannot find step buttons to update.");
       return;
     }
 
     // 控制"前へ"按钮
-    const prevDisplay = stepIndex === 0 ? 'none' : 'block';
+    const prevDisplay = stepIndex === 0 ? "none" : "block";
     console.log(
-      `[TestJS UI Update] Setting prevButton display to: ${prevDisplay}`,
+      `[TestJS UI Update] Setting prevButton display to: ${prevDisplay}`
     );
     prevButton.style.display = prevDisplay;
 
     // 控制"次へ"和"提出"按钮
     const isLastStep = stepIndex === steps.length - 1;
     console.log(
-      `[TestJS UI Update] Is last step? ${isLastStep} (steps.length: ${steps.length})`,
+      `[TestJS UI Update] Is last step? ${isLastStep} (steps.length: ${steps.length})`
     );
 
     if (isLastStep) {
       // 最后一步: 显示"提出"，隐藏"次へ"
       console.log(
-        '[TestJS UI Update] Setting nextButton display: none, submitButton display: block',
+        "[TestJS UI Update] Setting nextButton display: none, submitButton display: block"
       );
-      nextButton.style.display = 'none';
-      submitButton.style.display = 'block';
+      nextButton.style.display = "none";
+      submitButton.style.display = "block";
     } else {
       // 非最后一步: 显示"次へ"，隐藏"提出"
       console.log(
-        '[TestJS UI Update] Setting nextButton display: block, submitButton display: none',
+        "[TestJS UI Update] Setting nextButton display: block, submitButton display: none"
       );
-      nextButton.style.display = 'block';
-      submitButton.style.display = 'none';
+      nextButton.style.display = "block";
+      submitButton.style.display = "none";
     }
     // 打印设置后的实际样式值 (用于对比)
-    console.log('[TestJS UI Update] Styles after setting:', {
+    console.log("[TestJS UI Update] Styles after setting:", {
       prev: prevButton.style.display,
       next: nextButton.style.display,
       submit: submitButton.style.display,
@@ -810,7 +810,7 @@
       // 滚动到页面顶部
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   }
@@ -834,7 +834,7 @@
     });
 
     if (!isValid) {
-      kinlink.formApi.showError('必須項目をご入力ください', 3);
+      kinlink.formApi.showError("必須項目をご入力ください", 3);
     }
 
     return isValid;
@@ -842,7 +842,7 @@
 
   // 应用全局样式
   function applyGlobalStyles() {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       body {
         background-color: #f5f5f5;
@@ -903,74 +903,74 @@
     document.head.appendChild(style);
 
     // 为移动设备添加视口meta标签，确保正确缩放
-    const viewportMeta = document.createElement('meta');
-    viewportMeta.name = 'viewport';
+    const viewportMeta = document.createElement("meta");
+    viewportMeta.name = "viewport";
     viewportMeta.content =
-      'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
     document.head.appendChild(viewportMeta);
 
     // 包装表单内容到容器中以便更好控制
-    const formElement = document.querySelector('.ant-form');
+    const formElement = document.querySelector(".ant-form");
     if (
       formElement &&
-      !formElement.parentElement.classList.contains('ant-form-container')
+      !formElement.parentElement.classList.contains("ant-form-container")
     ) {
-      const formContainer = document.createElement('div');
-      formContainer.className = 'ant-form-container';
+      const formContainer = document.createElement("div");
+      formContainer.className = "ant-form-container";
       formElement.parentNode.insertBefore(formContainer, formElement);
       formContainer.appendChild(formElement);
     }
   }
 
   function showSuccessScreen() {
-    const kinlinkFormLayout = document.getElementById('kinlink-form-layout');
+    const kinlinkFormLayout = document.getElementById("kinlink-form-layout");
     if (kinlinkFormLayout) {
       // 隐藏所有子节点
       Array.from(kinlinkFormLayout.children).forEach(function (child) {
-        child.style.display = 'none';
+        child.style.display = "none";
       });
       // 显示自定义提交成功画面
-      const successScreen = document.getElementById('success-screen');
+      const successScreen = document.getElementById("success-screen");
       if (successScreen) {
-        successScreen.style.display = 'flex';
+        successScreen.style.display = "flex";
         // 如果 successScreen 不是 kinlinkFormLayout 的子节点，插进去
         if (successScreen.parentNode !== kinlinkFormLayout)
           kinlinkFormLayout.appendChild(successScreen);
       }
     }
     // 禁止页面滚动
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   }
 
   // 显示一览页面（最后一步）
   function showSummaryPage() {
     // 先移除之前的一览页面
-    let summaryDiv = document.getElementById('step-summary-view');
+    let summaryDiv = document.getElementById("step-summary-view");
     if (summaryDiv) summaryDiv.remove();
 
-    summaryDiv = document.createElement('div');
-    summaryDiv.id = 'step-summary-view';
-    summaryDiv.style.margin = '32px 0 0 0';
-    summaryDiv.style.background = '#fafbfc';
-    summaryDiv.style.borderRadius = '8px';
-    summaryDiv.style.boxShadow = '0 1px 8px 0 rgba(0,0,0,0.03)';
-    summaryDiv.style.padding = '32px 24px';
+    summaryDiv = document.createElement("div");
+    summaryDiv.id = "step-summary-view";
+    summaryDiv.style.margin = "32px 0 0 0";
+    summaryDiv.style.background = "#fafbfc";
+    summaryDiv.style.borderRadius = "8px";
+    summaryDiv.style.boxShadow = "0 1px 8px 0 rgba(0,0,0,0.03)";
+    summaryDiv.style.padding = "32px 24px";
 
     // 标题
-    const title = document.createElement('h3');
-    title.textContent = '请确认以下信息';
-    title.style.margin = '0 0 24px 0';
-    title.style.color = '#3f51b5';
+    const title = document.createElement("h3");
+    title.textContent = "请确认以下信息";
+    title.style.margin = "0 0 24px 0";
+    title.style.color = "#3f51b5";
     summaryDiv.appendChild(title);
 
     // 分组显示
     steps.slice(0, -1).forEach((step) => {
-      const groupTitle = document.createElement('div');
+      const groupTitle = document.createElement("div");
       groupTitle.textContent = step.title;
-      groupTitle.style.fontWeight = 'bold';
-      groupTitle.style.margin = '18px 0 10px 0';
-      groupTitle.style.padding = '5px 0';
-      groupTitle.style.borderBottom = '1px solid #f0f0f0';
+      groupTitle.style.fontWeight = "bold";
+      groupTitle.style.margin = "18px 0 10px 0";
+      groupTitle.style.padding = "5px 0";
+      groupTitle.style.borderBottom = "1px solid #f0f0f0";
       summaryDiv.appendChild(groupTitle);
 
       step.fields.forEach((field) => {
@@ -978,21 +978,21 @@
         if (!fieldConfig) return;
         const fieldValue = kinlink.formApi.getFieldValue(field);
 
-        const row = document.createElement('div');
-        row.style.display = 'flex';
-        row.style.marginBottom = '8px';
-        row.style.padding = '10px 0';
-        row.style.borderRadius = '4px';
-        row.style.background = '#fff';
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.marginBottom = "8px";
+        row.style.padding = "10px 0";
+        row.style.borderRadius = "4px";
+        row.style.background = "#fff";
 
-        const label = document.createElement('div');
-        label.style.fontWeight = 'bold';
-        label.style.width = '40%';
+        const label = document.createElement("div");
+        label.style.fontWeight = "bold";
+        label.style.width = "40%";
         label.textContent = fieldConfig.label || field;
         row.appendChild(label);
 
-        const value = document.createElement('div');
-        value.style.width = '60%';
+        const value = document.createElement("div");
+        value.style.width = "60%";
 
         // 附件类型字段，仅显示文件名
         if (
@@ -1000,16 +1000,16 @@
           Array.isArray(fieldValue) &&
           fieldValue.length > 0
         ) {
-          value.style.display = 'flex';
-          value.style.flexDirection = 'column';
+          value.style.display = "flex";
+          value.style.flexDirection = "column";
           fieldValue.forEach((file) => {
-            const fileNameDiv = document.createElement('div');
-            fileNameDiv.textContent = file.name || '附件';
-            fileNameDiv.style.marginBottom = '4px';
+            const fileNameDiv = document.createElement("div");
+            fileNameDiv.textContent = file.name || "附件";
+            fileNameDiv.style.marginBottom = "4px";
             value.appendChild(fileNameDiv);
           });
         } else {
-          value.textContent = fieldValue || '未填写';
+          value.textContent = fieldValue || "未填写";
         }
         row.appendChild(value);
 
@@ -1018,17 +1018,17 @@
     });
 
     // 提示
-    const tip = document.createElement('div');
-    tip.style.margin = '24px 0 0 0';
-    tip.style.padding = '12px';
-    tip.style.background = 'rgba(76, 175, 80, 0.08)';
-    tip.style.borderRadius = '6px';
-    tip.style.color = '#388e3c';
+    const tip = document.createElement("div");
+    tip.style.margin = "24px 0 0 0";
+    tip.style.padding = "12px";
+    tip.style.background = "rgba(76, 175, 80, 0.08)";
+    tip.style.borderRadius = "6px";
+    tip.style.color = "#388e3c";
     tip.textContent = '请仔细核对以上信息，确认无误后点击"提出"按钮。';
     summaryDiv.appendChild(tip);
 
     // 插入到表单前
-    const formElement = document.querySelector('.ant-form');
+    const formElement = document.querySelector(".ant-form");
     if (formElement) {
       formElement.parentNode.insertBefore(summaryDiv, formElement);
     }
@@ -1036,7 +1036,7 @@
 
   // 隐藏一览页面
   function hideSummaryPage() {
-    const summaryDiv = document.getElementById('step-summary-view');
+    const summaryDiv = document.getElementById("step-summary-view");
     if (summaryDiv) summaryDiv.remove();
   }
 })();

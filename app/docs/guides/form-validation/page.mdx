@@ -3,17 +3,17 @@ import { CodeBlock } from "@/components/code-block";
 # 表单验证
 
 <div className="mt-2 text-lg text-muted-foreground">
-  了解如何为Kinlink表单实现自定义验证。
+  了解如何为kinlink表单实现自定义验证。
 </div>
 
-表单验证对于确保用户提交准确和完整的数据至关重要。Kinlink提供了一个强大的验证系统，允许您为表单字段定义自定义验证规则。本指南介绍如何使用Kinlink API实现各种类型的验证。
+表单验证对于确保用户提交准确和完整的数据至关重要。kinlink提供了一个强大的验证系统，允许您为表单字段定义自定义验证规则。本指南介绍如何使用kinlink API实现各种类型的验证。
 
 ## 基本验证概念
 
-Kinlink表单有两种类型的验证：
+kinlink表单有两种类型的验证：
 
 1.  **内置验证：** 基于表单配置中的字段类型和必填设置
-2.  **自定义验证：** 使用Kinlink JavaScript API定义
+2.  **自定义验证：** 使用kinlink JavaScript API定义
 
 本指南重点介绍自定义验证，它使您能够完全控制表单字段的验证规则。
 
@@ -298,7 +298,7 @@ form.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
 
 ### 异步验证
 
-Kinlink验证器本身不支持异步操作（即返回Promise）。如果您需要执行异步验证（例如，检查服务器上用户名是否可用），您应该在其他地方执行异步调用，然后使用`setFieldError`手动设置字段错误。
+kinlink验证器本身不支持异步操作（即返回Promise）。如果您需要执行异步验证（例如，检查服务器上用户名是否可用），您应该在其他地方执行异步调用，然后使用`setFieldError`手动设置字段错误。
 
 <CodeBlock
   code={`// 示例：在字段更改时进行异步用户名可用性检查
@@ -336,7 +336,7 @@ kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
 
 ## 结合使用验证
 
-您可以为单个字段添加多个验证器，Kinlink将按顺序执行它们。如果任何验证器返回错误消息，则验证过程将停止，并显示该错误。
+您可以为单个字段添加多个验证器，kinlink将按顺序执行它们。如果任何验证器返回错误消息，则验证过程将停止，并显示该错误。
 
 <CodeBlock
   code={`form.addFieldValidator('username', (value) => {
@@ -367,4 +367,4 @@ form.addFieldValidator('username', (value) => {
 
 ## 总结
 
-Kinlink的验证系统为您提供了保护表单数据完整性和准确性的全面工具。通过结合使用内置验证和自定义验证器，您可以为应用程序实现任何复杂的验证逻辑。 
+kinlink的验证系统为您提供了保护表单数据完整性和准确性的全面工具。通过结合使用内置验证和自定义验证器，您可以为应用程序实现任何复杂的验证逻辑。 

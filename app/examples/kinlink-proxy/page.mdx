@@ -11,20 +11,20 @@ import { Button } from "@/components/ui/button";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">Kinlink代理</h1>
+    <h1 className="text-3xl font-bold tracking-tight">kinlink代理</h1>
   </div>
 
   <div className="my-8 space-y-6">
     <div className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
       <div>
-        此示例演示如何使用Kinlink的代理功能发送API请求。Kinlink代理允许您从表单前端安全地调用外部API，无需担心跨域问题或暴露敏感凭据。这对于与外部系统集成、数据验证或动态获取信息非常有用。
+        此示例演示如何使用kinlink的代理功能发送API请求。kinlink代理允许您从表单前端安全地调用外部API，无需担心跨域问题或暴露敏感凭据。这对于与外部系统集成、数据验证或动态获取信息非常有用。
       </div>
     </div>
 
     <div className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">基本示例</h2>
-      <div>以下代码展示了如何在表单提交前使用Kinlink代理发送POST请求：</div>
+      <div>以下代码展示了如何在表单提交前使用kinlink代理发送POST请求：</div>
       <Tabs defaultValue="javascript">
         <TabsList>
           <TabsTrigger value="javascript">JavaScript</TabsTrigger>
@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
         <TabsContent value="javascript">
           <CodeBlock 
             code={`/**
- * 示例: Kinlink代理
+ * 示例: kinlink代理
  * 功能：在表单提交前使用代理发送API请求
  */
 (function () {
@@ -75,7 +75,7 @@ import { Button } from "@/components/ui/button";
         <TabsContent value="javascript">
           <CodeBlock 
             code={`/**
- * 示例: 高级Kinlink代理用例
+ * 示例: 高级kinlink代理用例
  * 功能：使用代理获取外部数据并填充表单字段
  */
 (function () {
@@ -248,13 +248,13 @@ import { Button } from "@/components/ui/button";
     <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
       <h3 className="font-semibold text-yellow-800">注意事项</h3>
       <div className="text-yellow-800">
-        Kinlink代理功能受到安全策略和跨域限制。确保目标API允许来自Kinlink服务器的请求。敏感操作（如支付处理）应使用适当的安全措施和授权。在生产环境中，避免直接在前端存储API密钥或访问令牌。
+        kinlink代理功能受到安全策略和跨域限制。确保目标API允许来自kinlink服务器的请求。敏感操作（如支付处理）应使用适当的安全措施和授权。在生产环境中，避免直接在前端存储API密钥或访问令牌。
       </div>
     </div>
 
     <div className="space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
-      <div>此示例使用了以下Kinlink API：</div>
+      <div>此示例使用了以下kinlink API：</div>
       <ul className="list-disc pl-6 space-y-2">
         <li>
           <code>kinlink.proxy(url, method, headers, body)</code> -
