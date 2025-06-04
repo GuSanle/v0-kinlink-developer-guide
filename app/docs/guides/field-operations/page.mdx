@@ -1,18 +1,31 @@
 import { CodeBlock } from "@/components/code-block";
 
-# 字段操作
+# 字段操作实战指南
 
 <div className="mt-2 text-lg text-muted-foreground">
-  了解如何使用kinlink API操作表单字段。
+  掌握表单字段的全面操作：从基础数据处理到高级交互实现的完整解决方案。
 </div>
 
-kinlink API提供了一系列丰富的函数用于操作表单字段。本指南涵盖了最常见的字段操作，包括获取和设置字段值、显示和隐藏字段、启用和禁用字段以及样式设置。
+字段操作是构建动态表单的核心技能。kinlink提供了丰富的API来操作表单字段，包括数据获取设置、显示状态控制、交互行为管理和视觉样式定制。本指南将通过实际场景帮您掌握各种字段操作技术。
 
-## 获取和设置字段值
+## 字段数据操作
+> 获取、设置和管理表单字段的数据内容
 
-最常见的操作之一是获取和设置字段值。这对于实现字段联动、计算和其他动态行为非常有用。
+数据操作是表单交互的基础，通过程序化的数据读写实现动态表单逻辑。
 
-### 获取字段值
+### 数据获取技术
+
+#### 单字段数据读取
+获取特定字段的当前值，用于条件判断、数据计算和业务逻辑处理。
+
+**适用场景**：字段联动检查、数据验证、条件逻辑判断
+**返回值**：字段的当前值，类型根据字段类型而定
+
+#### 全表单数据获取
+一次性获取表单中所有字段的值，返回完整的数据对象。
+
+**适用场景**：数据提交前处理、整体数据验证、批量操作
+**返回值**：包含所有字段值的对象
 
 <CodeBlock
   code={`// 获取单个字段的值
@@ -26,7 +39,17 @@ console.log(allValues); // 输出: { name: "John Doe", email: "john@example.com"
   filename="get-field-values.js"
 />
 
-### 设置字段值
+### 数据设置技术
+
+#### 单字段数据写入
+为指定字段设置新值，触发相关的验证和事件处理。
+
+**适用场景**：默认值设置、计算结果回填、用户操作响应
+
+#### 批量数据设置
+同时为多个字段设置值，提高操作效率并保持数据一致性。
+
+**适用场景**：表单初始化、数据导入、批量更新操作
 
 <CodeBlock
   code={`// 设置单个字段的值
@@ -42,7 +65,13 @@ kinlink.formApi.setFieldsValue({
   filename="set-field-values.js"
 />
 
-### 示例：计算总额
+### 实时计算应用
+
+#### 动态数值计算
+监听字段变化，实时计算相关数值，为用户提供即时反馈。
+
+**业务场景**：订单总价计算、税费计算、数量统计
+**技术要点**：事件监听、数值转换、错误处理
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
@@ -62,11 +91,24 @@ kinlink.formApi.setFieldsValue({
   filename="calculate-total.js"
 />
 
-## 显示和隐藏字段
+## 字段可见性控制
+> 动态显示和隐藏字段，创建智能的条件式表单
 
-您可以根据用户输入或其他条件动态显示和隐藏字段。这对于创建能够适应用户需求的条件表单非常有用。
+可见性控制让表单能够根据用户输入和业务逻辑动态调整结构，提供个性化的用户体验。
 
-### 隐藏字段
+### 字段隐藏策略
+
+#### 完全隐藏字段
+彻底隐藏字段，隐藏的字段不会参与表单提交。
+
+**适用场景**：权限控制、条件式显示、简化界面
+**影响范围**：UI显示、数据提交、验证处理
+
+#### 视觉隐藏字段
+仅在视觉上隐藏字段，但保留其数据和验证逻辑。
+
+**适用场景**：系统字段、计算字段、中间数据存储
+**特点**：保持数据完整性，不影响业务逻辑
 
 <CodeBlock
   code={`// 完全隐藏字段（不会被提交）
@@ -78,7 +120,12 @@ kinlink.formApi.visuallyHideField('hiddenId');`}
   filename="hide-fields.js"
 />
 
-### 显示字段
+### 字段显示恢复
+
+#### showField(fieldCode)
+显示之前隐藏的字段，恢复其正常的显示和交互状态。
+
+**适用场景**：条件满足后显示、用户权限变更、流程步骤推进
 
 <CodeBlock
   code={`// 显示之前隐藏的字段
@@ -87,7 +134,17 @@ kinlink.formApi.showField('additionalInfo');`}
   filename="show-fields.js"
 />
 
-### 检查字段状态
+### 字段状态查询
+
+#### getFieldState(fieldCode)
+获取字段的完整状态信息，包括可见性、启用状态等。
+
+**返回信息**：
+- `visible`: 字段是否可见
+- `disabled`: 字段是否禁用  
+- `excludeFromSubmit`: 是否排除在提交数据外
+
+**适用场景**：状态检查、条件判断、调试分析
 
 <CodeBlock
   code={`// 检查字段是否可见、启用等
@@ -97,7 +154,13 @@ console.log(state); // 输出: { visible: true, disabled: false, excludeFromSubm
   filename="check-field-state.js"
 />
 
-### 示例：条件字段
+### 条件式字段显示
+
+#### 业务逻辑驱动的字段控制
+根据用户选择和业务规则动态显示相关字段，创建智能表单体验。
+
+**设计模式**：主控字段 + 从属字段、分类选择 + 详细选项
+**实现要点**：初始状态设置、事件监听、状态同步
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
@@ -128,11 +191,18 @@ kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
   filename="conditional-fields.js"
 />
 
-## 启用和禁用字段
+## 字段启用状态管理
+> 控制字段的可编辑性，实现灵活的权限控制
 
-您可以启用和禁用字段来控制用户是否可以编辑它们。这对于只读字段、计算字段或只在特定条件下可编辑的字段非常有用。
+启用状态管理让您能够根据业务规则、用户权限或表单状态动态控制字段的可编辑性。
 
-### 禁用字段
+### 字段禁用控制
+
+#### disableField(fieldCode)
+禁用指定字段，使其变为只读状态，用户无法编辑但可以查看。
+
+**适用场景**：计算字段、已确认数据、权限限制、流程控制
+**视觉效果**：通常显示为灰色状态，明确表示不可编辑
 
 <CodeBlock
   code={`// 禁用字段（使其只读）
@@ -141,7 +211,12 @@ kinlink.formApi.disableField('total');`}
   filename="disable-field.js"
 />
 
-### 启用字段
+### 字段启用恢复
+
+#### enableField(fieldCode)
+启用之前禁用的字段，恢复其可编辑状态。
+
+**适用场景**：权限提升、条件满足、流程推进、编辑模式切换
 
 <CodeBlock
   code={`// 启用之前禁用的字段
@@ -150,7 +225,13 @@ kinlink.formApi.enableField('total');`}
   filename="enable-field.js"
 />
 
-### 示例：条件启用/禁用
+### 条件式启用控制
+
+#### 基于业务逻辑的字段控制
+根据用户选择和业务规则动态启用或禁用相关字段。
+
+**应用案例**：支付方式选择、服务类型切换、权限级别控制
+**设计考虑**：清晰的逻辑分支、用户友好的状态提示
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
@@ -181,11 +262,21 @@ kinlink.formApi.enableField('total');`}
   filename="conditional-enabling.js"
 />
 
-## 样式设置
+## 字段样式定制
+> 通过程序化样式控制增强视觉体验和用户引导
 
-您可以通过为字段标签和组件设置样式来自定义字段的外观。这对于突出显示重要字段、创建视觉层次结构或适应您的品牌指南非常有用。
+样式定制让您能够根据字段状态、用户操作或业务逻辑动态调整字段的视觉表现。
 
-### 设置字段标签样式
+### 标签样式控制
+
+#### 动态标签样式设置
+程序化控制字段标签的外观，用于状态提示、重要性标识或品牌统一。
+
+**样式属性**：颜色、字体、大小、装饰等CSS属性
+**应用场景**：必填标识、错误提示、状态反馈、主题统一
+
+#### 标签样式查询和重置
+获取当前样式状态，支持样式的查询和重置操作。
 
 <CodeBlock
   code={`// 设置字段标签的样式
@@ -198,43 +289,74 @@ kinlink.formApi.setFieldLabelStyle('name', {
 const labelStyle = kinlink.formApi.getFieldLabelStyle('name');
 console.log(labelStyle); // 输出: { color: "red", fontWeight: "bold" }
 
-// 重置字段标签的样式
+// 重置字段标签样式
 kinlink.formApi.resetFieldLabelStyle('name');
 
-// 设置多个字段标签的样式
+// 批量设置标签样式
 kinlink.formApi.setFieldsLabelStyles({
-  name: { color: 'red', fontWeight: 'bold' },
-  email: { color: 'blue', fontStyle: 'italic' }
+  name: { color: 'blue', fontWeight: 'bold' },
+  email: { color: 'green', fontStyle: 'italic' }
 });`}
   language="javascript"
-  filename="style-field-labels.js"
+  filename="label-styling.js"
 />
 
-### 设置字段组件样式
+### 组件样式控制
+
+#### 输入组件样式定制
+控制输入框、选择器等表单组件的外观和交互效果。
+
+**设计考虑**：用户体验、品牌一致性、状态反馈、可访问性
+**技术要点**：CSS属性设置、响应式适配、浏览器兼容性
 
 <CodeBlock
-  code={`// 设置字段组件的样式（输入框、选择框等）
-kinlink.formApi.setFieldComponentStyle('name', {
-  backgroundColor: '#f0f0f0',
+  code={`// 设置字段组件的样式
+kinlink.formApi.setFieldComponentStyle('email', {
+  backgroundColor: '#f0f8ff',
+  border: '2px solid #4169e1',
+  borderRadius: '6px',
   padding: '10px'
 });
 
-// 获取字段组件的当前样式
-const componentStyle = kinlink.formApi.getFieldComponentStyle('name');
-console.log(componentStyle); // 输出: { backgroundColor: "#f0f0f0", padding: "10px" }
+// 获取组件样式
+const componentStyle = kinlink.formApi.getFieldComponentStyle('email');
+console.log(componentStyle);
 
-// 重置字段组件的样式
-kinlink.formApi.resetFieldComponentStyle('name');
+// 重置组件样式
+kinlink.formApi.resetFieldComponentStyle('email');
 
-// 设置多个字段组件的样式
+// 批量设置组件样式
 kinlink.formApi.setFieldsComponentStyles({
-  name: { backgroundColor: '#f0f0f0', padding: '10px' },
-  email: { backgroundColor: '#e0e0e0', padding: '8px' }
+  name: {
+    backgroundColor: '#ffffff',
+    border: '1px solid #ddd',
+    borderRadius: '4px'
+  },
+  email: {
+    backgroundColor: '#f0f8ff',
+    border: '2px solid #4169e1'
+  }
 });`}
   language="javascript"
-  filename="style-field-components.js"
+  filename="component-styling.js"
 />
 
-## 总结
+## 字段操作最佳实践
 
-kinlink API为管理表单字段提供了强大而灵活的工具集。通过利用这些函数，您可以创建高度动态和交互式的表单，以满足您的特定需求。 
+### 性能优化建议
+
+- **批量操作优先**：使用批量API减少DOM操作次数
+- **事件防抖**：对频繁触发的计算操作使用防抖技术
+- **状态缓存**：缓存字段状态避免重复查询
+
+### 用户体验优化
+
+- **渐进式展示**：根据用户操作逐步展示相关字段
+- **清晰的视觉反馈**：通过样式变化明确表示字段状态
+- **一致的交互模式**：保持字段操作的一致性和可预期性
+
+### 代码组织建议
+
+- **功能模块化**：将相关的字段操作组织成独立模块
+- **配置驱动**：使用配置对象管理复杂的字段控制逻辑
+- **错误处理**：添加适当的错误处理和边界情况检查 

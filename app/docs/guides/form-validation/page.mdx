@@ -1,25 +1,42 @@
 import { CodeBlock } from "@/components/code-block";
 
-# 表单验证
+# 表单验证完全指南
 
 <div className="mt-2 text-lg text-muted-foreground">
-  了解如何为kinlink表单实现自定义验证。
+  从基础到高级：构建可靠和用户友好的表单验证系统。
 </div>
 
-表单验证对于确保用户提交准确和完整的数据至关重要。kinlink提供了一个强大的验证系统，允许您为表单字段定义自定义验证规则。本指南介绍如何使用kinlink API实现各种类型的验证。
+表单验证是确保数据质量和提升用户体验的关键环节。kinlink提供了强大而灵活的验证系统，支持从简单的格式检查到复杂的业务逻辑验证。本指南将带您全面掌握kinlink表单验证的各种技术和最佳实践。
 
-## 基本验证概念
+## 验证系统概述
+> 理解kinlink验证机制的工作原理
 
-kinlink表单有两种类型的验证：
+kinlink表单验证系统采用双重验证策略，确保数据的准确性和完整性：
 
-1.  **内置验证：** 基于表单配置中的字段类型和必填设置
-2.  **自定义验证：** 使用kinlink JavaScript API定义
+### 验证类型说明
 
-本指南重点介绍自定义验证，它使您能够完全控制表单字段的验证规则。
+**内置验证**：基于表单配置中的字段类型和必填设置，自动执行基础验证
+**自定义验证**：使用JavaScript API定义的高级验证规则，提供完全的控制权
 
-## 添加自定义验证器
+本指南重点介绍自定义验证，它使您能够实现复杂的业务逻辑验证和个性化的用户体验。
 
-您可以使用`addFieldValidator`方法为任何字段添加自定义验证器。验证器是一个函数，它接收字段值作为输入，并返回错误消息（如果验证失败）或 `undefined`（如果验证通过）。
+## 自定义验证器管理
+> 添加、配置和管理字段验证规则
+
+自定义验证器是验证系统的核心，通过编写验证函数来实现各种验证需求。
+
+### 基础验证器创建
+
+#### 验证器函数原理
+
+验证器是一个接收字段值的函数，根据验证结果返回错误信息或undefined：
+- **验证失败**：返回错误消息字符串
+- **验证通过**：返回undefined
+- **空值处理**：通常跳过对空值的验证
+
+#### 添加验证规则
+
+使用`addFieldValidator`方法为字段添加自定义验证规则：
 
 <CodeBlock
   code={`// 为电子邮件字段添加自定义验证器
@@ -39,7 +56,9 @@ kinlink.formApi.addFieldValidator('email', (value) => {
   filename="add-validator.js"
 />
 
-您通常在`FORM_LOADED`事件处理程序中添加验证器：
+#### 表单初始化时配置验证
+
+推荐在`FORM_LOADED`事件中集中配置所有验证规则：
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
@@ -88,9 +107,12 @@ function validatePassword(value) {
   filename="form-loaded-validators.js"
 />
 
-## 移除验证器
+### 验证器移除和管理
 
-您可以使用`removeFieldValidator`方法移除自定义验证器：
+#### removeFieldValidator(fieldCode)
+移除字段的自定义验证器，恢复到默认验证状态。
+
+**适用场景**：动态验证规则切换、简化模式、条件性验证
 
 <CodeBlock
   code={`// 从电子邮件字段移除验证器
@@ -99,9 +121,23 @@ kinlink.formApi.removeFieldValidator('email');`}
   filename="remove-validator.js"
 />
 
-## 手动验证字段
+## 验证执行与检查
+> 手动触发验证和获取验证结果
 
-您可以使用`validateField`方法手动验证字段：
+提供程序化的验证控制，支持实时验证和批量验证操作。
+
+### 单字段验证
+
+#### validateField(fieldCode, value)
+手动验证指定字段的值，立即获取验证结果。
+
+**参数**：
+- `fieldCode` (string): 字段标识符
+- `value` (any): 待验证的值
+
+**返回值**：错误信息字符串或undefined
+
+**适用场景**：实时验证、条件验证、用户交互验证
 
 <CodeBlock
   code={`// 验证电子邮件字段
@@ -115,9 +151,16 @@ console.log(noError); // 输出: undefined (验证通过)`}
   filename="validate-field.js"
 />
 
-## 验证整个表单
+### 全表单验证
 
-您可以使用`validateForm`方法验证整个表单：
+#### validateForm()
+验证表单中的所有字段，返回完整的验证结果报告。
+
+**返回值**：包含验证状态和错误信息的对象
+- `isValid` (boolean): 整体验证是否通过
+- `errors` (object): 各字段的错误信息映射
+
+**适用场景**：表单提交前检查、整体数据验证、错误汇总展示
 
 <CodeBlock
   code={`// 验证整个表单
@@ -134,7 +177,9 @@ console.log(result);
   filename="validate-form.js"
 />
 
-这在`BEFORE_SUBMIT`事件处理程序中特别有用，可以在存在验证错误时阻止提交：
+### 提交前验证集成
+
+在`BEFORE_SUBMIT`事件中集成验证，实现提交拦截和错误处理：
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
@@ -158,9 +203,22 @@ console.log(result);
   filename="before-submit-validation.js"
 />
 
-## 手动设置错误消息
+## 错误信息管理
+> 手动设置和清除字段错误状态
 
-您可以使用`setFieldError`方法手动设置字段的错误消息：
+除了自动验证外，还支持手动管理错误信息，适用于服务端验证和业务逻辑检查。
+
+### 单字段错误处理
+
+#### setFieldError(fieldCode, errorMsg)
+手动为字段设置错误信息，用于显示自定义错误或服务端返回的错误。
+
+**适用场景**：服务端验证错误、业务逻辑错误、异步验证结果
+
+#### clearFieldError(fieldCode)
+清除字段的错误状态，恢复正常显示。
+
+**适用场景**：错误修正后的状态重置、条件性错误清除
 
 <CodeBlock
   code={`// 为电子邮件字段设置错误消息
@@ -178,11 +236,15 @@ kinlink.formApi.setFieldsErrors({
   filename="set-field-errors.js"
 />
 
-## 常见验证模式
+## 常用验证模式库
+> 可复用的验证规则和最佳实践
 
-以下是您可以在表单中使用的一些常见验证模式：
+提供经过验证的常用验证模式，可直接应用于项目中。
 
-### 必填字段
+### 基础数据验证
+
+#### 必填字段验证
+确保重要字段不能为空，提供清晰的错误提示。
 
 <CodeBlock
   code={`// 验证字段不为空
@@ -196,7 +258,8 @@ form.addFieldValidator('name', (value) => {
   filename="required-field.js"
 />
 
-### 电子邮件验证
+#### 邮箱格式验证
+标准的邮箱地址格式检查，支持常见邮箱格式。
 
 <CodeBlock
   code={`// 验证电子邮件格式
@@ -211,7 +274,8 @@ form.addFieldValidator('email', (value) => {
   filename="email-validation.js"
 />
 
-### 电话号码验证
+#### 手机号码验证
+灵活的电话号码验证，支持国际格式。
 
 <CodeBlock
   code={`// 验证电话号码格式
@@ -228,7 +292,10 @@ form.addFieldValidator('phone', (value) => {
   filename="phone-validation.js"
 />
 
-### 密码强度
+### 安全性验证
+
+#### 密码强度检查
+多层次的密码安全性验证，确保密码符合安全要求。
 
 <CodeBlock
   code={`// 验证密码强度
@@ -255,7 +322,10 @@ form.addFieldValidator('password', (value) => {
   filename="password-strength.js"
 />
 
-### 数字范围
+### 数值范围验证
+
+#### 数字范围检查
+验证数值是否在合理范围内，支持年龄、金额等数值字段。
 
 <CodeBlock
   code={`// 验证数字是否在指定范围内
@@ -274,7 +344,10 @@ form.addFieldValidator('age', (value) => {
   filename="number-range.js"
 />
 
-### 字段匹配（例如，确认密码）
+### 关联字段验证
+
+#### 字段匹配验证
+验证两个字段内容是否一致，如密码确认等场景。
 
 <CodeBlock
   code={`// 验证两个字段是否匹配
@@ -296,9 +369,14 @@ form.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
   filename="field-matching.js"
 />
 
-### 异步验证
+## 高级验证技术
+> 异步验证和复杂业务逻辑处理
 
-kinlink验证器本身不支持异步操作（即返回Promise）。如果您需要执行异步验证（例如，检查服务器上用户名是否可用），您应该在其他地方执行异步调用，然后使用`setFieldError`手动设置字段错误。
+### 异步验证处理
+
+由于kinlink验证器不直接支持Promise，异步验证需要通过事件和手动错误设置实现。
+
+**适用场景**：用户名唯一性检查、服务端数据验证、第三方API验证
 
 <CodeBlock
   code={`// 示例：在字段更改时进行异步用户名可用性检查
@@ -334,9 +412,12 @@ kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
   filename="async-validation-example.js"
 />
 
-## 结合使用验证
+### 多重验证规则
 
-您可以为单个字段添加多个验证器，kinlink将按顺序执行它们。如果任何验证器返回错误消息，则验证过程将停止，并显示该错误。
+#### 验证器链式执行
+单个字段可以添加多个验证器，按添加顺序依次执行，第一个失败的验证器将终止后续验证。
+
+**适用场景**：分层验证逻辑、基础验证+业务验证的组合
 
 <CodeBlock
   code={`form.addFieldValidator('username', (value) => {
@@ -347,9 +428,9 @@ kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
 });
 
 form.addFieldValidator('username', (value) => {
-  if (!value) return;
-  if (value.length < 5) {
-    return '用户名必须至少包含5个字符';
+  if (!value) return; // 前一个验证器已经处理了空值情况
+  if (value.length < 3) {
+    return '用户名长度至少为3个字符';
   }
   return undefined;
 });
@@ -365,6 +446,22 @@ form.addFieldValidator('username', (value) => {
   filename="multiple-validators.js"
 />
 
-## 总结
+## 验证最佳实践
 
-kinlink的验证系统为您提供了保护表单数据完整性和准确性的全面工具。通过结合使用内置验证和自定义验证器，您可以为应用程序实现任何复杂的验证逻辑。 
+### 性能优化建议
+
+- **防抖处理**：对异步验证使用防抖，避免频繁API调用
+- **验证时机**：合理选择验证触发时机（实时 vs 失焦 vs 提交时）
+- **错误缓存**：避免重复验证相同的值
+
+### 用户体验优化
+
+- **渐进式验证**：先进行基础验证，再进行复杂验证
+- **友好的错误信息**：提供具体的错误描述和修改建议
+- **视觉反馈**：结合样式变化提供验证状态反馈
+
+### 可维护性建议
+
+- **验证器模块化**：将验证函数独立定义，便于复用和测试
+- **配置驱动**：使用配置对象管理验证规则
+- **错误信息集中管理**：统一管理错误消息文本 

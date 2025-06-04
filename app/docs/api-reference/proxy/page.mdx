@@ -1,41 +1,222 @@
 import { CodeBlock } from "@/components/code-block";
 
-# Proxy API
+# 代理服务API
 
 <div className="mt-2 text-lg text-muted-foreground">
-  使用kinlink代理服务安全地调用外部API。
+  安全的外部API集成解决方案，支持跨域请求和敏感信息保护。
 </div>
 
-`kinlink.proxy` API提供了一种通过kinlink服务端代理安全地向外部系统发起HTTP请求的方法，实现跨域、隐藏Token等安全集成场景。
-推荐在`BEFORE_SUBMIT`事件中调用，实现与外部系统的数据交互。
+代理服务API（`kinlink.proxy`）提供了一个安全可靠的方式来调用外部系统的API，通过服务端代理机制解决跨域限制，同时保护敏感的认证信息（如Token、API Key）不被前端暴露。该API特别适用于需要与第三方系统集成的表单应用场景。
 
-## 方法签名
+## 核心功能特性
+> 代理服务的主要能力和优势
+
+代理服务为表单应用提供了强大的外部集成能力，具备以下核心特性：
+
+### 安全性保障
+- **Token隐藏**：敏感认证信息仅在服务端配置，前端无法获取
+- **跨域解决**：绕过浏览器CORS限制，安全访问任何外部API
+- **请求验证**：服务端验证和过滤所有外部请求
+
+### 集成便利性
+- **统一接口**：简单的API调用方式，支持所有HTTP方法
+- **自动认证**：服务端自动添加配置的认证头信息
+- **错误处理**：完整的异常处理和错误反馈机制
+
+## 基础用法
+> 代理API的调用方式和参数说明
+
+### API方法签名
 
 <CodeBlock
   code={`kinlink.proxy(url, method, headers, body)`}
   language="javascript"
 />
 
-## 参数
+### 快速上手示例
 
-- `url` `{string}`
-  目标外部系统的完整URL（如第三方REST API地址）
-- `method` `{string}`
-  HTTP方法（如'GET', 'POST', 'PUT', 'DELETE'等）
-- `headers` `{object}`
-  请求头对象，键值对形式（如 `{\'Content-Type\': \'application/json\'}`）
-- `body` `{object|string|undefined}`
-  请求体内容。对于POST/PUT等方法，通常为对象（会自动序列化为JSON），也可为字符串或undefined
+#### GET请求示例
 
-## 返回值
+<CodeBlock
+  code={`// 简单的GET请求
+const userData = await kinlink.proxy(
+  'https://api.example.com/users/123',
+  'GET',
+  { 'Accept': 'application/json' }
+);
 
-返回`Promise<any>`，解析为外部系统响应的JSON对象或原始数据。
+console.log('用户信息:', userData);
+
+// 带查询参数的GET请求
+const searchResults = await kinlink.proxy(
+  'https://api.example.com/search?q=keyword&limit=10',
+  'GET',
+  { 'Accept': 'application/json' }
+);`}
+  language="javascript"
+/>
+
+#### POST请求示例
+
+<CodeBlock
+  code={`// 创建新用户
+const newUser = await kinlink.proxy(
+  'https://api.example.com/users',
+  'POST',
+  { 
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  {
+    name: '张三',
+    email: 'zhangsan@example.com',
+    department: '技术部'
+  }
+);
+
+console.log('创建的用户:', newUser);`}
+  language="javascript"
+/>
+
+#### PUT/PATCH请求示例
+
+<CodeBlock
+  code={`// 更新用户信息（PUT）
+const updatedUser = await kinlink.proxy(
+  'https://api.example.com/users/123',
+  'PUT',
+  { 'Content-Type': 'application/json' },
+  {
+    name: '李四',
+    email: 'lisi@example.com',
+    status: 'active'
+  }
+);
+
+// 部分更新（PATCH）
+const patchedUser = await kinlink.proxy(
+  'https://api.example.com/users/123',
+  'PATCH',
+  { 'Content-Type': 'application/json' },
+  { status: 'inactive' }
+);`}
+  language="javascript"
+/>
+
+#### DELETE请求示例
+
+<CodeBlock
+  code={`// 删除用户
+await kinlink.proxy(
+  'https://api.example.com/users/123',
+  'DELETE',
+  { 'Accept': 'application/json' }
+);
+
+kinlink.formApi.showSuccess('用户删除成功');`}
+  language="javascript"
+/>
+
+### 参数详解
+
+#### url `{string}`
+目标外部系统的完整URL地址。
+
+**要求：** 必须是有效的HTTP/HTTPS URL
+**示例：** `'https://api.example.com/users'`
+
+#### method `{string}`
+HTTP请求方法，支持所有标准HTTP动词。
+
+**常用值：** `'GET'`、`'POST'`、`'PUT'`、`'DELETE'`、`'PATCH'`
+**注意：** 方法名大小写不敏感
+
+#### headers `{object}`
+HTTP请求头对象，以键值对形式定义。
+
+**格式：** `{'Header-Name': 'Header-Value'}`
+**常用头：** `'Content-Type'`、`'Accept'`、`'Authorization'`（如需要）
+
+#### body `{object|string|undefined}`
+请求体内容，根据请求类型和目标API要求设置。
+
+**对象类型：** 自动序列化为JSON字符串
+**字符串类型：** 直接作为请求体发送
+**undefined：** 适用于GET等无需请求体的方法
+
+### 返回值类型
+
+**返回：** `Promise<any>`
+**解析值：** 外部API返回的JSON对象或原始响应数据
+**异常：** 网络错误、HTTP错误状态码、服务异常时抛出异常
+
+## 安全机制
+> 代理服务的安全设计和Token保护原理
+
+### Token隐藏机制
+
+代理服务采用服务端代理架构，确保敏感信息的完全隐藏：
+
+1. **后端配置**：所有认证信息在kinlink后台管理系统中配置
+2. **自动注入**：服务端根据目标URL自动添加相应的认证头
+3. **前端透明**：前端代码无需也无法获取任何敏感信息
+4. **安全传输**：所有请求通过加密通道传输
+
+### 跨域解决方案
+
+通过服务端代理机制完全绕过浏览器的同源策略限制：
+
+- **无CORS限制**：可访问任何外部API，无需目标服务器支持CORS
+- **完整头部支持**：可发送任意请求头，包括自定义认证头
+- **协议支持**：支持HTTP和HTTPS协议的API调用
 
 ## 异常处理
+> 错误情况的处理和最佳实践
 
-网络错误、服务端异常、目标系统返回错误码等，均会抛出异常（`Promise` reject）， 需用`try-catch`或 `.catch()`处理。
+### 错误类型
 
-## 示例
+代理API可能遇到的错误情况：
+
+- **网络错误**：连接超时、DNS解析失败等
+- **HTTP错误**：4xx客户端错误、5xx服务器错误
+- **解析错误**：响应数据格式无效
+- **配置错误**：目标URL未在后台配置认证信息
+
+### 异常处理最佳实践
+
+建议使用`try-catch`或`.catch()`方法处理异常：
+
+<CodeBlock
+  code={`// 推荐的异常处理方式
+try {
+  const result = await kinlink.proxy(url, method, headers, body);
+  // 处理成功响应
+  console.log('API调用成功:', result);
+} catch (error) {
+  // 处理异常情况
+  console.error('API调用失败:', error);
+  kinlink.formApi.showError('外部服务暂时不可用，请稍后重试');
+}
+
+// Promise链式调用方式
+kinlink.proxy(url, method, headers, body)
+  .then(result => {
+    console.log('API调用成功:', result);
+    // 处理成功逻辑
+  })
+  .catch(error => {
+    console.error('API调用失败:', error);
+    kinlink.formApi.showError('外部服务请求失败');
+  });`}
+  language="javascript"
+/>
+
+## 实际应用场景
+> 代理API在不同业务场景中的应用
+
+### 表单提交前验证
+
+在表单提交前调用外部API进行数据验证或业务检查：
 
 <CodeBlock
   code={`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, async (data) => {
@@ -45,7 +226,7 @@ import { CodeBlock } from "@/components/code-block";
     const result = await kinlink.proxy(
       'https://api.example.com/endpoint',
       'POST',
-      { \'Content-Type\': \'application/json\' },
+      { 'Content-Type': 'application/json' },
       { foo: 'bar', ...values }
     );
     // 可根据result决定是否允许提交
@@ -62,14 +243,529 @@ import { CodeBlock } from "@/components/code-block";
   filename="proxy-example.js"
 />
 
-## 典型应用场景
+### 典型应用场景
 
-- **跨域请求**：通过服务端代理安全访问第三方API，避免浏览器CORS限制。
-- **隐藏敏感信息**：如Token、API Key等仅在服务端配置，前端不可见。
-- **表单集成**：在`BEFORE_SUBMIT`阶段校验、同步或补充外部数据。
+#### 数据验证集成
 
-### 关于隐藏Token的原理
+**用户信息验证示例：**
 
-通过`kinlink.proxy`发起的所有外部请求，实际由kinlink plugin的后端服务代理完成。
-后端会根据后台配置的目标URL自动补全所需的认证头（如Token、API Key等），前端无需也无法直接获取这些敏感信息。
-所有认证信息的配置和管理均在kinlink plugin后台完成，确保安全合规。
+<CodeBlock
+  code={`// 验证员工工号是否存在
+async function validateEmployeeId(employeeId) {
+  try {
+    const employee = await kinlink.proxy(
+      'https://hr.company.com/api/employees/' + employeeId,
+      'GET',
+      { 'Accept': 'application/json' }
+    );
+    
+    if (employee && employee.status === 'active') {
+      kinlink.formApi.setFieldValue('employeeName', employee.name);
+      kinlink.formApi.setFieldValue('department', employee.department);
+      return true;
+    } else {
+      kinlink.formApi.setFieldError('employeeId', '员工不存在或已离职');
+      return false;
+    }
+  } catch (error) {
+    kinlink.formApi.setFieldError('employeeId', '无法验证员工信息');
+    return false;
+  }
+}
+
+// 在字段变化时调用验证
+kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (event) => {
+  if (event.fieldCode === 'employeeId' && event.value) {
+    validateEmployeeId(event.value);
+  }
+});`}
+  language="javascript"
+/>
+
+**业务规则检查示例：**
+
+<CodeBlock
+  code={`// 检查预算申请是否超出限额
+async function validateBudgetRequest(amount, category, department) {
+  try {
+    const budgetCheck = await kinlink.proxy(
+      'https://finance.company.com/api/budget/validate',
+      'POST',
+      { 'Content-Type': 'application/json' },
+      {
+        amount: amount,
+        category: category,
+        department: department,
+        fiscalYear: new Date().getFullYear()
+      }
+    );
+    
+    if (!budgetCheck.approved) {
+      kinlink.formApi.setFieldError('amount', 
+        \`申请金额超出预算限额，剩余额度：¥\${budgetCheck.remaining}\`);
+      return false;
+    }
+    
+    kinlink.formApi.clearFieldError('amount');
+    return true;
+  } catch (error) {
+    kinlink.formApi.showError('预算验证服务暂时不可用');
+    return false;
+  }
+}`}
+  language="javascript"
+/>
+
+#### 数据同步场景
+
+**CRM系统同步示例：**
+
+<CodeBlock
+  code={`// 将客户信息同步到CRM系统
+async function syncToCRM(customerData) {
+  try {
+    // 检查客户是否已存在
+    const existingCustomer = await kinlink.proxy(
+      \`https://crm.company.com/api/customers/search?email=\${customerData.email}\`,
+      'GET',
+      { 'Accept': 'application/json' }
+    );
+    
+    if (existingCustomer.data.length > 0) {
+      // 更新现有客户
+      const updated = await kinlink.proxy(
+        \`https://crm.company.com/api/customers/\${existingCustomer.data[0].id}\`,
+        'PUT',
+        { 'Content-Type': 'application/json' },
+        customerData
+      );
+      kinlink.formApi.showSuccess('客户信息已更新到CRM系统');
+    } else {
+      // 创建新客户
+      const created = await kinlink.proxy(
+        'https://crm.company.com/api/customers',
+        'POST',
+        { 'Content-Type': 'application/json' },
+        customerData
+      );
+      kinlink.formApi.showSuccess(\`新客户已创建，CRM ID: \${created.id}\`);
+    }
+  } catch (error) {
+    kinlink.formApi.showError('CRM同步失败：' + error.message);
+  }
+}
+
+// 在表单提交成功后同步到CRM
+kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, async (data) => {
+  const customerData = {
+    name: data.values.customerName,
+    email: data.values.email,
+    phone: data.values.phone,
+    company: data.values.company,
+    source: 'kinlink_form'
+  };
+  
+  await syncToCRM(customerData);
+});`}
+  language="javascript"
+/>
+
+**实时数据获取示例：**
+
+<CodeBlock
+  code={`// 获取产品库存信息
+async function loadProductInventory(productId) {
+  try {
+    const inventory = await kinlink.proxy(
+      \`https://erp.company.com/api/inventory/\${productId}\`,
+      'GET',
+      { 'Accept': 'application/json' }
+    );
+    
+    // 更新表单中的库存信息
+    kinlink.formApi.setFieldValue('availableStock', inventory.quantity);
+    kinlink.formApi.setFieldValue('unitPrice', inventory.unitPrice);
+    
+    // 根据库存情况显示提示
+    if (inventory.quantity < 10) {
+      kinlink.formApi.showWarning(\`产品库存不足，仅剩 \${inventory.quantity} 件\`);
+    }
+    
+    // 如果缺货则禁用数量字段
+    if (inventory.quantity === 0) {
+      kinlink.formApi.disableField('quantity');
+      kinlink.formApi.setFieldError('quantity', '产品暂时缺货');
+    } else {
+      kinlink.formApi.enableField('quantity');
+      kinlink.formApi.clearFieldError('quantity');
+    }
+  } catch (error) {
+    kinlink.formApi.showError('无法获取库存信息');
+  }
+}
+
+// 产品选择变化时更新库存
+kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (event) => {
+  if (event.fieldCode === 'productId' && event.value) {
+    loadProductInventory(event.value);
+  }
+});`}
+  language="javascript"
+/>
+
+#### 集成认证服务
+
+**用户权限验证示例：**
+
+<CodeBlock
+  code={`// 检查用户操作权限
+async function checkUserPermission(userId, action, resource) {
+  try {
+    const permission = await kinlink.proxy(
+      'https://auth.company.com/api/permissions/check',
+      'POST',
+      { 'Content-Type': 'application/json' },
+      {
+        userId: userId,
+        action: action,
+        resource: resource
+      }
+    );
+    
+    return permission.allowed;
+  } catch (error) {
+    console.error('权限检查失败:', error);
+    return false;
+  }
+}
+
+// 表单初始化时检查权限
+kinlink.events.on(kinlink.FormEvents.INIT, async () => {
+  const currentUser = kinlink.formApi.getFieldValue('currentUserId');
+  
+  // 检查编辑权限
+  const canEdit = await checkUserPermission(currentUser, 'edit', 'form_data');
+  if (!canEdit) {
+    // 禁用所有编辑字段
+    const editableFields = ['name', 'email', 'department', 'salary'];
+    editableFields.forEach(field => {
+      kinlink.formApi.disableField(field);
+    });
+    kinlink.formApi.showWarning('您没有编辑权限，表单为只读模式');
+  }
+  
+  // 检查查看敏感信息权限
+  const canViewSalary = await checkUserPermission(currentUser, 'view', 'salary_info');
+  if (!canViewSalary) {
+    kinlink.formApi.hideField('salary');
+  }
+});`}
+  language="javascript"
+/>
+
+**单点登录集成示例：**
+
+<CodeBlock
+  code={`// SSO用户信息获取和表单预填充
+async function initializeUserFromSSO() {
+  try {
+    // 获取当前SSO用户信息
+    const userInfo = await kinlink.proxy(
+      'https://sso.company.com/api/user/current',
+      'GET',
+      { 'Accept': 'application/json' }
+    );
+    
+    if (userInfo) {
+      // 预填充用户信息
+      kinlink.formApi.setFieldsValue({
+        employeeId: userInfo.employeeId,
+        fullName: userInfo.fullName,
+        email: userInfo.email,
+        department: userInfo.department,
+        manager: userInfo.managerName
+      });
+      
+      // 隐藏用户自己无法修改的字段
+      kinlink.formApi.disableField('employeeId');
+      kinlink.formApi.disableField('email');
+      
+      kinlink.formApi.showInfo('已自动填入您的基本信息');
+    }
+  } catch (error) {
+    kinlink.formApi.showError('无法获取用户信息，请手动填写');
+  }
+}
+
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', initializeUserFromSSO);`}
+  language="javascript"
+/>
+
+## 配置和部署
+> 代理服务的配置要求和部署说明
+
+### 后台配置要求
+
+1. **URL映射配置**：在kinlink后台配置目标API的URL模式
+2. **认证信息设置**：配置对应的Token、API Key等认证信息
+3. **请求头模板**：定义自动添加的认证头格式
+4. **访问权限控制**：设置允许访问的API白名单
+
+### 配置示例
+
+#### 基础URL映射配置
+
+<CodeBlock
+  code={`// kinlink后台配置示例（JSON格式）
+{
+  "proxyConfigs": [
+    {
+      "name": "HR系统API",
+      "urlPattern": "https://hr.company.com/api/*",
+      "enabled": true,
+      "authType": "bearer",
+      "authToken": "${process.env.HR_API_TOKEN}",
+      "rateLimiting": {
+        "requestsPerMinute": 60,
+        "burstLimit": 10
+      }
+    },
+    {
+      "name": "CRM系统API", 
+      "urlPattern": "https://crm.company.com/api/*",
+      "enabled": true,
+      "authType": "apikey",
+      "authHeaders": {
+        "X-API-Key": "${process.env.CRM_API_KEY}",
+        "X-Client-ID": "kinlink-integration"
+      }
+    },
+    {
+      "name": "财务系统API",
+      "urlPattern": "https://finance.company.com/api/*",
+      "enabled": true,
+      "authType": "custom",
+      "authHeaders": {
+        "Authorization": "Custom ${process.env.FINANCE_TOKEN}",
+        "X-Request-Source": "kinlink"
+      },
+      "allowedMethods": ["GET", "POST"],
+      "ipWhitelist": ["10.0.0.0/8"]
+    }
+  ]
+}`}
+  language="json"
+/>
+
+#### 环境变量设置
+
+<CodeBlock
+  code={`# .env 配置文件示例
+# HR系统认证
+HR_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# CRM系统认证  
+CRM_API_KEY=pk_live_1234567890abcdef
+CRM_SECRET=sk_live_0987654321fedcba
+
+# 财务系统认证
+FINANCE_TOKEN=ft_abc123def456ghi789
+
+# 代理服务配置
+PROXY_TIMEOUT=30000
+PROXY_MAX_REDIRECTS=5
+PROXY_SSL_VERIFY=true
+
+# 日志配置
+LOG_LEVEL=info
+LOG_PROXY_REQUESTS=true`}
+  language="bash"
+/>
+
+### 运行时配置检查
+
+<CodeBlock
+  code={`// 配置验证脚本示例
+async function validateProxyConfiguration() {
+  const configs = [
+    {
+      name: 'HR API',
+      url: 'https://hr.company.com/api/health',
+      method: 'GET'
+    },
+    {
+      name: 'CRM API',
+      url: 'https://crm.company.com/api/ping',
+      method: 'GET'
+    }
+  ];
+
+  const results = [];
+  
+  for (const config of configs) {
+    try {
+      const startTime = Date.now();
+      const response = await kinlink.proxy(config.url, config.method, {});
+      const responseTime = Date.now() - startTime;
+      
+      results.push({
+        name: config.name,
+        status: 'success',
+        responseTime: responseTime,
+        message: '配置正常'
+      });
+    } catch (error) {
+      results.push({
+        name: config.name,
+        status: 'error',
+        error: error.message,
+        message: '配置失败'
+      });
+    }
+  }
+  
+  console.table(results);
+  return results;
+}
+
+// 在开发环境中验证配置
+if (process.env.NODE_ENV === 'development') {
+  validateProxyConfiguration();
+}`}
+  language="javascript"
+/>
+
+### 安全最佳实践
+
+#### 网络安全配置
+
+<CodeBlock
+  code={`// 安全配置检查清单
+const securityChecklist = {
+  // SSL/TLS验证
+  sslVerification: true,
+  
+  // 请求头安全
+  securityHeaders: {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block'
+  },
+  
+  // 速率限制
+  rateLimiting: {
+    enabled: true,
+    windowMs: 60000, // 1分钟
+    maxRequests: 100,
+    skipSuccessfulRequests: false
+  },
+  
+  // IP白名单（可选）
+  ipWhitelist: [
+    '192.168.1.0/24',
+    '10.0.0.0/8'
+  ],
+  
+  // 请求大小限制
+  maxRequestSize: '10mb',
+  
+  // 超时设置
+  timeout: 30000
+};
+
+// 监控和告警配置
+const monitoringConfig = {
+  // 错误率阈值
+  errorThreshold: 0.05, // 5%
+  
+  // 响应时间阈值
+  responseTimeThreshold: 5000, // 5秒
+  
+  // 告警邮箱
+  alertEmails: ['admin@company.com'],
+  
+  // 日志保留期限
+  logRetentionDays: 30
+};`}
+  language="javascript"
+/>
+
+#### Token轮换策略
+
+<CodeBlock
+  code={`// Token自动轮换示例
+class TokenManager {
+  constructor() {
+    this.tokens = new Map();
+    this.refreshIntervals = new Map();
+    this.setupTokenRotation();
+  }
+  
+  // 设置Token轮换
+  setupTokenRotation() {
+    const tokenConfigs = [
+      { service: 'hr', refreshInterval: 24 * 60 * 60 * 1000 }, // 24小时
+      { service: 'crm', refreshInterval: 12 * 60 * 60 * 1000 }, // 12小时
+      { service: 'finance', refreshInterval: 6 * 60 * 60 * 1000 } // 6小时
+    ];
+    
+    tokenConfigs.forEach(config => {
+      this.scheduleTokenRefresh(config.service, config.refreshInterval);
+    });
+  }
+  
+  // 计划Token刷新
+  scheduleTokenRefresh(service, interval) {
+    const refreshToken = async () => {
+      try {
+        await this.refreshTokenForService(service);
+        console.log(\`\${service} Token轮换成功\`);
+      } catch (error) {
+        console.error(\`\${service} Token轮换失败:\`, error);
+        // 发送告警
+        this.sendAlert(service, error);
+      }
+    };
+    
+    // 立即刷新一次
+    refreshToken();
+    
+    // 设置定期刷新
+    const intervalId = setInterval(refreshToken, interval);
+    this.refreshIntervals.set(service, intervalId);
+  }
+  
+  // 刷新特定服务的Token
+  async refreshTokenForService(service) {
+    // 实现具体的Token刷新逻辑
+    // 这里应该调用各服务的Token刷新API
+    throw new Error('需要实现具体的Token刷新逻辑');
+  }
+  
+  // 发送告警
+  sendAlert(service, error) {
+    // 实现告警发送逻辑
+    console.error(\`告警: \${service} 服务Token轮换失败\`, error);
+  }
+}
+
+// 初始化Token管理器
+const tokenManager = new TokenManager();`}
+  language="javascript"
+/>
+
+## 参数说明
+
+### 方法参数类型
+
+- `url` `{string}` - 目标API的完整URL地址
+- `method` `{string}` - HTTP请求方法名称
+- `headers` `{object}` - 请求头键值对对象
+- `body` `{object|string|undefined}` - 请求体内容
+
+### 返回值类型
+
+- `Promise<any>` - 异步Promise对象，解析为API响应数据
+- 成功时解析为外部API的响应数据
+- 失败时抛出包含错误信息的异常

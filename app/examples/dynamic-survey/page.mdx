@@ -8,6 +8,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../highlight-tabs";
+import { Tabs } from "@/components/ui/tabs";
 
 <div className="container py-6 lg:py-10">
   <div className="flex items-center gap-4 mb-8">
@@ -16,7 +17,24 @@ import {
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">动态调查</h1>
+    <h1 className="text-3xl font-bold tracking-tight">智能动态调查表单示例</h1>
+  </div>
+
+    <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">动态调查系统概览</h2>
+      > 构建自适应调查问卷，实现条件分支逻辑和个性化问题流程
+
+      此示例演示如何创建**智能动态调查表单**，根据用户的答案自动显示或隐藏相关问题。通过**条件逻辑**和**分支控制**，创建更加个性化和高效的调查体验。
+
+      ### 动态调查核心特性
+      - 🧭 **条件分支**：基于答案自动跳转到相关问题
+      - 🎯 **个性化流程**：为不同用户群体定制问题序列
+      - 📊 **实时统计**：动态计算和显示调查进度
+      - 🔄 **逻辑验证**：确保答案逻辑一致性和完整性
+      - 💾 **状态保存**：支持调查中途保存和继续
+      - 📱 **响应式设计**：适配各种设备的调查体验
+    </div>
   </div>
 
   <div className="prose prose-blue dark:prose-invert max-w-none">

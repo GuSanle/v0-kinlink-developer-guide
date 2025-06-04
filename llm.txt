@@ -23,7 +23,6 @@ This is a developer documentation website built with Next.js and MDX, specifical
 ### Website Structure
 
 #### Documentation Section (/docs)
-- **Installation Guide** (`/docs/installation`): Detailed setup and configuration instructions
 - **API Reference** (`/docs/api-reference`): Complete JavaScript API documentation
   - Form API (`form-api`): Field operations, validation, value management
   - Layout API (`layout-api`): Form layout control
@@ -85,14 +84,6 @@ window.kinlink = {
 }
 ```
 
-## Installation Process
-
-1. **Register kinlink Account**: Create an account at kinlink.io
-2. **Connect Kintone Instance**: Configure API tokens and domain
-3. **Create kinlink Form**: Map Kintone application fields
-4. **JavaScript Customization**: Use kinlink API to add custom behaviors
-5. **Share Form**: Share via public links, embed codes, or email invitations
-
 ## Target Users
 
 - Kintone developers and administrators
@@ -105,7 +96,6 @@ window.kinlink = {
 - **Chinese Documentation**: Fully localized Chinese developer documentation
 - **Practical Examples**: Rich code examples and usage scenarios
 - **API Completeness**: Detailed API reference documentation
-- **Progressive Learning**: Complete learning path from installation to advanced usage
 - **Responsive Design**: Support for desktop and mobile device access
 
 ## File Organization

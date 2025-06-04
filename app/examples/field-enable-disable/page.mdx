@@ -11,16 +11,23 @@ import { Button } from "@/components/ui/button";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段启用禁用控制</h1>
+    <h1 className="text-3xl font-bold tracking-tight">字段状态动态控制示例</h1>
   </div>
 
   <div className="my-8 space-y-6">
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何使用kinlink
-        API控制表单字段的启用和禁用状态。禁用的字段无法编辑但仍然可见，这与隐藏字段不同。这种功能对于创建基于条件或权限控制的表单非常有用。
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight">字段状态管理概览</h2>
+      > 智能控制表单字段的启用和禁用状态，实现条件式表单交互逻辑
+
+      此示例演示如何使用**kinlink API**动态控制表单字段的启用和禁用状态。通过**条件逻辑**和**用户交互**，实现智能的表单流程控制和用户权限管理。
+
+      ### 状态控制核心能力
+      - 🔒 **条件禁用**：基于业务规则自动禁用字段编辑
+      - 🔓 **智能启用**：满足条件时自动开放字段输入
+      - 🎯 **权限控制**：根据用户角色动态调整字段权限
+      - 🔄 **实时响应**：即时响应表单状态变化
+      - 🛡️ **数据保护**：防止意外修改重要数据
+      - 📋 **流程控制**：实现多步骤表单的逐步解锁
     </div>
 
     <div className="space-y-4">

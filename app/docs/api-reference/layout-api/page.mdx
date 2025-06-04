@@ -1,18 +1,26 @@
 import { CodeBlock } from "@/components/code-block";
 
-# 布局API
+# 布局控制API
 
 <div className="mt-2 text-lg text-muted-foreground">
-  用于控制表单布局和UI元素的函数。
+  全面的表单布局和UI元素控制系统，支持响应式设计和移动端优化。
 </div>
 
-布局API（`kinlink.layoutApi`）提供了用于控制表单布局元素（如页眉、页脚和操作栏）的函数。此API帮助您自定义kinlink表单的外观和行为，特别是针对不同设备类型。
+布局API（`kinlink.layoutApi`）提供了完整的表单布局控制功能，让您能够精确管理页眉、页脚、操作栏等UI元素的显示状态和尺寸。API特别针对移动端和响应式设计进行了优化，确保在不同设备上都能提供最佳的用户体验。
 
-## 页眉控制
+## 页眉管理
+> 控制表单页眉的显示状态和尺寸获取
 
-### `getHeaderHeight()`
+页眉管理功能让您能够动态控制页眉的可见性，并获取其尺寸信息，适用于需要自定义顶部区域的场景。
 
+### 页眉状态查询
+
+#### getHeaderHeight()
 获取页眉元素的当前高度。
+
+**返回值：** 页眉高度（像素）
+
+**适用场景：** 布局计算、响应式设计调整、内容区域定位
 
 <CodeBlock
   code={`// 获取页眉的高度
@@ -21,9 +29,12 @@ console.log(headerHeight); // 输出: 64 (像素)`}
   language="javascript"
 />
 
-### `isHeaderVisible()`
-
+#### isHeaderVisible()
 检查页眉元素当前是否可见。
+
+**返回值：** 布尔值，表示页眉是否可见
+
+**适用场景：** 条件性布局调整、状态检查
 
 <CodeBlock
   code={`// 检查页眉是否可见
@@ -32,9 +43,12 @@ console.log(isVisible); // 输出: true 或 false`}
   language="javascript"
 />
 
-### `hideHeader()`
+### 页眉显示控制
 
-隐藏页眉元素。
+#### hideHeader()
+隐藏页眉元素，释放更多空间给表单内容。
+
+**适用场景：** 全屏模式、移动端空间优化、专注模式
 
 <CodeBlock
   code={`// 隐藏页眉
@@ -42,9 +56,10 @@ kinlink.layoutApi.hideHeader();`}
   language="javascript"
 />
 
-### `showHeader()`
+#### showHeader()
+显示之前隐藏的页眉元素。
 
-显示先前隐藏的页眉元素。
+**适用场景：** 恢复标准布局、退出全屏模式
 
 <CodeBlock
   code={`// 显示页眉
@@ -52,11 +67,19 @@ kinlink.layoutApi.showHeader();`}
   language="javascript"
 />
 
-## 页脚控制
+## 页脚管理
+> 控制表单页脚的显示状态和尺寸获取
 
-### `getFooterHeight()`
+页脚管理提供与页眉类似的控制功能，用于管理表单底部区域的显示和布局。
 
+### 页脚状态查询
+
+#### getFooterHeight()
 获取页脚元素的当前高度。
+
+**返回值：** 页脚高度（像素）
+
+**适用场景：** 底部间距计算、滚动区域定义
 
 <CodeBlock
   code={`// 获取页脚的高度
@@ -65,9 +88,10 @@ console.log(footerHeight); // 输出: 48 (像素)`}
   language="javascript"
 />
 
-### `isFooterVisible()`
-
+#### isFooterVisible()
 检查页脚元素当前是否可见。
+
+**返回值：** 布尔值，表示页脚是否可见
 
 <CodeBlock
   code={`// 检查页脚是否可见
@@ -76,9 +100,12 @@ console.log(isVisible); // 输出: true 或 false`}
   language="javascript"
 />
 
-### `hideFooter()`
+### 页脚显示控制
 
+#### hideFooter()
 隐藏页脚元素。
+
+**适用场景：** 最大化内容显示区域、移动端优化
 
 <CodeBlock
   code={`// 隐藏页脚
@@ -86,9 +113,8 @@ kinlink.layoutApi.hideFooter();`}
   language="javascript"
 />
 
-### `showFooter()`
-
-显示先前隐藏的页脚元素。
+#### showFooter()
+显示之前隐藏的页脚元素。
 
 <CodeBlock
   code={`// 显示页脚
@@ -97,10 +123,18 @@ kinlink.layoutApi.showFooter();`}
 />
 
 ## 提交按钮控制
+> 管理表单提交按钮的显示状态
 
-### `isSubmitButtonVisible()`
+提交按钮控制功能让您能够根据表单状态或业务逻辑动态显示或隐藏提交按钮。
 
+### 提交按钮状态查询
+
+#### isSubmitButtonVisible()
 检查提交按钮当前是否可见。
+
+**返回值：** 布尔值，表示提交按钮是否可见
+
+**适用场景：** 状态检查、条件性操作
 
 <CodeBlock
   code={`// 检查提交按钮是否可见
@@ -109,9 +143,12 @@ console.log(isVisible); // 输出: true 或 false`}
   language="javascript"
 />
 
-### `hideSubmitButton()`
+### 提交按钮显示控制
 
+#### hideSubmitButton()
 隐藏提交按钮。
+
+**适用场景：** 预览模式、条件性提交、多步骤表单的中间步骤
 
 <CodeBlock
   code={`// 隐藏提交按钮
@@ -119,9 +156,10 @@ kinlink.layoutApi.hideSubmitButton();`}
   language="javascript"
 />
 
-### `showSubmitButton()`
+#### showSubmitButton()
+显示之前隐藏的提交按钮。
 
-显示先前隐藏的提交按钮。
+**适用场景：** 启用提交功能、表单验证通过后显示
 
 <CodeBlock
   code={`// 显示提交按钮
@@ -129,13 +167,19 @@ kinlink.layoutApi.showSubmitButton();`}
   language="javascript"
 />
 
-## 移动端特定控制
+## 移动端专用功能
+> 针对移动设备优化的布局控制功能
 
-kinlink为移动设备提供了特殊控制。这些对于在小屏幕上创建更好的用户体验特别有用。
+移动端功能专门为小屏幕设备设计，提供更适合触屏操作和有限空间的界面控制。
 
-### `checkIsMobileDevice()`
+### 设备检测
 
+#### checkIsMobileDevice()
 检查当前设备是否为移动设备（视口宽度 ≤ 575px）。
+
+**返回值：** 布尔值，表示是否为移动设备
+
+**适用场景：** 响应式布局决策、条件性功能启用
 
 <CodeBlock
   code={`// 检查当前设备是否为移动设备
@@ -148,9 +192,14 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   language="javascript"
 />
 
-### `mobileIsFormActionBarVisible()`
+### 移动端操作栏管理
 
+#### mobileIsFormActionBarVisible()
 检查移动表单操作栏当前是否可见。
+
+**返回值：** 布尔值，表示移动操作栏是否可见
+
+**适用场景：** 移动端布局状态检查
 
 <CodeBlock
   code={`// 检查移动表单操作栏是否可见
@@ -159,9 +208,10 @@ console.log(isVisible); // 输出: true 或 false`}
   language="javascript"
 />
 
-### `mobileHideFormActionBar()`
-
+#### mobileHideFormActionBar()
 隐藏移动表单操作栏。
+
+**适用场景：** 最大化移动端内容显示、自定义操作流程
 
 <CodeBlock
   code={`// 隐藏移动表单操作栏
@@ -169,9 +219,10 @@ kinlink.layoutApi.mobileHideFormActionBar();`}
   language="javascript"
 />
 
-### `mobileShowFormActionBar()`
+#### mobileShowFormActionBar()
+显示之前隐藏的移动表单操作栏。
 
-显示先前隐藏的移动表单操作栏。
+**适用场景：** 恢复默认移动端布局、启用标准操作
 
 <CodeBlock
   code={`// 显示移动表单操作栏
@@ -179,9 +230,10 @@ kinlink.layoutApi.mobileShowFormActionBar();`}
   language="javascript"
 />
 
-### `toggleFormActionBar()`
-
+#### toggleFormActionBar()
 切换移动表单操作栏的可见性。
+
+**适用场景：** 动态切换操作栏显示、用户交互控制
 
 <CodeBlock
   code={`// 切换移动表单操作栏
@@ -189,9 +241,12 @@ kinlink.layoutApi.toggleFormActionBar();`}
   language="javascript"
 />
 
-### `mobileGetFormActionBarHeight()`
-
+#### mobileGetFormActionBarHeight()
 获取移动表单操作栏的当前高度。
+
+**返回值：** 操作栏高度（像素）
+
+**适用场景：** 移动端布局计算、空间规划
 
 <CodeBlock
   code={`// 获取移动表单操作栏的高度
@@ -200,11 +255,19 @@ console.log(height); // 输出: 70 (像素)`}
   language="javascript"
 />
 
-## 通用布局工具
+## 布局计算与监听
+> 高级布局计算和变化监听功能
 
-### `getContentAreaHeight()`
+提供智能的布局计算和实时监听功能，帮助构建动态响应的界面。
 
+### 内容区域计算
+
+#### getContentAreaHeight()
 计算表单内容区域的可用高度，考虑页眉、页脚和操作栏的高度。
+
+**返回值：** 可用内容区域高度（像素）
+
+**适用场景：** 动态内容高度设置、滚动区域定义、响应式布局
 
 <CodeBlock
   code={`// 获取可用内容区域高度
@@ -213,9 +276,17 @@ console.log(contentHeight); // 输出: 600 (像素)`}
   language="javascript"
 />
 
-### `onLayoutChange(callback)`
+### 布局变化监听
 
-注册一个回调函数，在布局变化时调用（例如，当页眉、页脚或操作栏显示或隐藏时）。
+#### onLayoutChange(callback)
+注册布局变化监听器，在页眉、页脚或操作栏状态变化时自动调用。
+
+**参数：**
+- `callback` (function): 布局变化时的回调函数
+
+**返回值：** 清理函数，用于移除监听器
+
+**适用场景：** 实时布局调整、响应式内容适配、动态UI更新
 
 <CodeBlock
   code={`// 注册布局变化监听器
@@ -233,9 +304,11 @@ cleanup();`}
 language="javascript"
 />
 
-## 示例：响应式布局
+## 响应式布局最佳实践
 
-以下是如何使用布局API创建适应不同设备类型的响应式表单的示例：
+### 完整的响应式布局示例
+
+以下示例展示了如何结合使用布局API创建适应不同设备的响应式表单：
 
 <CodeBlock
   code={`(function() {
@@ -281,3 +354,19 @@ language="javascript"
   language="javascript"
   filename="responsive-layout-example.js"
 />
+
+## 参数说明
+
+### 返回值类型
+
+- `number` - 高度值（像素）
+- `boolean` - 状态值（可见性、设备类型等）
+- `function` - 清理函数（用于移除监听器）
+- `undefined` - 无返回值的操作
+
+### 事件回调参数
+
+- `detail` `{object}` - 布局变化详情对象
+  - `element` `{string}` - 发生变化的元素类型
+  - `visible` `{boolean}` - 元素的可见状态
+  - `height` `{number}` - 元素的当前高度

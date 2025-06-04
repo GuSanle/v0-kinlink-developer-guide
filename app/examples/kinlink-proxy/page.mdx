@@ -11,27 +11,83 @@ import { Button } from "@/components/ui/button";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">kinlink代理</h1>
+    <h1 className="text-3xl font-bold tracking-tight">API代理服务集成示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
+  <div className="my-8 space-y-8">
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
+      <h2 className="text-2xl font-bold tracking-tight mb-4">代理服务实现概览</h2>
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+        > 安全的外部API集成解决方案，实现跨域请求和第三方系统无缝对接
+      </div>
+
+      <div className="text-gray-700 leading-7 mb-6">
+        此示例演示如何使用**kinlink代理服务**安全地调用外部API。通过**服务端代理机制**解决跨域限制，同时保护敏感的认证信息不被前端暴露，实现与第三方系统的安全集成。
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-4">代理服务核心优势</h3>
+        <ul className="space-y-3 ml-4">
+          <li className="flex items-start gap-2">
+            <span>🔐</span>
+            <div>
+              <strong>安全认证</strong>：敏感Token和API Key在服务端安全管理
+            </div>
+          </li>
+          <li className="flex items-start gap-2">
+            <span>🌍</span>
+            <div>
+              <strong>跨域解决</strong>：绕过浏览器同源策略限制
+            </div>
+          </li>
+          <li className="flex items-start gap-2">
+            <span>🔗</span>
+            <div>
+              <strong>系统集成</strong>：与CRM、ERP、HR等外部系统无缝对接
+            </div>
+          </li>
+          <li className="flex items-start gap-2">
+            <span>🛡️</span>
+            <div>
+              <strong>请求过滤</strong>：服务端验证和过滤所有外部请求
+            </div>
+          </li>
+          <li className="flex items-start gap-2">
+            <span>⚡</span>
+            <div>
+              <strong>性能优化</strong>：智能缓存和请求去重机制
+            </div>
+          </li>
+          <li className="flex items-start gap-2">
+            <span>📊</span>
+            <div>
+              <strong>监控告警</strong>：完整的API调用监控和异常告警
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight mb-4">功能概述</h2>
+      <div className="text-gray-700 leading-7 mb-4">
         此示例演示如何使用kinlink的代理功能发送API请求。kinlink代理允许您从表单前端安全地调用外部API，无需担心跨域问题或暴露敏感凭据。这对于与外部系统集成、数据验证或动态获取信息非常有用。
       </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">基本示例</h2>
-      <div>以下代码展示了如何在表单提交前使用kinlink代理发送POST请求：</div>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
+      <h2 className="text-2xl font-bold tracking-tight mb-4">基本示例</h2>
+      <div className="text-gray-700 leading-7 mb-4">
+        以下代码展示了如何在表单提交前使用kinlink代理发送POST请求：
+      </div>
+      <div className="mt-4">
+        <Tabs defaultValue="javascript">
+          <TabsList>
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例: kinlink代理
  * 功能：在表单提交前使用代理发送API请求
  */
@@ -57,24 +113,26 @@ import { Button } from "@/components/ui/button";
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">高级示例</h2>
-      <div>
+      <h2 className="text-2xl font-bold tracking-tight mb-4">高级示例</h2>
+      <div className="text-gray-700 leading-7 mb-4">
         以下代码展示了一个更复杂的用例，使用代理获取公司信息并自动填充表单字段：
       </div>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
+      <div className="mt-4">
+        <Tabs defaultValue="javascript">
+          <TabsList>
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例: 高级kinlink代理用例
  * 功能：使用代理获取外部数据并填充表单字段
  */
@@ -147,59 +205,60 @@ import { Button } from "@/components/ui/button";
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">
+      <h2 className="text-2xl font-bold tracking-tight mb-4">
         代理功能参数说明
       </h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse border border-gray-300">
+      <div className="overflow-x-auto my-6">
+        <table className="min-w-full border-collapse border border-gray-300 rounded-lg">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2 text-left">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
                 参数
               </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
                 类型
               </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
+              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
                 说明
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="border border-gray-300 px-4 py-2">url</td>
-              <td className="border border-gray-300 px-4 py-2">String</td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">url</td>
+              <td className="border border-gray-300 px-4 py-3">String</td>
+              <td className="border border-gray-300 px-4 py-3">
                 API请求的完整URL
               </td>
             </tr>
-            <tr>
-              <td className="border border-gray-300 px-4 py-2">method</td>
-              <td className="border border-gray-300 px-4 py-2">String</td>
-              <td className="border border-gray-300 px-4 py-2">
+            <tr className="bg-gray-50">
+              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">method</td>
+              <td className="border border-gray-300 px-4 py-3">String</td>
+              <td className="border border-gray-300 px-4 py-3">
                 HTTP方法，如'GET'、'POST'、'PUT'、'DELETE'等
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 px-4 py-2">headers</td>
-              <td className="border border-gray-300 px-4 py-2">Object</td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">headers</td>
+              <td className="border border-gray-300 px-4 py-3">Object</td>
+              <td className="border border-gray-300 px-4 py-3">
                 HTTP请求头，如{`'Content-Type': 'application/json'`}
               </td>
             </tr>
-            <tr>
-              <td className="border border-gray-300 px-4 py-2">body</td>
-              <td className="border border-gray-300 px-4 py-2">
+            <tr className="bg-gray-50">
+              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">body</td>
+              <td className="border border-gray-300 px-4 py-3">
                 Object/null
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-3">
                 请求体数据，对于POST/PUT请求必需，GET请求可为null
               </td>
             </tr>
@@ -209,82 +268,70 @@ import { Button } from "@/components/ui/button";
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
+      <h2 className="text-2xl font-bold tracking-tight mb-4">使用场景</h2>
+      <ul className="list-disc pl-6 space-y-3">
+        <li className="leading-7">
           <strong>数据验证</strong>
           ：验证表单中输入的数据（如邮箱、公司名称等）
         </li>
-        <li>
+        <li className="leading-7">
           <strong>数据填充</strong>：根据已有信息自动填充其他字段
         </li>
-        <li>
+        <li className="leading-7">
           <strong>第三方集成</strong>：将表单数据发送到外部系统或服务
         </li>
-        <li>
+        <li className="leading-7">
           <strong>数据查询</strong>：从外部数据源获取信息
         </li>
-        <li>
+        <li className="leading-7">
           <strong>通知和消息</strong>：发送邮件、短信或其他通知
         </li>
-        <li>
+        <li className="leading-7">
           <strong>工作流触发</strong>：触发外部系统中的工作流程
         </li>
       </ul>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>始终使用try/catch处理API请求异常</li>
-        <li>为长时间运行的请求提供适当的用户反馈（如加载状态）</li>
-        <li>处理请求失败的情况，并向用户提供友好的错误消息</li>
-        <li>仅发送必要的数据，避免传输敏感信息</li>
-        <li>使用HTTPS URL确保数据传输安全</li>
-        <li>考虑请求的性能影响，避免过多或过大的请求</li>
+      <h2 className="text-2xl font-bold tracking-tight mb-4">最佳实践</h2>
+      <ul className="list-disc pl-6 space-y-3">
+        <li className="leading-7">始终使用try/catch处理API请求异常</li>
+        <li className="leading-7">为长时间运行的请求提供适当的用户反馈（如加载状态）</li>
+        <li className="leading-7">处理请求失败的情况，并向用户提供友好的错误消息</li>
+        <li className="leading-7">仅发送必要的数据，避免传输敏感信息</li>
+        <li className="leading-7">使用HTTPS URL确保数据传输安全</li>
+        <li className="leading-7">考虑请求的性能影响，避免过多或过大的请求</li>
       </ul>
     </div>
 
-    <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-      <h3 className="font-semibold text-yellow-800">注意事项</h3>
-      <div className="text-yellow-800">
+    <div className="p-6 border rounded-lg bg-yellow-50 border-yellow-200 my-8">
+      <h3 className="font-semibold text-yellow-800 mb-3">注意事项</h3>
+      <div className="text-yellow-800 leading-7">
         kinlink代理功能受到安全策略和跨域限制。确保目标API允许来自kinlink服务器的请求。敏感操作（如支付处理）应使用适当的安全措施和授权。在生产环境中，避免直接在前端存储API密钥或访问令牌。
       </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
-      <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <code>kinlink.proxy(url, method, headers, body)</code> -
-          发送API代理请求
+      <h2 className="text-2xl font-bold tracking-tight mb-4">API参考</h2>
+      <div className="text-gray-700 leading-7 mb-4">此示例使用了以下kinlink API：</div>
+      <ul className="list-disc pl-6 space-y-3">
+        <li className="leading-7">
+          kinlink.proxy(url, method, headers, body) - 发送API代理请求
         </li>
-        <li>
-          <code>
-            kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, callback)
-          </code>{" "}
-          - 监听表单提交前事件
+        <li className="leading-7">
+          kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, callback) - 监听表单提交前事件
         </li>
-        <li>
-          <code>
-            kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)
-          </code>{" "}
-          - 监听表单加载完成事件
+        <li className="leading-7">
+          kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback) - 监听表单加载完成事件
         </li>
-        <li>
-          <code>kinlink.formApi.getFieldValue(fieldCode)</code> - 获取字段值
+        <li className="leading-7">
+          kinlink.formApi.getFieldValue(fieldCode) - 获取字段值
         </li>
-        <li>
-          <code>kinlink.formApi.setFieldsValue(valuesObject)</code> -
-          设置多个字段的值
+        <li className="leading-7">
+          kinlink.formApi.setFieldsValue(valuesObject) - 设置多个字段的值
         </li>
-        <li>
-          <code>
-            kinlink.formApi.showSuccess/showError/showWarning(message,
-            duration)
-          </code>{" "}
-          - 显示消息
+        <li className="leading-7">
+          kinlink.formApi.showSuccess/showError/showWarning(message, duration) - 显示消息
         </li>
       </ul>
     </div>

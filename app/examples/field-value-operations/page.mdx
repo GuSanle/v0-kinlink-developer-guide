@@ -11,31 +11,29 @@ import { Button } from "@/components/ui/button";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段值读取与设置</h1>
+    <h1 className="text-3xl font-bold tracking-tight">字段值操作实战示例</h1>
   </div>
 
   <div className="my-8 space-y-6">
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何使用kinlink API读取和设置表单字段的值。这是表单操作中最基础也是最重要的功能之一，包括单个字段操作和批量字段操作。
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight">实例功能概览</h2>
+      > 表单字段值的完整操作演示，涵盖读取、设置、批量处理的实际应用场景
+
+      此示例演示如何使用**kinlink API**读取和设置表单字段的值。这是表单操作中最基础也是最重要的功能之一，包括**单个字段操作**和**批量字段操作**。
+
+      ### 核心操作能力
+      - 🔧 **字段值设置**：单个和批量字段值的精确控制
+      - 📖 **字段值读取**：获取当前表单数据状态
+      - 🎯 **交互式测试**：动态按钮演示操作效果
+      - 📋 **数据预填充**：自动化表单初始化
+      - 🔍 **实时反馈**：操作结果的即时显示
+      - ⚡ **性能优化**：批量操作提升处理效率
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>设置单个字段值</li>
-        <li>批量设置多个字段值</li>
-        <li>获取单个字段值</li>
-        <li>获取所有字段值</li>
-        <li>创建交互式测试按钮</li>
-        <li>自动填充测试数据</li>
-      </ul>
-    </div>
+      <h2 className="text-2xl font-bold tracking-tight">实现代码演示</h2>
+      > 完整的字段值操作实现，包含初始化、测试工具和错误处理
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
       <Tabs defaultValue="javascript">
         <TabsList>
           <TabsTrigger value="javascript">JavaScript</TabsTrigger>
@@ -127,77 +125,105 @@ import { Button } from "@/components/ui/button";
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
-      <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段修改字段代码。代码会在表单加载时自动设置初始值，并添加两个测试按钮用于演示字段值的读取和设置功能。
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight">部署使用指南</h2>
+      > 将示例代码集成到您的kinlink项目中的详细步骤
+
+      **集成步骤：**
+      1. 将上述代码复制到您的**kinlink自定义JavaScript**中
+      2. 根据您的表单字段修改相应的**字段代码**
+      3. 保存并刷新表单页面查看效果
+
+      **字段代码映射：** 请确保将示例中的字段代码（如`'单行文本框_0'`、`'文字列__1行__0'`）替换为您实际表单中的字段代码。
+
       <div className="p-4 border rounded-md bg-green-50 border-green-200">
-        <h3 className="font-semibold text-green-800">功能演示</h3>
+        <h3 className="font-semibold text-green-800">💡 功能演示</h3>
         <div className="text-green-800">
-          代码会自动添加"显示当前表单值"和"填充测试数据"两个按钮，您可以通过这些按钮测试字段值的读取和设置功能。
+          代码会自动添加**"显示当前表单值"**和**"填充测试数据"**两个按钮，您可以通过这些按钮测试字段值的读取和设置功能。
         </div>
       </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
-      <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <code>kinlink.formApi.setFieldValue(fieldCode, value)</code> -
-          设置单个字段的值
-        </li>
-        <li>
-          <code>kinlink.formApi.setFieldsValue(values)</code> - 批量设置多个字段的值
-        </li>
-        <li>
-          <code>kinlink.formApi.getFieldValue(fieldCode)</code> -
-          获取单个字段的值
-        </li>
-        <li>
-          <code>kinlink.formApi.getAllValues()</code> - 获取所有字段的值
-        </li>
-        <li>
-          <code>kinlink.formApi.showInfo(message)</code> - 显示信息消息
-        </li>
-        <li>
-          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
-        </li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">API函数参考</h2>
+      > 本示例使用的核心kinlink API方法说明
+
+      **字段值操作API：**
+      - **`kinlink.formApi.setFieldValue(fieldCode, value)`** - 设置单个字段的值
+      - **`kinlink.formApi.setFieldsValue(values)`** - 批量设置多个字段的值
+      - **`kinlink.formApi.getFieldValue(fieldCode)`** - 获取单个字段的值
+      - **`kinlink.formApi.getAllValues()`** - 获取所有字段的值
+
+      **消息提示API：**
+      - **`kinlink.formApi.showInfo(message)`** - 显示信息消息
+      - **`kinlink.formApi.showSuccess(message)`** - 显示成功消息
+
+      **事件监听API：**
+      - **`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)`** - 监听表单加载完成事件
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">字段类型支持</h2>
-      <div>此示例演示了多种字段类型的值操作：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li><strong>文本字段</strong>：单行文本框、多行文本框</li>
-        <li><strong>选择字段</strong>：单选框、下拉菜单</li>
-        <li><strong>日期字段</strong>：日期选择器</li>
-        <li><strong>联系信息</strong>：手机号、邮箱地址</li>
-        <li><strong>身份信息</strong>：护照号码、公司名称</li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">支持的字段类型</h2>
+      > 本示例兼容的表单字段类型和数据格式说明
+
+      **文本输入类型：**
+      - ✅ **单行文本框**：普通文本、英文名称
+      - ✅ **多行文本框**：备注、描述信息
+      - ✅ **数字字段**：年龄、金额等数值
+
+      **选择类型：**
+      - ✅ **单选框**：性别、状态选择
+      - ✅ **下拉菜单**：类别、等级选择
+      - ✅ **复选框**：多项选择
+
+      **日期时间类型：**
+      - ✅ **日期字段**：生日、有效期
+      - ✅ **时间字段**：预约时间
+      - ✅ **日期时间字段**：创建时间
+
+      **联系信息类型：**
+      - ✅ **手机号码**：联系电话
+      - ✅ **邮箱地址**：电子邮件
+      - ✅ **身份信息**：护照号码、公司名称
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>表单数据的预填充和初始化</li>
-        <li>基于用户选择动态更新相关字段</li>
-        <li>表单数据的批量导入和导出</li>
-        <li>表单状态的保存和恢复</li>
-        <li>表单数据的验证前预处理</li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">典型应用场景</h2>
+      > 字段值操作在实际业务中的常见使用场景
+
+      **数据初始化场景：**
+      - 📝 **表单预填充**：基于用户信息或业务数据自动填写表单
+      - 🔄 **数据同步**：从其他系统导入数据到当前表单
+      - 💾 **草稿恢复**：恢复用户之前未完成的表单数据
+
+      **动态交互场景：**
+      - 🔗 **联动更新**：基于用户选择动态更新相关字段
+      - 🧮 **自动计算**：根据输入值自动计算总价、税费等
+      - 📊 **数据验证**：实时检查和纠正用户输入
+
+      **数据处理场景：**
+      - 📤 **批量导入**：一次性设置多个字段值
+      - 📥 **数据导出**：获取表单数据用于报告生成
+      - 🔍 **状态检查**：实时监控表单填写状态
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>在设置字段值前确保字段已存在</li>
-        <li>使用批量操作提高性能</li>
-        <li>为用户操作提供适当的反馈</li>
-        <li>处理字段值设置可能出现的异常</li>
-        <li>在控制台输出调试信息便于开发</li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">开发最佳实践</h2>
+      > 字段值操作的性能优化和错误处理建议
+
+      **性能优化策略：**
+      - ⚡ **批量操作优先**：使用`setFieldsValue()`而非多次调用`setFieldValue()`
+      - 🎯 **按需读取**：只获取必要的字段值，避免频繁调用`getAllValues()`
+      - 🔄 **缓存机制**：对不经常变化的字段值进行本地缓存
+
+      **错误处理机制：**
+      - ✅ **字段存在性检查**：在设置字段值前确保字段已存在
+      - 🛡️ **异常捕获**：使用try-catch包装所有字段操作
+      - 📝 **日志记录**：在控制台输出调试信息便于开发调试
+
+      **用户体验优化：**
+      - 💬 **操作反馈**：为用户操作提供适当的成功/失败提示
+      - 🔔 **状态提示**：显示数据加载、保存等状态信息
+      - 🎨 **视觉反馈**：通过样式变化表明字段状态更新
     </div>
   </div>
 </div> 

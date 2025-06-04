@@ -11,30 +11,29 @@ import { Button } from "@/components/ui/button";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">自定义验证规则</h1>
+    <h1 className="text-3xl font-bold tracking-tight">表单验证规则定制示例</h1>
   </div>
 
   <div className="my-8 space-y-6">
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何为表单字段添加自定义验证规则。您将学习如何实现邮箱格式验证、手机号验证、日期有效性检查等常见验证场景，并提供实时反馈给用户。
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight">验证功能实现概览</h2>
+      > 构建智能表单验证系统，实现邮箱、手机号、日期等字段的实时验证
+
+      此示例演示如何为表单字段添加**自定义验证规则**。您将学习如何实现**邮箱格式验证**、**手机号验证**、**日期有效性检查**等常见验证场景，并提供**实时反馈**给用户。
+
+      ### 验证系统核心特性
+      - 📧 **邮箱格式验证**：标准邮箱地址格式检查
+      - 📱 **手机号码验证**：国际化手机号格式支持
+      - 📅 **日期有效性验证**：证件过期检查和预警
+      - 🎯 **实时验证反馈**：输入即时验证，提升用户体验
+      - 🔧 **自定义错误消息**：友好的错误提示信息
+      - ⚡ **手动触发验证**：支持表单整体验证检查
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>邮箱格式验证</li>
-        <li>手机号码格式验证</li>
-        <li>护照有效期验证</li>
-        <li>自定义错误消息显示</li>
-        <li>手动触发表单验证</li>
-      </ul>
-    </div>
+      <h2 className="text-2xl font-bold tracking-tight">完整验证实现代码</h2>
+      > 包含邮箱、手机、日期验证的完整实现，支持多种验证场景
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
       <Tabs defaultValue="javascript">
         <TabsList>
           <TabsTrigger value="javascript">JavaScript</TabsTrigger>
@@ -136,61 +135,88 @@ import { Button } from "@/components/ui/button";
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
-      <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段修改字段代码。此示例假设表单包含邮箱、手机号和护照有效期字段。
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight">集成部署说明</h2>
+      > 将验证规则应用到您的表单项目中的操作指南
+
+      **部署步骤：**
+      1. 将上述代码复制到您的**kinlink自定义JavaScript**中
+      2. 根据您的表单字段修改相应的**字段代码**
+      3. 调整验证规则以符合您的业务需求
+      4. 保存并测试验证功能
+
+      **字段代码适配：** 此示例假设表单包含邮箱（`'文字列__1行__3'`）、手机号（`'文字列__1行__2'`）和护照有效期（`'日期_2'`）字段。
+
       <div className="p-4 border rounded-md bg-blue-50 border-blue-200">
-        <h3 className="font-semibold text-blue-800">提示</h3>
+        <h3 className="font-semibold text-blue-800">💡 验证器配置提示</h3>
         <div className="text-blue-800">
-          您可以为任何字段添加自定义验证规则。验证函数返回错误消息字符串表示验证失败，返回undefined表示验证通过。
+          您可以为任何字段添加**自定义验证规则**。验证函数返回**错误消息字符串**表示验证失败，返回**undefined**表示验证通过。
         </div>
       </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
-      <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <code>kinlink.formApi.addFieldValidator(fieldCode, validatorFunction)</code> -
-          为指定字段添加自定义验证规则
-        </li>
-        <li>
-          <code>kinlink.formApi.validateForm()</code> - 手动触发整个表单的验证
-        </li>
-        <li>
-          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
-        </li>
-        <li>
-          <code>kinlink.formApi.showError(message)</code> - 显示错误消息
-        </li>
-        <li>
-          <code>kinlink.formApi.showWarning(message)</code> - 显示警告消息
-        </li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">验证API参考文档</h2>
+      > 表单验证相关的kinlink API方法详细说明
+
+      **验证规则管理API：**
+      - **`kinlink.formApi.addFieldValidator(fieldCode, validatorFunction)`** - 为指定字段添加自定义验证规则
+      - **`kinlink.formApi.validateForm()`** - 手动触发整个表单的验证
+      - **`kinlink.formApi.removeFieldValidator(fieldCode)`** - 移除字段的验证规则
+
+      **消息提示API：**
+      - **`kinlink.formApi.showSuccess(message)`** - 显示成功消息
+      - **`kinlink.formApi.showError(message)`** - 显示错误消息
+      - **`kinlink.formApi.showWarning(message)`** - 显示警告消息
+
+      **验证结果对象结构：**
+      ```javascript
+      {
+        isValid: boolean,    // 整体验证是否通过
+        errors: {           // 验证错误详情
+          fieldCode: "错误消息"
+        }
+      }
+      ```
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>用户注册表单的邮箱和密码验证</li>
-        <li>联系信息表单的手机号和地址验证</li>
-        <li>身份验证表单的证件号码和有效期验证</li>
-        <li>业务表单的自定义业务规则验证</li>
-        <li>多步骤表单的分步验证</li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">验证规则应用场景</h2>
+      > 自定义验证在不同业务表单中的实际应用
+
+      **用户信息表单：**
+      - 👤 **用户注册**：邮箱唯一性、密码强度验证
+      - 📞 **联系信息**：手机号格式、地址完整性验证
+      - 🆔 **身份验证**：证件号码格式、有效期验证
+
+      **业务流程表单：**
+      - 📋 **申请表单**：必填项检查、业务规则验证
+      - 💰 **财务表单**：金额范围、预算限制验证
+      - 📅 **预约表单**：时间可用性、冲突检查验证
+
+      **数据采集表单：**
+      - 📊 **调查问卷**：选项逻辑、答案一致性验证
+      - 📝 **反馈表单**：内容长度、敏感词过滤验证
+      - 🔍 **搜索表单**：关键词格式、参数有效性验证
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">最佳实践</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>提供清晰、具体的错误消息</li>
-        <li>对于非必填字段，空值时不进行验证</li>
-        <li>使用正则表达式进行格式验证</li>
-        <li>为即将过期的数据提供警告而非错误</li>
-        <li>在验证失败时提供修正建议</li>
-      </ul>
+      <h2 className="text-2xl font-bold tracking-tight">验证开发最佳实践</h2>
+      > 构建用户友好且高效的验证系统的经验总结
+
+      **用户体验优化：**
+      - 💬 **友好错误消息**：提供清晰、具体的错误提示信息
+      - ⚡ **实时验证反馈**：输入时即时验证，减少提交时的错误
+      - 🎯 **渐进式验证**：先检查格式，再检查业务规则
+
+      **验证逻辑设计：**
+      - 🔧 **灵活的验证规则**：对于非必填字段，空值时不进行验证
+      - 📊 **正则表达式应用**：使用标准正则进行格式验证
+      - ⚠️ **警告与错误区分**：为即将过期的数据提供警告而非错误
+
+      **性能与维护：**
+      - 🛡️ **异常处理**：验证函数需要处理各种异常情况
+      - 📝 **代码可读性**：使用清晰的变量名和注释
+      - 🔄 **可扩展设计**：便于添加新的验证规则和修改现有规则
     </div>
   </div>
 </div> 

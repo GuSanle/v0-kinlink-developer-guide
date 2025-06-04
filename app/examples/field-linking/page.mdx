@@ -17,12 +17,23 @@ import { Tabs } from "@/components/ui/tabs";
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段联动</h1>
+    <h1 className="text-3xl font-bold tracking-tight">字段联动交互控制示例</h1>
   </div>
 
-  <div className="prose prose-blue dark:prose-invert max-w-none">
-    <div className="lead">
-      本示例演示如何使用字段联动和条件逻辑创建动态表单。您将学习如何基于用户输入显示/隐藏字段、自动计算值，以及根据表单状态应用不同的验证规则。
+  <div className="my-8 space-y-6">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold tracking-tight">联动机制实现概览</h2>
+      > 构建智能表单字段联动系统，实现基于选择的自动数据填充和字段状态控制
+
+      此示例演示如何创建**字段间的智能联动**机制。通过监听字段变化事件，实现**自动数据填充**、**级联选择**和**条件字段显示**，提供更加智能和用户友好的表单体验。
+
+      ### 字段联动核心特性
+      - 🔗 **级联选择**：上级选择自动更新下级选项内容
+      - 📝 **自动填充**：基于选择自动填充相关字段数据
+      - 🎯 **条件显示**：根据字段值动态显示或隐藏相关字段
+      - 🔄 **实时响应**：即时响应用户选择变化
+      - 💾 **数据关联**：维护字段间的逻辑关系和数据一致性
+      - ⚡ **性能优化**：智能缓存和防抖处理
     </div>
 
     <HighlightTabs defaultValue="overview">

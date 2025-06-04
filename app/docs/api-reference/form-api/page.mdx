@@ -1,416 +1,1087 @@
-
-
 import { CodeBlock } from "@/components/code-block";
 
 # 表单API
 
 <div className="mt-2 text-lg text-muted-foreground">
-  用于操作表单字段和值的函数。
+  用于操作表单字段和值的函数集合，提供完整的表单交互解决方案。
 </div>
 
-表单API（`kinlink.formApi`）提供了用于操作表单字段和值的函数。这包括获取和设置字段值、隐藏和显示字段、验证字段等功能。
+表单API（`kinlink.formApi`）提供了全面的表单操作功能，包括字段值管理、可见性控制、验证处理、样式定制等。所有API都设计为链式调用友好，支持现代JavaScript开发模式。
 
-## 字段值操作
+## 字段值管理
+> 获取、设置和批量操作表单字段值的核心功能
 
-### `getFieldValue(code)`
+表单字段值管理是最常用的功能集合，提供单个和批量操作的完整解决方案。
 
-获取特定字段的值。
+### 单个字段操作
+
+#### getFieldValue(code)
+获取指定字段的当前值。
+
+**参数：**
+- `code` (string): 字段代码
+
+**返回值：** 字段的当前值
 
 <CodeBlock
-  code={`// 获取'name'字段的值
-const name = kinlink.formApi.getFieldValue('name');
-console.log(name); // 输出: "张三"`}
+  code={`// 获取用户姓名
+const userName = kinlink.formApi.getFieldValue('name');
+console.log(userName); // 输出: "张三"`}
   language="javascript"
 />
 
-### `setFieldValue(code, value)`
+#### setFieldValue(code, value)
+设置指定字段的值。
 
-设置特定字段的值。
+**参数：**
+- `code` (string): 字段代码
+- `value` (any): 要设置的值
 
 <CodeBlock
-  code={`// 设置'name'字段的值
-kinlink.formApi.setFieldValue('name', '李四');`}
+  code={`// 设置用户姓名
+kinlink.formApi.setFieldValue('name', '李四');
+
+// 设置数字字段
+kinlink.formApi.setFieldValue('age', 25);
+
+// 设置日期字段
+kinlink.formApi.setFieldValue('birthDate', '2024-01-01');`}
   language="javascript"
 />
 
-### `getAllValues()`
+### 批量字段操作
 
-获取表单中所有字段的值。
+#### getAllValues()
+获取表单中所有字段的值，返回包含所有字段值的对象。
+
+**返回值：** 包含所有字段值的对象
 
 <CodeBlock
-  code={`// 获取所有表单值
-const values = kinlink.formApi.getAllValues();
-console.log(values); // 输出: { name: "张三", email: "zhang@example.com", ... }`}
+  code={`// 获取所有表单数据
+const formData = kinlink.formApi.getAllValues();
+console.log(formData); 
+// 输出: { 
+//   name: "张三", 
+//   email: "zhang@example.com", 
+//   age: 30,
+//   department: "技术部"
+// }`}
   language="javascript"
 />
 
-### `setFieldsValue(values)`
+#### setFieldsValue(values)
+批量设置多个字段的值，提高操作效率。
 
-一次性设置多个字段的值。
+**参数：**
+- `values` (object): 包含字段代码和值的键值对对象
 
 <CodeBlock
-  code={`// 设置多个字段值
+  code={`// 批量设置用户信息
 kinlink.formApi.setFieldsValue({
-  name: '李四',
-  email: 'li@example.com',
-  age: 30
+  name: '王五',
+  email: 'wang@example.com',
+  age: 28,
+  department: '产品部'
+});
+
+// 部分字段更新
+kinlink.formApi.setFieldsValue({
+  status: 'active',
+  lastLoginDate: new Date().toISOString()
 });`}
   language="javascript"
 />
 
-## 字段可见性
+## 字段可见性控制
+> 动态控制字段的显示和隐藏，支持条件式表单逻辑
 
-### `hideField(code)`
+字段可见性控制允许您根据业务逻辑动态调整表单结构，提供更好的用户体验。
 
-完全隐藏字段（字段的值不会被提交）。
+### 完全隐藏字段
+
+#### hideField(code)
+完全隐藏指定字段，隐藏的字段值不会在表单提交时包含。
+
+**参数：**
+- `code` (string): 字段代码
+
+**适用场景：** 根据用户权限或其他条件隐藏敏感字段
 
 <CodeBlock
-  code={`// 隐藏'additionalInfo'字段
-kinlink.formApi.hideField('additionalInfo');`}
+  code={`// 隐藏敏感信息字段
+kinlink.formApi.hideField('salary');
+
+// 根据用户类型隐藏字段
+if (userType !== 'admin') {
+  kinlink.formApi.hideField('adminNotes');
+}`}
   language="javascript"
 />
 
-### `showField(code)`
+#### showField(code)
+显示之前隐藏的字段。
 
-显示先前隐藏的字段。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 显示'additionalInfo'字段
-kinlink.formApi.showField('additionalInfo');`}
+  code={`// 根据条件显示字段
+if (needsAdditionalInfo) {
+  kinlink.formApi.showField('additionalInfo');
+}`}
   language="javascript"
 />
 
-### `visuallyHideField(code)`
+### 视觉隐藏字段
 
-视觉上隐藏字段但在表单提交中保留其值。
+#### visuallyHideField(code)
+仅在视觉上隐藏字段，但在表单提交时仍保留其值。
+
+**参数：**
+- `code` (string): 字段代码
+
+**适用场景：** 隐藏计算字段或系统字段，但需要在提交时保留值
 
 <CodeBlock
-  code={`// 视觉上隐藏'hiddenId'字段
-kinlink.formApi.visuallyHideField('hiddenId');`}
+  code={`// 视觉隐藏系统ID字段
+kinlink.formApi.visuallyHideField('systemId');
+
+// 隐藏计算字段但保留值
+kinlink.formApi.visuallyHideField('calculatedTotal');`}
   language="javascript"
 />
 
-### `getFieldState(code)`
+### 字段状态查询
 
-获取字段的当前状态。
+#### getFieldState(code)
+获取字段的完整状态信息，包括可见性、启用状态等。
+
+**参数：**
+- `code` (string): 字段代码
+
+**返回值：** 包含字段状态的对象
 
 <CodeBlock
-  code={`// 获取'name'字段的状态
-const state = kinlink.formApi.getFieldState('name');
-console.log(state); // 输出: { visible: true, disabled: false, excludeFromSubmit: false }`}
+  code={`// 检查字段状态
+const fieldState = kinlink.formApi.getFieldState('email');
+console.log(fieldState);
+// 输出: {
+//   visible: true,
+//   disabled: false,
+//   excludeFromSubmit: false
+// }
+
+// 基于状态进行条件操作
+if (fieldState.visible && !fieldState.disabled) {
+  // 字段可见且可编辑
+  kinlink.formApi.setFieldValue('email', newEmail);
+}`}
   language="javascript"
 />
 
-## 字段启用/禁用
+## 字段启用状态管理
+> 控制字段的可编辑状态，实现动态的表单交互逻辑
 
-### `disableField(code)`
+字段启用状态管理允许您根据业务规则动态控制字段的可编辑性。
 
-禁用字段（使其为只读）。
+#### disableField(code)
+禁用指定字段，使其变为只读状态。
+
+**参数：**
+- `code` (string): 字段代码
+
+**适用场景：** 基于条件禁用字段编辑，如已提交的表单或权限限制
 
 <CodeBlock
-  code={`// 禁用'readOnlyField'字段
-kinlink.formApi.disableField('readOnlyField');`}
+  code={`// 禁用已确认的字段
+kinlink.formApi.disableField('confirmedEmail');
+
+// 根据状态禁用字段
+if (formSubmitted) {
+  kinlink.formApi.disableField('userData');
+}`}
   language="javascript"
 />
 
-### `enableField(code)`
+#### enableField(code)
+启用之前禁用的字段。
 
-启用先前禁用的字段。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 启用'readOnlyField'字段
-kinlink.formApi.enableField('readOnlyField');`}
+  code={`// 根据条件启用字段
+if (hasEditPermission) {
+  kinlink.formApi.enableField('sensitiveData');
+}
+
+// 启用编辑模式
+kinlink.formApi.enableField('userProfile');`}
   language="javascript"
 />
 
-## 验证
+## 表单验证系统
+> 强大的表单验证功能，支持自定义验证规则和实时反馈
 
-### `addFieldValidator(code, validator)`
+提供完整的表单验证解决方案，支持字段级和表单级验证。
 
-为字段添加自定义验证器函数。
+### 自定义验证器
+
+#### addFieldValidator(code, validator)
+为指定字段添加自定义验证规则。
+
+**参数：**
+- `code` (string): 字段代码
+- `validator` (function): 验证函数，返回错误信息或undefined
 
 <CodeBlock
-  code={`// 为'email'字段添加验证器
+  code={`// 添加邮箱验证
 kinlink.formApi.addFieldValidator('email', (value) => {
-  if (!value) return;
-  if (!/^\\\\w+@\\\\w+\\\\.\\\\w+$/.test(value)) {
-    return '请输入有效的电子邮件地址';
+  if (!value) return '邮箱地址不能为空';
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(value)) {
+    return '请输入有效的邮箱地址';
   }
+  
   return undefined; // 验证通过
+});
+
+// 添加密码强度验证
+kinlink.formApi.addFieldValidator('password', (value) => {
+  if (!value) return '密码不能为空';
+  if (value.length < 8) return '密码至少需要8个字符';
+  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+    return '密码必须包含大小写字母和数字';
+  }
+  return undefined;
+});
+
+// 添加异步验证（用户名唯一性）
+kinlink.formApi.addFieldValidator('username', async (value) => {
+  if (!value) return '用户名不能为空';
+  
+  try {
+    const isAvailable = await checkUsernameAvailability(value);
+    return isAvailable ? undefined : '用户名已被使用';
+  } catch (error) {
+    return '验证失败，请重试';
+  }
 });`}
   language="javascript"
 />
 
-### `removeFieldValidator(code)`
+#### removeFieldValidator(code)
+移除指定字段的自定义验证器。
 
-从字段中移除自定义验证器。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 从'email'字段移除验证器
-kinlink.formApi.removeFieldValidator('email');`}
+  code={`// 移除邮箱验证器
+kinlink.formApi.removeFieldValidator('email');
+
+// 动态移除验证（如简化模式）
+if (isSimpleMode) {
+  kinlink.formApi.removeFieldValidator('advancedField');
+}`}
   language="javascript"
 />
 
-### `validateField(code, value)`
+### 验证执行
 
-验证特定字段值。
+#### validateField(code, value)
+验证指定字段的值。
+
+**参数：**
+- `code` (string): 字段代码
+- `value` (any): 要验证的值
+
+**返回值：** 错误信息字符串或undefined
 
 <CodeBlock
-  code={`// 验证'email'字段
-const error = kinlink.formApi.validateField('email', 'invalid-email');
-console.log(error); // 输出: "请输入有效的电子邮件地址"`}
+  code={`// 验证单个字段
+const emailError = kinlink.formApi.validateField('email', 'invalid-email');
+if (emailError) {
+  console.log('邮箱验证失败:', emailError);
+}
+
+// 实时验证
+document.getElementById('emailInput').addEventListener('blur', (e) => {
+  const error = kinlink.formApi.validateField('email', e.target.value);
+  displayFieldError('email', error);
+});`}
   language="javascript"
 />
 
-### `validateForm()`
+#### validateForm()
+验证整个表单的所有字段。
 
-验证整个表单。
+**返回值：** 包含验证结果的对象
 
 <CodeBlock
   code={`// 验证整个表单
-const result = kinlink.formApi.validateForm();
-console.log(result); // 输出: { errors: { email: "请输入有效的电子邮件地址" }, isValid: false }`}
+const validationResult = kinlink.formApi.validateForm();
+
+if (validationResult.isValid) {
+  console.log('表单验证通过');
+  // 提交表单
+  submitForm();
+} else {
+  console.log('验证失败:', validationResult.errors);
+  // 显示错误信息
+  Object.keys(validationResult.errors).forEach(fieldCode => {
+    displayFieldError(fieldCode, validationResult.errors[fieldCode]);
+  });
+}
+
+// 示例输出
+// {
+//   isValid: false,
+//   errors: {
+//     email: "请输入有效的邮箱地址",
+//     password: "密码至少需要8个字符"
+//   }
+// }`}
   language="javascript"
 />
 
-### `setFieldError(code, errorMsg)`
+### 错误信息管理
 
-为字段设置错误消息。
+#### setFieldError(code, errorMsg)
+手动设置字段的错误信息。
+
+**参数：**
+- `code` (string): 字段代码
+- `errorMsg` (string): 错误信息
 
 <CodeBlock
-  code={`// 为'email'字段设置错误消息
-kinlink.formApi.setFieldError('email', '此电子邮件已注册');`}
+  code={`// 设置服务器验证错误
+kinlink.formApi.setFieldError('email', '该邮箱已被注册');
+
+// 设置业务逻辑错误
+if (age < 18) {
+  kinlink.formApi.setFieldError('age', '年龄必须满18岁');
+}`}
   language="javascript"
 />
 
-### `clearFieldError(code)`
+#### clearFieldError(code)
+清除指定字段的错误信息。
 
-清除字段的错误消息。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 清除'email'字段的错误消息
+  code={`// 清除字段错误
+kinlink.formApi.clearFieldError('email');
+
+// 字段值改变时清除错误
+kinlink.formApi.setFieldValue('email', newEmail);
 kinlink.formApi.clearFieldError('email');`}
   language="javascript"
 />
 
-### `setFieldsErrors(fieldErrors)`
+#### setFieldsErrors(fieldErrors)
+批量设置多个字段的错误信息。
 
-为多个字段设置错误消息。
+**参数：**
+- `fieldErrors` (object): 包含字段代码和错误信息的键值对对象
 
 <CodeBlock
-  code={`// 为多个字段设置错误消息
+  code={`// 批量设置服务器返回的验证错误
 kinlink.formApi.setFieldsErrors({
-  email: '此电子邮件已注册',
-  password: '密码必须至少8个字符'
+  email: '邮箱格式不正确',
+  password: '密码强度不够',
+  phone: '手机号码无效'
+});
+
+// 处理API响应错误
+fetch('/api/validate', {
+  method: 'POST',
+  body: JSON.stringify(formData)
+})
+.then(response => response.json())
+.then(data => {
+  if (data.errors) {
+    kinlink.formApi.setFieldsErrors(data.errors);
+  }
 });`}
   language="javascript"
 />
 
-### `setFieldLabelStyle(code, styleObject)`
+## 字段样式定制
+> 动态调整字段标签和组件的视觉样式，实现个性化用户界面
 
+提供完整的样式定制解决方案，支持标签和组件的独立样式控制。
+
+### 标签样式管理
+
+#### setFieldLabelStyle(code, styleObject)
 设置字段标签的CSS样式。
 
+**参数：**
+- `code` (string): 字段代码
+- `styleObject` (object): CSS样式对象
+
 <CodeBlock
-  code={`// 设置'name'字段标签的样式
-kinlink.formApi.setFieldLabelStyle('name', {
-  color: 'red',
-  fontWeight: 'bold'
-});`}
+  code={`// 设置必填字段标签样式
+kinlink.formApi.setFieldLabelStyle('email', {
+  color: '#e74c3c',
+  fontWeight: 'bold',
+  position: 'relative'
+});
+
+// 添加必填标记
+kinlink.formApi.setFieldLabelStyle('requiredField', {
+  '::after': {
+    content: '"*"',
+    color: 'red',
+    marginLeft: '4px'
+  }
+});
+
+// 主题样式应用
+const primaryTheme = {
+  color: '#2c3e50',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px'
+};
+kinlink.formApi.setFieldLabelStyle('title', primaryTheme);`}
   language="javascript"
 />
 
-### `getFieldLabelStyle(code)`
-
+#### getFieldLabelStyle(code)
 获取字段标签的当前自定义样式。
 
+**参数：**
+- `code` (string): 字段代码
+
+**返回值：** 当前样式对象
+
 <CodeBlock
-  code={`// 获取'name'字段标签的样式
-const style = kinlink.formApi.getFieldLabelStyle('name');
-console.log(style); // 输出: { color: "red", fontWeight: "bold" }`}
+  code={`// 获取当前标签样式
+const currentStyle = kinlink.formApi.getFieldLabelStyle('email');
+console.log(currentStyle);
+// 输出: { color: "#e74c3c", fontWeight: "bold" }
+
+// 基于当前样式进行调整
+const updatedStyle = {
+  ...currentStyle,
+  fontSize: '16px',
+  textDecoration: 'underline'
+};
+kinlink.formApi.setFieldLabelStyle('email', updatedStyle);`}
   language="javascript"
 />
 
-### `resetFieldLabelStyle(code)`
+#### resetFieldLabelStyle(code)
+重置字段标签样式为默认值。
 
-将字段标签的样式重置为默认值。
-
-<CodeBlock
-  code={`// 重置'name'字段标签的样式
-kinlink.formApi.resetFieldLabelStyle('name');`}
-  language="javascript"
-/>
-
-### `setFieldsLabelStyles(stylesMap)`
-
-设置多个字段标签的CSS样式。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 设置多个字段标签的样式
-kinlink.formApi.setFieldsLabelStyles({
-  name: { color: 'red', fontWeight: 'bold' },
-  email: { color: 'blue', fontStyle: 'italic' }
+  code={`// 重置标签样式
+kinlink.formApi.resetFieldLabelStyle('email');
+
+// 批量重置样式
+['email', 'name', 'phone'].forEach(fieldCode => {
+  kinlink.formApi.resetFieldLabelStyle(fieldCode);
 });`}
   language="javascript"
 />
 
-### `setFieldComponentStyle(code, styleObject)`
+#### setFieldsLabelStyles(stylesMap)
+批量设置多个字段标签的样式。
 
+**参数：**
+- `stylesMap` (object): 包含字段代码和样式对象的映射
+
+<CodeBlock
+  code={`// 批量应用主题样式
+kinlink.formApi.setFieldsLabelStyles({
+  name: { 
+    color: '#2c3e50', 
+    fontWeight: 'bold',
+    fontSize: '14px'
+  },
+  email: { 
+    color: '#3498db', 
+    fontStyle: 'italic',
+    fontSize: '13px'
+  },
+  phone: {
+    color: '#27ae60',
+    fontFamily: 'monospace'
+  }
+});
+
+// 应用错误状态样式
+const errorStyles = {
+  color: '#e74c3c',
+  fontWeight: 'bold',
+  textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+};
+
+kinlink.formApi.setFieldsLabelStyles({
+  invalidEmail: errorStyles,
+  invalidPhone: errorStyles
+});`}
+  language="javascript"
+/>
+
+### 组件样式管理
+
+#### setFieldComponentStyle(code, styleObject)
 设置字段组件（输入框、选择框等）的CSS样式。
 
+**参数：**
+- `code` (string): 字段代码
+- `styleObject` (object): CSS样式对象
+
 <CodeBlock
-  code={`// 设置'name'字段组件的样式
-kinlink.formApi.setFieldComponentStyle('name', {
-  backgroundColor: '#f0f0f0',
-  padding: '10px'
+  code={`// 设置输入框样式
+kinlink.formApi.setFieldComponentStyle('email', {
+  backgroundColor: '#f8f9fa',
+  border: '2px solid #e9ecef',
+  borderRadius: '8px',
+  padding: '12px',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+});
+
+// 设置焦点样式
+kinlink.formApi.setFieldComponentStyle('email', {
+  ':focus': {
+    borderColor: '#007bff',
+    boxShadow: '0 0 0 0.2rem rgba(0,123,255,0.25)',
+    outline: 'none'
+  }
+});
+
+// 错误状态样式
+kinlink.formApi.setFieldComponentStyle('invalidField', {
+  backgroundColor: '#fff5f5',
+  borderColor: '#e53e3e',
+  boxShadow: '0 0 0 1px #e53e3e'
 });`}
   language="javascript"
 />
 
-### `getFieldComponentStyle(code)`
-
+#### getFieldComponentStyle(code)
 获取字段组件的当前自定义样式。
 
+**参数：**
+- `code` (string): 字段代码
+
+**返回值：** 当前样式对象
+
 <CodeBlock
-  code={`// 获取'name'字段组件的样式
-const style = kinlink.formApi.getFieldComponentStyle('name');
-console.log(style); // 输出: { backgroundColor: "#f0f0f0", padding: "10px" }`}
+  code={`// 获取组件样式
+const componentStyle = kinlink.formApi.getFieldComponentStyle('email');
+console.log(componentStyle);
+// 输出: { backgroundColor: "#f8f9fa", padding: "12px" }
+
+// 条件样式调整
+if (isHighContrast) {
+  const currentStyle = kinlink.formApi.getFieldComponentStyle('email');
+  kinlink.formApi.setFieldComponentStyle('email', {
+    ...currentStyle,
+    backgroundColor: '#000',
+    color: '#fff',
+    borderColor: '#fff'
+  });
+}`}
   language="javascript"
 />
 
-### `resetFieldComponentStyle(code)`
+#### resetFieldComponentStyle(code)
+重置字段组件样式为默认值。
 
-将字段组件的样式重置为默认值。
+**参数：**
+- `code` (string): 字段代码
 
 <CodeBlock
-  code={`// 重置'name'字段组件的样式
-kinlink.formApi.resetFieldComponentStyle('name');`}
+  code={`// 重置组件样式
+kinlink.formApi.resetFieldComponentStyle('email');
+
+// 主题切换时重置样式
+function switchToDefaultTheme() {
+  const allFields = ['name', 'email', 'phone', 'address'];
+  allFields.forEach(fieldCode => {
+    kinlink.formApi.resetFieldComponentStyle(fieldCode);
+  });
+}`}
   language="javascript"
 />
 
-### `setFieldsComponentStyles(stylesMap)`
+#### setFieldsComponentStyles(stylesMap)
+批量设置多个字段组件的样式。
 
-设置多个字段组件的CSS样式。
+**参数：**
+- `stylesMap` (object): 包含字段代码和样式对象的映射
 
 <CodeBlock
-  code={`// 设置多个字段组件的样式
+  code={`// 批量应用组件样式
 kinlink.formApi.setFieldsComponentStyles({
-  name: { backgroundColor: '#f0f0f0', padding: '10px' },
-  email: { border: '1px solid blue' }
-});`}
+  name: {
+    backgroundColor: '#ffffff',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    padding: '8px 12px'
+  },
+  email: {
+    backgroundColor: '#f0f8ff',
+    border: '2px solid #4169e1',
+    borderRadius: '6px',
+    padding: '10px'
+  },
+  phone: {
+    fontFamily: 'monospace',
+    letterSpacing: '1px'
+  }
+});
+
+// 响应式样式应用
+const mobileStyles = {
+  fontSize: '16px', // 防止iOS缩放
+  padding: '14px',
+  borderRadius: '8px'
+};
+
+if (window.innerWidth <= 768) {
+  kinlink.formApi.setFieldsComponentStyles({
+    name: mobileStyles,
+    email: mobileStyles,
+    phone: mobileStyles
+  });
+}`}
   language="javascript"
 />
 
-## 消息通知
+## 消息通知系统
+> 用户友好的消息提示功能，支持多种类型的通知展示
 
-### `showSuccess(message, duration)`
+提供统一的消息通知接口，支持成功、错误、警告、信息等多种类型的提示。
 
-显示成功消息。
+#### showSuccess(message, duration)
+显示成功类型的消息通知。
+
+**参数：**
+- `message` (string): 消息内容
+- `duration` `{number}` - 持续时间（毫秒），可选参数
 
 <CodeBlock
-  code={`// 显示成功消息
-kinlink.formApi.showSuccess('操作成功完成！');`}
+  code={`// 显示操作成功消息
+kinlink.formApi.showSuccess('数据保存成功！');
+
+// 自定义显示时长
+kinlink.formApi.showSuccess('用户注册成功，欢迎加入！', 5000);
+
+// 表单提交成功
+function onFormSubmitSuccess() {
+  kinlink.formApi.showSuccess('表单提交成功，我们会尽快处理您的申请');
+}`}
   language="javascript"
 />
 
-### `showError(message, duration)`
+#### showError(message, duration)
+显示错误类型的消息通知。
 
-显示错误消息。
+**参数：**
+- `message` (string): 错误消息内容
+- `duration` `{number}` - 持续时间（毫秒），可选参数
 
 <CodeBlock
-  code={`// 显示错误消息
-kinlink.formApi.showError('发生错误，请重试。');`}
+  code={`// 显示操作失败消息
+kinlink.formApi.showError('保存失败，请检查网络连接后重试');
+
+// 验证错误提示
+kinlink.formApi.showError('表单包含错误，请检查并修正后重新提交');
+
+// API错误处理
+fetch('/api/submit', { method: 'POST', body: formData })
+  .catch(error => {
+    kinlink.formApi.showError('网络错误：' + error.message);
+  });`}
   language="javascript"
 />
 
-### `showInfo(message, duration)`
+#### showInfo(message, duration)
+显示信息类型的消息通知。
 
-显示信息消息。
+**参数：**
+- `message` (string): 信息内容
+- `duration` `{number}` - 持续时间（毫秒），可选参数
 
 <CodeBlock
-  code={`// 显示信息消息
-kinlink.formApi.showInfo('这是一条信息提示。');`}
+  code={`// 显示提示信息
+kinlink.formApi.showInfo('请注意：此操作可能需要几分钟时间');
+
+// 功能说明
+kinlink.formApi.showInfo('点击字段旁的问号图标可查看详细说明');
+
+// 状态更新通知
+kinlink.formApi.showInfo('系统已自动保存您的草稿');`}
   language="javascript"
 />
 
-### `showWarning(message, duration)`
+#### showWarning(message, duration)
+显示警告类型的消息通知。
 
-显示警告消息。
+**参数：**
+- `message` (string): 警告消息内容
+- `duration` `{number}` - 持续时间（毫秒），可选参数
 
 <CodeBlock
-  code={`// 显示警告消息
-kinlink.formApi.showWarning('请注意，此操作无法撤销。');`}
+  code={`// 显示警告信息
+kinlink.formApi.showWarning('注意：此操作无法撤销，请确认后继续');
+
+// 数据丢失警告
+kinlink.formApi.showWarning('您有未保存的更改，离开页面将丢失这些更改');
+
+// 权限提醒
+if (!hasPermission) {
+  kinlink.formApi.showWarning('您没有修改此字段的权限');
+}`}
   language="javascript"
 />
 
-## 表单控制
+## 表单控制与操作
+> 表单级别的控制功能，包括提交、重置和元素访问
 
-### `submit()`
+提供表单整体操作的核心功能，支持程序化的表单控制。
 
+### 表单操作
+
+#### submit()
 以编程方式提交表单。
 
 <CodeBlock
-  code={`// 提交表单
-kinlink.formApi.submit();`}
+  code={`// 程序化提交表单
+function submitFormProgrammatically() {
+  // 先验证表单
+  const validation = kinlink.formApi.validateForm();
+  
+  if (validation.isValid) {
+    kinlink.formApi.submit();
+    kinlink.formApi.showSuccess('表单提交成功！');
+  } else {
+    kinlink.formApi.showError('请修正表单中的错误后重新提交');
+  }
+}
+
+// 异步提交处理
+async function handleAsyncSubmit() {
+  try {
+    await validateServerSide();
+    kinlink.formApi.submit();
+  } catch (error) {
+    kinlink.formApi.showError('服务器验证失败：' + error.message);
+  }
+}`}
   language="javascript"
 />
 
-### `resetForm()`
-
-重置表单到其初始状态。
+#### resetForm()
+重置表单到初始状态，清除所有用户输入。
 
 <CodeBlock
   code={`// 重置表单
-kinlink.formApi.resetForm();`}
+kinlink.formApi.resetForm();
+
+// 确认后重置
+if (confirm('确定要重置表单吗？所有更改将丢失。')) {
+  kinlink.formApi.resetForm();
+  kinlink.formApi.showInfo('表单已重置为初始状态');
+}
+
+// 条件重置
+function resetIfNeeded() {
+  if (formHasErrors()) {
+    kinlink.formApi.resetForm();
+  }
+}`}
   language="javascript"
 />
 
-### `getFormElement()`
+### 元素访问
 
+#### getFormElement()
 获取表单的根HTML元素。
+
+**返回值：** 表单的DOM元素
 
 <CodeBlock
   code={`// 获取表单元素
 const formElement = kinlink.formApi.getFormElement();
-console.log(formElement); // 输出: <form>...</form>`}
+
+// 添加事件监听器
+formElement.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log('表单提交被拦截');
+});
+
+// 修改表单属性
+formElement.setAttribute('novalidate', 'true');
+
+// 获取表单数据
+const formData = new FormData(formElement);
+console.log('表单数据:', Object.fromEntries(formData));`}
   language="javascript"
 />
 
-### `getFieldElement(fieldCode)`
+#### getFieldElement(fieldCode)
+获取指定字段的HTML元素。
 
-获取特定字段的HTML元素。
+**参数：**
+- `fieldCode` (string): 字段代码
+
+**返回值：** 字段的DOM元素
 
 <CodeBlock
-  code={`// 获取'name'字段的元素
-const fieldElement = kinlink.formApi.getFieldElement('name');
-console.log(fieldElement); // 输出: <input type="text" ...>`}
+  code={`// 获取字段元素
+const emailField = kinlink.formApi.getFieldElement('email');
+
+// 设置原生属性
+emailField.setAttribute('autocomplete', 'email');
+emailField.setAttribute('spellcheck', 'false');
+
+// 添加事件监听
+emailField.addEventListener('input', (e) => {
+  const value = e.target.value;
+  if (value.includes('@')) {
+    kinlink.formApi.clearFieldError('email');
+  }
+});
+
+// 焦点控制
+function focusFirstErrorField() {
+  const validation = kinlink.formApi.validateForm();
+  if (!validation.isValid) {
+    const firstErrorField = Object.keys(validation.errors)[0];
+    const element = kinlink.formApi.getFieldElement(firstErrorField);
+    element.focus();
+  }
+}`}
   language="javascript"
 />
 
-### `hideKintoneLabel(fieldCode)`
+## Kintone集成功能
+> 专为Kintone平台优化的集成功能
 
+针对Kintone平台的特殊需求提供的增强功能。
+
+#### hideKintoneLabel(fieldCode)
 隐藏指定字段的Kintone原生标签。
 
+**参数：**
+- `fieldCode` (string): 字段代码
+
+**适用场景：** 当使用自定义标签时隐藏原生标签，避免重复显示
+
 <CodeBlock
-  code={'// 隐藏字段\'fieldCode\'的原生Kintone标签\nkinlink.formApi.hideKintoneLabel(\'fieldCode\');'}
+  code={`// 隐藏原生标签，使用自定义标签
+kinlink.formApi.hideKintoneLabel('customField');
+
+// 批量隐藏系统字段标签
+const systemFields = ['recordId', 'createdBy', 'modifiedBy'];
+systemFields.forEach(field => {
+  kinlink.formApi.hideKintoneLabel(field);
+});
+
+// 条件隐藏
+if (useCustomLabels) {
+  kinlink.formApi.hideKintoneLabel('userDefinedField');
+}`}
   language="javascript"
 />
 
-### `showKintoneLabel(fieldCode)`
+#### showKintoneLabel(fieldCode)
+显示之前隐藏的Kintone原生标签。
 
-显示指定字段的Kintone原生标签（如果之前被隐藏）。
+**参数：**
+- `fieldCode` (string): 字段代码
 
 <CodeBlock
-  code={'// 显示字段\'fieldCode\'的原生Kintone标签\nkinlink.formApi.showKintoneLabel(\'fieldCode\');'}
+  code={`// 恢复显示原生标签
+kinlink.formApi.showKintoneLabel('customField');
+
+// 切换显示模式
+function toggleLabelMode(useNativeLabels) {
+  if (useNativeLabels) {
+    kinlink.formApi.showKintoneLabel('fieldCode');
+  } else {
+    kinlink.formApi.hideKintoneLabel('fieldCode');
+  }
+}`}
   language="javascript"
 />
 
-## 参数
+## 最佳实践示例
 
-- `url` `{string}`
-  目标外部系统的完整URL（如第三方REST API地址）
-- `method` `{string}`
-  HTTP方法（如'GET', 'POST', 'PUT', 'DELETE'等）
-- `headers` `{object}`
-  请求头对象，键值对形式（如 `{\'Content-Type\': \'application/json\'}`）
-- `body` `{object|string|undefined}`
-  请求体内容。对于POST/PUT等方法，通常为对象（会自动序列化为JSON），也可为字符串或undefined
+### 完整的表单处理流程
+
+<CodeBlock
+  code={`// 完整的表单初始化和处理示例
+class FormManager {
+  constructor() {
+    this.initializeForm();
+    this.setupValidation();
+    this.setupEventHandlers();
+  }
+
+  // 初始化表单
+  initializeForm() {
+    // 设置初始值
+    kinlink.formApi.setFieldsValue({
+      status: 'draft',
+      createDate: new Date().toISOString().split('T')[0]
+    });
+
+    // 隐藏系统字段
+    kinlink.formApi.visuallyHideField('systemId');
+    kinlink.formApi.hideKintoneLabel('internalNotes');
+
+    // 应用样式主题
+    this.applyTheme();
+  }
+
+  // 设置验证规则
+  setupValidation() {
+    // 邮箱验证
+    kinlink.formApi.addFieldValidator('email', (value) => {
+      if (!value) return '邮箱不能为空';
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value) ? undefined : '请输入有效的邮箱地址';
+    });
+
+    // 手机号验证
+    kinlink.formApi.addFieldValidator('phone', (value) => {
+      if (!value) return '手机号不能为空';
+      const phoneRegex = /^1[3-9]\d{9}$/;
+      return phoneRegex.test(value) ? undefined : '请输入有效的手机号';
+    });
+  }
+
+  // 设置事件处理
+  setupEventHandlers() {
+    // 实时验证
+    const emailField = kinlink.formApi.getFieldElement('email');
+    emailField.addEventListener('blur', this.validateEmailRealTime.bind(this));
+
+    // 表单提交处理
+    const form = kinlink.formApi.getFormElement();
+    form.addEventListener('submit', this.handleSubmit.bind(this));
+  }
+
+  // 实时邮箱验证
+  validateEmailRealTime(event) {
+    const email = event.target.value;
+    const error = kinlink.formApi.validateField('email', email);
+    
+    if (error) {
+      kinlink.formApi.setFieldError('email', error);
+    } else {
+      kinlink.formApi.clearFieldError('email');
+    }
+  }
+
+  // 处理表单提交
+  async handleSubmit(event) {
+    event.preventDefault();
+
+    // 全面验证
+    const validation = kinlink.formApi.validateForm();
+    if (!validation.isValid) {
+      kinlink.formApi.showError('请修正表单中的错误');
+      return;
+    }
+
+    try {
+      // 获取表单数据
+      const formData = kinlink.formApi.getAllValues();
+      
+      // 提交到服务器
+      const response = await this.submitToServer(formData);
+      
+      if (response.success) {
+        kinlink.formApi.showSuccess('提交成功！');
+        kinlink.formApi.submit(); // Kintone原生提交
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      kinlink.formApi.showError('提交失败：' + error.message);
+    }
+  }
+
+  // 应用主题样式
+  applyTheme() {
+    const primaryColor = '#007bff';
+    const borderRadius = '8px';
+
+    // 标签样式
+    kinlink.formApi.setFieldsLabelStyles({
+      email: { color: primaryColor, fontWeight: '600' },
+      phone: { color: primaryColor, fontWeight: '600' }
+    });
+
+    // 组件样式
+    kinlink.formApi.setFieldsComponentStyles({
+      email: {
+        borderRadius: borderRadius,
+        border: \`2px solid \${primaryColor}20\`,
+        padding: '12px',
+        transition: 'all 0.3s ease'
+      },
+      phone: {
+        borderRadius: borderRadius,
+        border: \`2px solid \${primaryColor}20\`,
+        padding: '12px',
+        transition: 'all 0.3s ease'
+      }
+    });
+  }
+
+  // 服务器提交（示例）
+  async submitToServer(data) {
+    const response = await fetch('/api/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    
+    return response.json();
+  }
+}
+
+// 使用示例
+document.addEventListener('DOMContentLoaded', () => {
+  new FormManager();
+});`}
+  language="javascript"
+/>
+
+## 参数说明
+
+### 通用参数类型
+
+- `code` `{string}` - 字段代码，用于标识特定的表单字段
+- `value` `{any}` - 字段值，类型根据字段类型而定
+- `styleObject` `{object}` - CSS样式对象，键值对形式
+- `message` `{string}` - 消息内容
+- `duration` `{number}` - 持续时间（毫秒），可选参数
+- `validator` `{function}` - 验证函数，接收字段值，返回错误信息或undefined
+
+### 返回值类型
+
+- `undefined` - 无返回值的操作
+- `any` - 字段值，类型根据字段而定
+- `object` - 包含多个属性的对象
+- `HTMLElement` - DOM元素对象
+- `boolean` - 布尔值
+- `string` - 字符串类型

@@ -1,18 +1,27 @@
 import { CodeBlock } from "@/components/code-block";
 
-# 移动端适配指南
+# 移动端适配完全指南
 
 <div className="mt-2 text-lg text-muted-foreground">
-  了解如何为移动设备优化kinlink表单。
+  打造优秀的移动端表单体验：从设备检测到交互优化的全方位解决方案。
 </div>
 
 <div className="docs-content">
 
-为现代Web应用程序创建良好的移动体验至关重要。kinlink提供了多种API和技术，帮助您为移动设备优化表单。
+在移动优先的时代，为移动设备优化表单体验至关重要。kinlink提供了完整的移动端适配解决方案，帮助您创建在小屏幕设备上表现出色的表单应用。本指南涵盖设备检测、布局优化、交互改进等各个方面。
 
-## 检测移动设备
+## 移动设备检测
+> 智能识别用户设备类型，实现差异化体验
 
-kinlink提供了一个实用函数来检测当前设备是否为移动设备：
+准确的设备检测是移动端适配的基础，让您能够为不同设备提供最适合的界面和交互方式。
+
+### 设备类型判断
+
+#### checkIsMobileDevice()
+kinlink提供的设备检测函数，基于视口宽度判断当前设备类型。
+
+**检测标准**：视口宽度 ≤ 575px 判定为移动设备
+**适用场景**：响应式布局决策、功能特性切换、交互方式选择
 
 <CodeBlock
   code={`// 检查当前设备是否为移动设备
@@ -24,13 +33,20 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   language="javascript"
 />
 
-此函数使用媒体查询来检查视口宽度是否小于或等于575px，这是kinlink中移动设备的标准断点。
+这种检测方式与kinlink内部的移动设备断点保持一致，确保界面表现的统一性。
 
-## 移动端特定布局
+## 移动端布局优化
+> 充分利用有限的屏幕空间，提升内容可读性
 
-移动设备的屏幕空间有限，因此优化表单布局对移动设备很重要。以下是一些技巧：
+移动设备的屏幕空间宝贵，需要通过智能的布局策略来优化用户体验。
 
-### 简化表单
+### 表单结构简化
+
+#### 隐藏次要内容
+在移动端隐藏非核心字段，突出重要信息，减少用户认知负担。
+
+**优化策略**：核心字段优先、分步骤展示、渐进式披露
+**适用场景**：复杂表单简化、多步骤表单、条件式显示
 
 <CodeBlock
   code={`// 在移动端隐藏非必要字段
@@ -50,7 +66,13 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   filename="simplify-mobile-form.js"
 />
 
-### 优化输入字段
+### 输入控件优化
+
+#### 触控友好设计
+增大输入控件的尺寸和点击区域，适应手指操作的精度要求。
+
+**设计原则**：最小44px触控目标、充足的内边距、清晰的视觉反馈
+**适用场景**：所有交互元素、表单输入框、按钮控件
 
 <CodeBlock
   code={`// 使输入字段在移动端更易于触摸
@@ -70,11 +92,21 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   filename="optimize-mobile-inputs.js"
 />
 
-## 移动端表单操作栏
+## 移动端操作栏管理
+> 提供便捷的表单操作入口，固定在屏幕底部
 
-kinlink提供了一个固定在屏幕底部的移动端特定表单操作栏。这对于在移动设备上提供表单操作的便捷访问非常有用。
+kinlink的移动端操作栏专为触屏设备设计，提供易于访问的表单操作功能。
 
-### 管理移动端表单操作栏
+### 操作栏控制接口
+
+移动端操作栏提供完整的显示控制和状态查询功能：
+
+#### 状态查询和显示控制
+- `mobileIsFormActionBarVisible()`: 检查操作栏可见状态
+- `mobileHideFormActionBar()`: 隐藏操作栏，释放屏幕空间
+- `mobileShowFormActionBar()`: 显示操作栏，提供操作入口
+- `toggleFormActionBar()`: 切换操作栏显示状态
+- `mobileGetFormActionBarHeight()`: 获取操作栏高度用于布局计算
 
 <CodeBlock
   code={`// 检查移动端表单操作栏是否可见
@@ -95,9 +127,13 @@ const height = kinlink.layoutApi.mobileGetFormActionBarHeight();`}
   filename="mobile-action-bar-api.js"
 />
 
-### 自定义移动端操作栏
+### 自定义操作栏实现
 
-您可以创建自定义移动端操作栏来替代默认操作栏：
+#### 创建个性化操作界面
+当默认操作栏无法满足需求时，可以创建自定义的移动端操作界面。
+
+**设计考虑**：固定定位、合适高度、易于操作、视觉突出
+**功能扩展**：草稿保存、步骤导航、快捷操作、状态提示
 
 <CodeBlock
   code={`// 创建自定义移动端操作栏
@@ -138,9 +174,17 @@ if (kinlink.layoutApi.checkIsMobileDevice()) {
   filename="custom-mobile-action-bar.js"
 />
 
-## 响应式布局调整
+## 响应式布局自适应
+> 动态响应屏幕变化，提供流畅的用户体验
 
-您可以根据可用内容区域高度调整表单布局：
+移动设备存在横竖屏切换、键盘弹起等场景，需要实时调整布局以适应变化。
+
+### 动态布局计算
+
+#### 内容区域自适应
+根据页眉、页脚、操作栏的显示状态，动态计算可用的内容显示区域。
+
+**应用场景**：屏幕旋转适配、键盘弹起适配、动态内容高度设置
 
 <CodeBlock
   code={`// 获取可用内容区域高度
@@ -164,16 +208,34 @@ cleanup();`}
   filename="responsive-layout.js"
 />
 
-## 移动端表单最佳实践
+## 移动端最佳实践
+> 基于用户行为和设备特性的优化建议
 
-- **简化表单：** 在移动端隐藏非必要字段并简化复杂输入。
-- **使用更大的触摸目标：** 使按钮和输入框在移动端更大、更容易点击。
-- **为竖屏方向优化：** 大多数移动用户会在竖屏方向使用您的表单。
-- **减少输入：** 使用下拉菜单、单选按钮和其他需要较少输入的输入类型。
-- **使用适当的输入类型：** 为每个字段使用适当的输入类型（例如，`tel`用于电话号码，`email`用于电子邮件地址）。
-- **在真实设备上测试：** 在真实移动设备上测试您的表单，以确保良好的用户体验。
+### 界面设计原则
 
-## 完整示例
+- **简化表单结构**：在移动端隐藏非必要字段，采用分步骤或渐进式披露
+- **增大触控目标**：确保按钮和输入框有足够的点击区域（最小44px）
+- **竖屏优化优先**：大多数用户习惯竖屏使用，优先考虑竖屏体验
+- **减少输入需求**：使用选择器、单选框等方式减少键盘输入
+
+### 技术实现建议
+
+- **合适的输入类型**：使用`tel`、`email`、`url`等HTML5输入类型
+- **防止缩放**：输入框字体大小至少16px，防止iOS自动缩放
+- **键盘适配**：考虑虚拟键盘对布局的影响
+- **加载性能**：优化资源加载，减少移动网络延迟影响
+
+### 测试验证
+
+- **真机测试**：在实际移动设备上验证体验
+- **多尺寸适配**：测试不同屏幕尺寸的显示效果
+- **网络环境**：考虑弱网络环境下的性能表现
+
+## 完整移动端适配示例
+
+### 综合优化实现
+
+以下示例展示了完整的移动端适配策略，涵盖设备检测、布局优化、交互改进等各个方面：
 
 <CodeBlock
   code={`(function() {
@@ -198,62 +260,28 @@ cleanup();`}
         });
       });
       
-      // 创建自定义移动端操作栏
+      // 优化标签样式
+      form.setFieldsLabelStyles({
+        name: { fontSize: '14px', fontWeight: 'bold' },
+        email: { fontSize: '14px', fontWeight: 'bold' },
+        phone: { fontSize: '14px', fontWeight: 'bold' }
+      });
+      
+      // 自定义移动端操作栏
       kinlink.layoutApi.mobileHideFormActionBar();
       
-      const customBar = document.createElement('div');
-      customBar.style.position = 'fixed';
-      customBar.style.bottom = '0';
-      customBar.style.left = '0';
-      customBar.style.right = '0';
-      customBar.style.height = '70px';
-      customBar.style.backgroundColor = '#f5f5f5';
-      customBar.style.display = 'flex';
-      customBar.style.justifyContent = 'space-between';
-      customBar.style.padding = '10px 20px';
-      customBar.style.zIndex = '1000';
+      // 监听方向变化和布局调整
+      window.addEventListener('resize', () => {
+        const newContentHeight = kinlink.layoutApi.getContentAreaHeight();
+        console.log('屏幕旋转，新内容高度:', newContentHeight);
+        // 根据需要调整布局
+      });
       
-      const saveBtn = document.createElement('button');
-      saveBtn.innerText = '保存草稿';
-      saveBtn.style.padding = '10px 20px';
-      saveBtn.style.backgroundColor = '#e0e0e0';
-      saveBtn.style.border = 'none';
-      saveBtn.style.borderRadius = '4px';
-      saveBtn.onclick = () => {
-        form.showSuccess('草稿已保存！');
-      };
-      customBar.appendChild(saveBtn);
-      
-      const submitBtn = document.createElement('button');
-      submitBtn.innerText = '提交表单';
-      submitBtn.style.padding = '10px 20px';
-      submitBtn.style.backgroundColor = '#1890ff';
-      submitBtn.style.color = 'white';
-      submitBtn.style.border = 'none';
-      submitBtn.style.borderRadius = '4px';
-      submitBtn.onclick = () => form.submit();
-      customBar.appendChild(submitBtn);
-      
-      document.body.appendChild(customBar);
+      console.log('移动端优化已应用');
     } else {
-      // 桌面端特定设置
-      
-      // 显示所有字段
-      form.showField('detailedTable');
-      form.hideField('simplifiedTable');
+      // 桌面端设置
+      console.log('桌面端标准布局');
     }
-    
-    // 监听布局变化
-    kinlink.layoutApi.onLayoutChange((detail) => {
-      console.log('布局已变更:', detail);
-      
-      // 重新计算内容区域高度
-      const contentHeight = kinlink.layoutApi.getContentAreaHeight();
-      console.log('内容高度:', contentHeight);
-      
-      // 根据新高度调整布局
-      // ...
-    });
   });
 })();`}
   language="javascript"
