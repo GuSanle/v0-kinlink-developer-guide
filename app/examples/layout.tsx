@@ -14,8 +14,12 @@ export default function ExamplesLayout({
 }) {
   return (
     <div className="flex-1">
-      <ClientCodeHighlighter />
-      {children}
+      <div className="container py-6 lg:py-10">
+        <div className="prose dark:prose-invert mx-auto w-full min-w-0">
+          <ClientCodeHighlighter />
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
