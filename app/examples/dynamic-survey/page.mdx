@@ -1,512 +1,557 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CodeBlock } from "@/components/code-block";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/code-block";
-import {
-  HighlightTabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../highlight-tabs";
-import { Tabs } from "@/components/ui/tabs";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">智能动态调查表单示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">动态调查表示例</h1>
   </div>
 
-    <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">动态调查系统概览</h2>
-      > 构建自适应调查问卷，实现条件分支逻辑和个性化问题流程
-
-      此示例演示如何创建**智能动态调查表单**，根据用户的答案自动显示或隐藏相关问题。通过**条件逻辑**和**分支控制**，创建更加个性化和高效的调查体验。
-
-      ### 动态调查核心特性
-      - 🧭 **条件分支**：基于答案自动跳转到相关问题
-      - 🎯 **个性化流程**：为不同用户群体定制问题序列
-      - 📊 **实时统计**：动态计算和显示调查进度
-      - 🔄 **逻辑验证**：确保答案逻辑一致性和完整性
-      - 💾 **状态保存**：支持调查中途保存和继续
-      - 📱 **响应式设计**：适配各种设备的调查体验
-    </div>
-  </div>
-
-  <div className="prose prose-blue dark:prose-invert max-w-none">
-    <div className="lead">
-      此示例演示如何创建一个动态调查表单，该表单能够根据用户响应自适应显示条件问题、分支逻辑和实时验证。
-    </div>
-
-    <h2>主要特性</h2>
-    <ul>
-      <li>基于先前答案显示的条件问题</li>
-      <li>创建不同调查路径的分支逻辑</li>
-      <li>响应的实时验证</li>
-      <li>基于用户数据的动态问题生成</li>
-      <li>进度跟踪和导航</li>
-    </ul>
-
-    <h2>实现方式</h2>
+  <div className="space-y-8 px-8">
     <div>
-      动态调查使用 kinlink API 来管理问题可见性、验证和分支逻辑。以下是完整的代码：
+      <h2>动态调查表系统概览</h2>
+      
+      > 构建智能化问卷调查系统，实现个性化问题分支和数据收集
+
+      此示例演示如何使用**kinlink API**创建**动态调查表**，根据用户回答自动调整后续问题。通过**智能分支逻辑**、**条件显示**和**数据分析**，提供个性化的调查体验。
+
+      ### 动态调查表核心功能
+      - 🔀 **条件分支**：根据答案动态显示相关问题
+      - 🎯 **智能筛选**：自动过滤不相关的问题项
+      - 📊 **实时统计**：即时分析和展示调查数据
+      - 🔄 **逻辑跳转**：基于回答结果的智能跳转
+      - 📝 **自适应问题**：动态生成个性化问题
+      - 💡 **提示引导**：智能提供填写建议和帮助
     </div>
 
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>基于条件的字段显示隐藏</li>
+        <li>动态问题分支和逻辑跳转</li>
+        <li>实时数据验证和分析</li>
+        <li>个性化用户体验</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
     <CodeBlock
-      code={`(function() {
-  // Survey configuration
+              code={`/**
+ * 动态调查表示例
+ * 功能：创建智能化问卷调查系统，根据用户回答动态调整问题
+ */
+(function () {
+  // 调查表配置
   const SURVEY_CONFIG = {
-    title: '客户满意度调查',
-    description: '请通过这个简短的调查帮助我们改进产品和服务。',
-    questions: [
-      {
-        id: 'customerType',
-        text: '您是哪种类型的客户？',
-        type: 'radio',
-        options: ['新客户', '回头客', '潜在客户'],
-        required: true
-      },
-      {
-        id: 'productUsage',
-        text: '您使用我们的哪些产品？',
-        type: 'checkbox',
-        options: ['产品 A', '产品 B', '产品 C', '无'],
-        showIf: (values) => values.customerType === '回头客',
-        required: true
-      },
-      {
-        id: 'productInterest',
-        text: '您对哪些产品感兴趣？',
-        type: 'checkbox',
-        options: ['产品 A', '产品 B', '产品 C', '还不确定'],
-        showIf: (values) => values.customerType === '潜在客户',
-        required: true
-      },
-      {
-        id: 'productASatisfaction',
-        text: '您对产品 A 的满意度如何？',
-        type: 'rating',
-        options: ['1', '2', '3', '4', '5'],
-        showIf: (values) => values.productUsage && values.productUsage.includes('产品 A'),
-        required: true
-      },
-      {
-        id: 'productBSatisfaction',
-        text: '您对产品 B 的满意度如何？',
-        type: 'rating',
-        options: ['1', '2', '3', '4', '5'],
-        showIf: (values) => values.productUsage && values.productUsage.includes('产品 B'),
-        required: true
-      },
-      {
-        id: 'productCSatisfaction',
-        text: '您对产品 C 的满意度如何？',
-        type: 'rating',
-        options: ['1', '2', '3', '4', '5'],
-        showIf: (values) => values.productUsage && values.productUsage.includes('产品 C'),
-        required: true
-      },
-      {
-        id: 'improvementSuggestions',
-        text: '您对我们如何改进产品有什么建议吗？',
-        type: 'textarea',
-        showIf: (values) => values.customerType === '回头客',
-        required: false
-      },
-      {
-        id: 'contactReason',
-        text: '是什么促使您今天联系我们？',
-        type: 'select',
-        options: ['看到广告', '朋友推荐', '在线搜索', '其他'],
-        showIf: (values) => values.customerType === '新客户' || values.customerType === '潜在客户',
-        required: true
-      },
-      {
-        id: 'otherContactReason',
-        text: '请具体说明原因：',
-        type: 'text',
-        showIf: (values) => values.contactReason === '其他',
-        required: true
-      },
-      {
-        id: 'futureContact',
-        text: '您希望我们就未来的产品和促销活动联系您吗？',
-        type: 'radio',
-        options: ['是', '否'],
-        required: true
-      },
-      {
-        id: 'contactMethod',
-        text: '您希望我们通过什么方式联系您？',
-        type: 'radio',
-        options: ['邮箱', '电话', '邮寄'],
-        showIf: (values) => values.futureContact === '是',
-        required: true
-      },
-      {
-        id: 'contactEmail',
-        text: '请提供您的邮箱地址：',
-        type: 'email',
-        showIf: (values) => values.contactMethod === '邮箱',
-        required: true,
-        validator: (value) => {
-          if (!value) return '邮箱地址是必填项';
-          if (!/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/.test(value)) {
-            return '请输入有效的邮箱地址';
-          }
-          return undefined;
+    // 用户类型分支
+    USER_TYPE: {
+      fieldCode: '单选框_0', // 用户类型选择
+      options: {
+        'individual': {
+          label: '个人用户',
+          nextFields: ['文字列__1行__0', '文字列__1行__1', '日期_1'],
+          hiddenFields: ['单行文本框_10', '下拉菜单']
+        },
+        'enterprise': {
+          label: '企业用户',
+          nextFields: ['单行文本框_10', '下拉菜单', '文字列__1行__2'],
+          hiddenFields: ['文字列__1行__1', '日期_1']
         }
-      },
-      {
-        id: 'contactPhone',
-        text: '请提供您的电话号码：',
-        type: 'tel',
-        showIf: (values) => values.contactMethod === '电话',
-        required: true,
-        validator: (value) => {
-          if (!value) return '电话号码是必填项';
-          if (!/^\\+?[\\d\\s()-]{10,20}$/.test(value)) {
-            return '请输入有效的电话号码';
-          }
-          return undefined;
-        }
-      },
-      {
-        id: 'contactAddress',
-        text: '请提供您的邮寄地址：',
-        type: 'textarea',
-        showIf: (values) => values.contactMethod === '邮寄',
-        required: true
-      },
-      {
-        id: 'additionalComments',
-        text: '您还有其他意见或反馈吗？',
-        type: 'textarea',
-        required: false
       }
-    ]
+    },
+    
+    // 体验评价分支
+    EXPERIENCE_RATING: {
+      fieldCode: '单选框_1', // 体验评分
+      options: {
+        'excellent': {
+          label: '非常满意',
+          nextFields: ['多行文本框_0'], // 满意原因
+          hiddenFields: ['多行文本框_1', '多选_0']
+        },
+        'good': {
+          label: '比较满意',
+          nextFields: ['多行文本框_0'],
+          hiddenFields: ['多行文本框_1', '多选_0']
+        },
+        'poor': {
+          label: '不满意',
+          nextFields: ['多行文本框_1', '多选_0'], // 不满意原因和改进建议
+          hiddenFields: ['多行文本框_0']
+        }
+      }
+    }
   };
-  
-  // 表单加载完成后初始化问卷
+
+  // 调查统计数据
+  let surveyStats = {
+    totalResponses: 0,
+    userTypeDistribution: {},
+    experienceRatings: {},
+    completionRate: 0
+  };
+
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
-    const form = kinlink.formApi;
-    
-    // 创建问卷标题和描述
-    createSurveyHeader();
-    
-    // 创建问题
-    createQuestions();
-    
-    // 添加验证器
-    addValidators();
-    
-    // 根据初始值更新问题可见性
-    updateQuestionVisibility();
-  });
-  
-  // 处理字段变更事件
-  kinlink.events.on(kinlink.FormEvents.FIELD_CHANGE, (data) => {
-    // 任何字段变更时更新问题可见性
-    updateQuestionVisibility();
-  });
-  
-  // 创建问卷头部的函数
-  function createSurveyHeader() {
-    const formElement = document.querySelector(\'form\');
-    
-    const headerContainer = document.createElement(\'div\');
-    headerContainer.style.marginBottom = \'2rem\';
-    
-    const titleElement = document.createElement(\'h2\');
-    titleElement.textContent = SURVEY_CONFIG.title;
-    titleElement.style.fontSize = \'1.5rem\';
-    titleElement.style.fontWeight = \'bold\';
-    titleElement.style.marginBottom = \'0.5rem\';
-    
-    const descriptionElement = document.createElement(\'p\');
-    descriptionElement.textContent = SURVEY_CONFIG.description;
-    descriptionElement.style.color = \'#666\'; // 可以根据主题调整颜色
-    
-    headerContainer.appendChild(titleElement);
-    headerContainer.appendChild(descriptionElement);
-    
-    // 插入到表单的顶部
-    if (formElement && formElement.firstChild) {
-      formElement.insertBefore(headerContainer, formElement.firstChild);
-    } else if (formElement) {
-      formElement.appendChild(headerContainer);
-    }
-  }
-  
-  // 创建问题的函数
-  function createQuestions() {
-    // 问题已在 kinlink 表单中定义
-    // 我们主要在这里添加自定义样式和行为
-    
-    SURVEY_CONFIG.questions.forEach(question => {
-      // 注意: kinlink 中字段元素的选择器可能需要根据实际情况调整
-      // 通常是 [data-field="fieldCode"] 或基于字段代码的特定ID/类名
-      const questionElement = kinlink.layoutApi.getFieldElement(question.id) || document.querySelector(\`[data-cy="control-id-\${question.id}"]\`) || document.querySelector(\`#\${question.id}\`) ;
+    try {
+      console.log('初始化动态调查表系统...');
       
-      if (questionElement) {
-        // 为标签添加额外信息和样式
-        // kinlink 的 getFieldLabelElement 可能返回包含标签的容器，或直接是 label 元素
-        const labelElement = kinlink.layoutApi.getFieldLabelElement(question.id) || questionElement.querySelector(\'label\');
+      // 创建调查管理面板
+      createSurveyDashboard();
+      
+      // 初始化调查逻辑
+      initializeSurveyLogic();
+      
+      // 设置初始状态
+      setupInitialState();
+      
+      console.log('动态调查表系统初始化完成');
+      
+    } catch (error) {
+      console.error('动态调查表初始化失败:', error);
+    }
+  });
+
+  // 创建调查管理面板
+  function createSurveyDashboard() {
+    const dashboardHTML = \`
+      <div id="surveyDashboard" style="
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        padding: 25px;
+        margin: 20px 0;
+        border-radius: 15px;
+        color: white;
+        box-shadow: 0 6px 25px rgba(231, 76, 60, 0.3);
+      ">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: 700;">
+            📊 智能调查系统
+          </h2>
+          <div style="font-size: 15px; opacity: 0.95;">
+            根据您的回答，系统将智能调整后续问题
+          </div>
+        </div>
         
-        if (labelElement) {
-          // 添加必填星号
-          if (question.required) {
-            const requiredSpan = document.createElement(\'span\');
-            requiredSpan.textContent = \' *\'; // 星号前加空格
-            requiredSpan.style.color = \'red\';
-            labelElement.appendChild(requiredSpan);
-          }
+        <div id="surveyStats" style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 15px;
+          margin-bottom: 20px;
+        ">
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;">0</div>
+            <div style="font-size: 13px; opacity: 0.9;">总回答数</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;">0%</div>
+            <div style="font-size: 13px; opacity: 0.9;">完成率</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;">-</div>
+            <div style="font-size: 13px; opacity: 0.9;">当前分支</div>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+          <button id="resetSurvey" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            🔄 重置调查
+          </button>
+          <button id="showBranches" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            🌿 显示分支
+          </button>
+          <button id="exportData" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            📤 导出数据
+          </button>
+          <button id="previewMode" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            👁️ 预览模式
+          </button>
+        </div>
+        
+        <div id="currentBranch" style="
+          background: rgba(0,0,0,0.2);
+          padding: 12px;
+          border-radius: 8px;
+          margin-top: 15px;
+          font-size: 13px;
+          font-family: monospace;
+        ">
+          当前状态：等待用户选择...
+        </div>
+      </div>
+    \`;
+
+    // 插入面板到表单顶部
+    const formElement = document.querySelector('.ant-form') || document.body;
+    const dashboardElement = document.createElement('div');
+    dashboardElement.innerHTML = dashboardHTML;
+    formElement.insertBefore(dashboardElement, formElement.firstChild);
+
+    // 绑定面板事件
+    bindDashboardEvents();
+  }
+
+  // 绑定面板事件
+  function bindDashboardEvents() {
+    const dashboard = document.getElementById('surveyDashboard');
+    if (!dashboard) return;
+
+    dashboard.addEventListener('click', (e) => {
+      const target = e.target;
+      
+      if (target.id === 'resetSurvey') {
+        resetSurveyState();
+      } else if (target.id === 'showBranches') {
+        showBranchVisualization();
+      } else if (target.id === 'exportData') {
+        exportSurveyData();
+      } else if (target.id === 'previewMode') {
+        togglePreviewMode();
+      }
+    });
+  }
+
+  // 初始化调查逻辑
+  function initializeSurveyLogic() {
+    // 监听字段值变化
+    kinlink.events.on(kinlink.FormEvents.FIELD_VALUE_CHANGED, handleFieldChange);
+    
+    // 设置初始字段状态
+    hideAllConditionalFields();
+  }
+
+  // 处理字段值变化
+  function handleFieldChange(data) {
+    const { fieldCode, value } = data;
+    
+    console.log(\`字段变化: \${fieldCode} = \${value}\`);
+    
+    // 处理用户类型选择
+    if (fieldCode === SURVEY_CONFIG.USER_TYPE.fieldCode) {
+      handleUserTypeChange(value);
+    }
+    
+    // 处理体验评价选择
+    if (fieldCode === SURVEY_CONFIG.EXPERIENCE_RATING.fieldCode) {
+      handleExperienceRatingChange(value);
+    }
+    
+    // 更新统计数据
+    updateSurveyStats();
+    
+    // 更新分支状态显示
+    updateBranchStatus();
+  }
+
+  // 处理用户类型变化
+  function handleUserTypeChange(userType) {
+    const config = SURVEY_CONFIG.USER_TYPE.options[userType];
+    if (!config) return;
+
+    console.log(\`用户类型切换到: \${config.label}\`);
+    
+    // 显示相关字段
+    config.nextFields.forEach(fieldCode => {
+      kinlink.formApi.showField(fieldCode);
+      
+      // 添加视觉效果
+      setTimeout(() => {
+        const element = kinlink.formApi.getFieldElement(fieldCode);
+        if (element) {
+          element.style.transition = 'all 0.5s ease';
+          element.style.transform = 'translateX(-10px)';
+          setTimeout(() => {
+            element.style.transform = 'translateX(0)';
+          }, 200);
         }
-        
-        // 为评分类型问题添加自定义样式
-        if (question.type === \'rating\') {
-          // 假设评分问题的选项是单选按钮组
-          // kinlink 的 getFieldInputElement 可能返回包含所有输入控件的容器
-          const inputContainer = kinlink.layoutApi.getFieldInputElement(question.id) || questionElement.querySelector(\'.input-container\'); // 请根据实际DOM结构调整选择器
-          
-          if (inputContainer) {
-            inputContainer.style.display = \'flex\';
-            inputContainer.style.gap = \'0.5rem\';
-            
-            // 获取所有单选按钮及其关联的标签
-            const inputs = inputContainer.querySelectorAll(\'input[type="radio"]\');
-            // Kintone/kinlink 的单选按钮和复选框的标签可能不是直接的 <label for="..."> 结构
-            // 需要根据实际生成的HTML结构来准确选取
-            // 此处假设每个 input 后紧跟一个 label, 或 label 包裹 input
-            
-            inputs.forEach((input, index) => {
-              let associatedLabel = input.nextElementSibling; // 尝试获取兄弟元素
-              if (!associatedLabel || associatedLabel.tagName !== \'LABEL\') {
-                 associatedLabel = input.parentElement && input.parentElement.tagName === \'LABEL\' ? input.parentElement : null;
-              }
-              // 如果还找不到，可能需要更复杂的 DOM 遍历或者依赖于 kinlink API 提供更精确的元素获取方法
+      }, 100);
+    });
+    
+    // 隐藏不相关字段
+    config.hiddenFields.forEach(fieldCode => {
+      kinlink.formApi.hideField(fieldCode);
+    });
+    
+    kinlink.formApi.showMessage('info', \`已切换到\${config.label}相关问题\`, 2);
+  }
 
-              if (associatedLabel) {
-                associatedLabel.style.display = \'flex\';
-                associatedLabel.style.flexDirection = \'column\';
-                associatedLabel.style.alignItems = \'center\';
-                associatedLabel.style.justifyContent = \'center\';
-                associatedLabel.style.width = \'40px\';
-                associatedLabel.style.height = \'40px\';
-                associatedLabel.style.borderRadius = \'50%\'; // 圆形
-                associatedLabel.style.border = \'1px solid #d9d9d9\'; // 边框颜色
-                associatedLabel.style.cursor = \'pointer\';
-                associatedLabel.style.textAlign = \'center\'; // 文字居中
-                associatedLabel.style.lineHeight = \'40px\'; // 辅助垂直居中
+  // 处理体验评价变化
+  function handleExperienceRatingChange(rating) {
+    const config = SURVEY_CONFIG.EXPERIENCE_RATING.options[rating];
+    if (!config) return;
 
-                // 初始状态下，如果选中则高亮
-                if (input.checked) {
-                    associatedLabel.style.backgroundColor = \'#1890ff\'; // 选中背景色
-                    associatedLabel.style.color = \'white\'; // 选中文字颜色
-                }
-                
-                input.addEventListener(\'change\', () => {
-                  // 重置所有同组评分按钮的样式
-                  inputs.forEach(inp => {
-                    let lbl = inp.nextElementSibling;
-                     if (!lbl || lbl.tagName !== \'LABEL\') {
-                       lbl = inp.parentElement && inp.parentElement.tagName === \'LABEL\' ? inp.parentElement : null;
-                    }
-                    if (lbl) {
-                      lbl.style.backgroundColor = \'\'; // 恢复默认背景
-                      lbl.style.color = \'\'; // 恢复默认文字颜色
-                    }
-                  });
-                  
-                  // 高亮当前选中的标签
-                  if (input.checked && associatedLabel) {
-                    associatedLabel.style.backgroundColor = \'#1890ff\';
-                    associatedLabel.style.color = \'white\';
-                  }
-                });
-              }
-            });
+    console.log(\`体验评价: \${config.label}\`);
+    
+    // 显示相关字段
+    config.nextFields.forEach(fieldCode => {
+      kinlink.formApi.showField(fieldCode);
+      
+      // 为不同评价添加不同的提示
+      const element = kinlink.formApi.getFieldElement(fieldCode);
+      if (element) {
+        const input = element.querySelector('textarea, input');
+        if (input) {
+          if (rating === 'poor') {
+            input.placeholder = '请详细说明您遇到的问题，我们会认真改进';
+            input.style.borderColor = '#e74c3c';
+          } else {
+            input.placeholder = '感谢您的肯定，请分享更多想法';
+            input.style.borderColor = '#27ae60';
           }
         }
       }
     });
-  }
-  
-  // 添加验证器的函数
-  function addValidators() {
-    const form = kinlink.formApi;
     
-    SURVEY_CONFIG.questions.forEach(question => {
-      if (question.validator) {
-        form.addFieldValidator(question.id, question.validator);
-      } else if (question.required) {
-        // 为必填项添加通用验证器
-        form.addFieldValidator(question.id, (value) => {
-          if (!value || (Array.isArray(value) && value.length === 0) || value === '') {
-            return \`\${question.text} 是必填项\`;
-          }
-          return undefined; // 验证通过返回 undefined
+    // 隐藏不相关字段
+    config.hiddenFields.forEach(fieldCode => {
+      kinlink.formApi.hideField(fieldCode);
+    });
+    
+    const messageType = rating === 'poor' ? 'warning' : 'success';
+    kinlink.formApi.showMessage(messageType, \`感谢您的\${config.label}评价\`, 2);
+  }
+
+  // 设置初始状态
+  function setupInitialState() {
+    // 隐藏所有条件字段
+    hideAllConditionalFields();
+    
+    // 显示欢迎消息
+    setTimeout(() => {
+      kinlink.formApi.showMessage('info', '欢迎参与调查！请选择您的用户类型开始', 3);
+    }, 1000);
+  }
+
+  // 隐藏所有条件字段
+  function hideAllConditionalFields() {
+    const allConditionalFields = [
+      ...Object.values(SURVEY_CONFIG.USER_TYPE.options).flatMap(option => [...option.nextFields, ...option.hiddenFields]),
+      ...Object.values(SURVEY_CONFIG.EXPERIENCE_RATING.options).flatMap(option => [...option.nextFields, ...option.hiddenFields])
+    ];
+    
+    // 去重
+    const uniqueFields = [...new Set(allConditionalFields)];
+    
+    uniqueFields.forEach(fieldCode => {
+      kinlink.formApi.hideField(fieldCode);
+    });
+  }
+
+  // 重置调查状态
+  function resetSurveyState() {
+    if (confirm('确定要重置调查吗？这将清除所有已填写的数据。')) {
+      // 清空所有字段值
+      Object.values(SURVEY_CONFIG).forEach(config => {
+        kinlink.formApi.setFieldValue(config.fieldCode, '');
+        
+        Object.values(config.options).forEach(option => {
+          [...option.nextFields, ...option.hiddenFields].forEach(fieldCode => {
+            kinlink.formApi.setFieldValue(fieldCode, '');
+          });
         });
-      }
-    });
-  }
-  
-  // 更新问题可见性的函数
-  function updateQuestionVisibility() {
-    const form = kinlink.formApi;
-    const values = form.getAllValues();
-    
-    SURVEY_CONFIG.questions.forEach(question => {
-      if (question.showIf) {
-        const shouldShow = question.showIf(values);
-        
-        if (shouldShow) {
-          form.showField(question.id);
-        } else {
-          form.hideField(question.id);
-          
-          // 隐藏字段时清空其值，以避免提交隐藏数据或影响后续逻辑
-          // 注意：根据业务需求决定是否需要清空。某些情况下可能希望保留隐藏字段的值。
-          form.setFieldValue(question.id, null); // 或 \'\' 根据字段类型
-        }
-      }
-    });
-  }
-  
-  // 表单提交前进行验证
-  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (eventData) => {
-    const form = kinlink.formApi;
-    const values = form.getAllValues();
-    let isValid = true; // 表单是否有效标志
-    
-    // 只验证当前可见的问题
-    const visibleQuestions = SURVEY_CONFIG.questions.filter(question => {
-      if (!question.showIf) return true; // 如果没有 showIf 条件，则始终可见（并参与验证）
-      return question.showIf(values); // 根据当前值判断是否可见
-    });
-    
-    visibleQuestions.forEach(question => {
-      const fieldValue = values[question.id];
+      });
       
-      // 检查必填项
-      if (question.required) {
-        const isEmpty = !fieldValue || (Array.isArray(fieldValue) && fieldValue.length === 0) || String(fieldValue).trim() === \'\';
-        if (isEmpty) {
-          form.setFieldError(question.id, \`\${question.text} 是必填项\`);
-          form.setFieldError(question.id, \`\${question.text} 是必填项\`);
-          isValid = false;
-        }
-      }
+      // 重置显示状态
+      setupInitialState();
       
-      // 执行自定义验证器 (如果存在)
-      if (question.validator) {
-        const error = question.validator(fieldValue, values); // 验证器可以接收当前字段值和所有表单值
-        if (error) {
-          form.setFieldError(question.id, error);
-          isValid = false;
-        }
-      }
+      // 重置统计数据
+      surveyStats = {
+        totalResponses: 0,
+        userTypeDistribution: {},
+        experienceRatings: {},
+        completionRate: 0
+      };
+      
+      updateSurveyStats();
+      kinlink.formApi.showMessage('success', '调查已重置', 2);
+    }
+  }
+
+  // 显示分支可视化
+  function showBranchVisualization() {
+    let branchInfo = '调查分支结构:\\n\\n';
+    
+    branchInfo += '1. 用户类型分支:\\n';
+    Object.entries(SURVEY_CONFIG.USER_TYPE.options).forEach(([key, option]) => {
+      branchInfo += \`   • \${option.label}: 显示字段 \${option.nextFields.length} 个\\n\`;
     });
     
-    if (!isValid) {
-      form.showError('请在提交前修复验证错误。');
-      return false;
+    branchInfo += '\\n2. 体验评价分支:\\n';
+    Object.entries(SURVEY_CONFIG.EXPERIENCE_RATING.options).forEach(([key, option]) => {
+      branchInfo += \`   • \${option.label}: 显示字段 \${option.nextFields.length} 个\\n\`;
+    });
+    
+    alert(branchInfo);
+  }
+
+  // 导出调查数据
+  function exportSurveyData() {
+    const exportData = {
+      timestamp: new Date().toISOString(),
+      stats: surveyStats,
+      currentResponse: getCurrentFormData()
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = \`survey-data-\${new Date().getTime()}.json\`;
+    link.click();
+    
+    kinlink.formApi.showMessage('success', '数据已导出', 2);
+  }
+
+  // 获取当前表单数据
+  function getCurrentFormData() {
+    const formData = {};
+    
+    Object.values(SURVEY_CONFIG).forEach(config => {
+      formData[config.fieldCode] = kinlink.formApi.getFieldValue(config.fieldCode);
+      
+      Object.values(config.options).forEach(option => {
+        [...option.nextFields, ...option.hiddenFields].forEach(fieldCode => {
+          formData[fieldCode] = kinlink.formApi.getFieldValue(fieldCode);
+        });
+      });
+    });
+    
+    return formData;
+  }
+
+  // 更新调查统计
+  function updateSurveyStats() {
+    // 这里可以实现统计逻辑
+    // 实际项目中可能需要从服务器获取数据
+    console.log('更新调查统计数据...');
+  }
+
+  // 更新分支状态
+  function updateBranchStatus() {
+    const branchStatus = document.getElementById('currentBranch');
+    if (!branchStatus) return;
+
+    const userType = kinlink.formApi.getFieldValue(SURVEY_CONFIG.USER_TYPE.fieldCode);
+    const experience = kinlink.formApi.getFieldValue(SURVEY_CONFIG.EXPERIENCE_RATING.fieldCode);
+    
+    let status = '当前状态：';
+    if (userType) {
+      const userConfig = SURVEY_CONFIG.USER_TYPE.options[userType];
+      status += \`\${userConfig ? userConfig.label : userType}\`;
     }
     
-    // 可以在此处向提交数据中添加额外元数据
-    // eventData.values 是将要提交的数据对象，可以直接修改
-    eventData.values.submittedAt = new Date().toISOString();
-    eventData.values.surveyVersion = \'1.0\'; // 示例：添加问卷版本
+    if (experience) {
+      const expConfig = SURVEY_CONFIG.EXPERIENCE_RATING.options[experience];
+      status += \` → \${expConfig ? expConfig.label : experience}\`;
+    }
     
-    console.log(\'准备提交的数据:\', eventData.values);
-    return true; // 允许表单提交
-  });
-  
-  // 处理成功提交后的操作
-  kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, (responseData) => {
-    const { success, error } = responseData; // 解构返回的数据
-    const form = kinlink.formApi;
+    if (!userType && !experience) {
+      status += '等待用户选择...';
+    }
     
-    if (success) {
-      form.showSuccess('感谢您完成调查！');
+    branchStatus.textContent = status;
+  }
+
+  // 切换预览模式
+  let previewMode = false;
+  function togglePreviewMode() {
+    previewMode = !previewMode;
+    
+    if (previewMode) {
+      // 在预览模式下显示所有字段
+      Object.values(SURVEY_CONFIG).forEach(config => {
+        Object.values(config.options).forEach(option => {
+          [...option.nextFields, ...option.hiddenFields].forEach(fieldCode => {
+            kinlink.formApi.showField(fieldCode);
+          });
+        });
+      });
+      
+      kinlink.formApi.showMessage('info', '预览模式：显示所有字段', 2);
     } else {
-      form.showError('提交调查时出现错误，请重试。');
+      // 退出预览模式，恢复正常逻辑
+      setupInitialState();
+      kinlink.formApi.showMessage('info', '已退出预览模式', 2);
     }
-  });
+    
+    const button = document.getElementById('previewMode');
+    if (button) {
+      button.textContent = previewMode ? '🔙 退出预览' : '👁️ 预览模式';
+    }
+  }
 })();`}
       language="javascript"
-      filename="dynamic-survey.js"
     />
-
-    <h2>工作原理</h2>
-    <div>
-      此示例创建了一个动态客户满意度调查，能够根据用户的响应进行自适应。调查包含不同的问题类型（单选按钮、复选框、文本输入等），并使用条件逻辑根据先前的答案显示或隐藏问题。
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <h3>调查配置</h3>
-    <div>调查使用 JavaScript 对象进行配置，该对象定义了：</div>
-    <ul>
-      <li>调查标题和描述</li>
-      <li>问题及其类型、选项和验证规则</li>
-      <li>显示/隐藏问题的条件逻辑</li>
-    </ul>
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。系统会根据用户的选择自动显示相关问题，隐藏不相关的内容，创造个性化的调查体验。
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          动态调查表需要根据您的表单字段配置调整分支逻辑。请确保字段代码正确，并测试所有分支路径是否按预期工作。
+        </div>
+      </div>
+    </div>
 
-    <h3>关键实现细节</h3>
-    <ul>
-      <li>
-        <strong>条件问题：</strong> 根据先前的答案显示或隐藏问题
-      </li>
-      <li>
-        <strong>自定义验证：</strong> 每个问题都可以有自己的验证规则
-      </li>
-      <li>
-        <strong>动态界面：</strong> 评分问题具有自定义样式和交互行为
-      </li>
-      <li>
-        <strong>表单提交：</strong> 只有可见和必填的问题在提交前会被验证
-      </li>
-    </ul>
-
-    <h2>最佳实践</h2>
+    <div>
+      <h2>API参考</h2>
+      <div>此示例使用了以下kinlink API：</div>
     <ul>
       <li>
-        <strong>渐进式披露：</strong> 只显示与用户相关的问题
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
       </li>
       <li>
-        <strong>清晰说明：</strong> 提供清晰的说明并标明必填字段
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
       </li>
       <li>
-        <strong>即时反馈：</strong> 实时验证响应
+          <code>kinlink.FormEvents.FIELD_VALUE_CHANGED</code> - 字段值变化事件
       </li>
       <li>
-        <strong>逻辑流程：</strong> 按逻辑顺序组织问题
+          <code>kinlink.formApi.hideField(fieldCode)</code> -
+          隐藏指定字段
       </li>
       <li>
-        <strong>响应式设计：</strong> 确保调查在所有设备上都能正常工作
+          <code>kinlink.formApi.showField(fieldCode)</code> -
+          显示指定字段
+      </li>
+      <li>
+          <code>kinlink.formApi.getFieldValue(fieldCode)</code> -
+          获取字段值
+      </li>
+      <li>
+          <code>kinlink.formApi.setFieldValue(fieldCode, value)</code> -
+          设置字段值
+      </li>
+      <li>
+          <code>kinlink.formApi.getFieldElement(fieldCode)</code> -
+          获取字段DOM元素
+      </li>
+      <li>
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
       </li>
     </ul>
-
-    <h2>自定义选项</h2>
-    <div>此示例可以通过多种方式进行自定义：</div>
-    <ul>
-      <li>在调查配置中添加或修改问题</li>
-      <li>更改问题类型和验证规则</li>
-      <li>自定义问题和选项的外观</li>
-      <li>实现更复杂的分支逻辑</li>
-      <li>添加进度跟踪和导航</li>
-    </ul>
-
-    <div className="mt-8">
-      <Link href="/examples">
-        <Button variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回示例
-        </Button>
-      </Link>
     </div>
   </div>
 </div> 

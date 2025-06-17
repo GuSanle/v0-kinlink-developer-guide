@@ -4,233 +4,346 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">移动端表单适配优化示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">移动端适配示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">移动适配实现概览</h2>
-      > 构建响应式表单体验，优化移动设备上的表单交互和显示效果
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>移动端优化系统概览</h2>
+      
+      > 全面的移动设备表单优化方案，实现跨设备的一致用户体验
 
-      此示例演示如何使用**kinlink API**检测移动设备并优化表单的移动端体验。通过**设备检测**、**布局调整**和**交互优化**，确保表单在各种移动设备上都能提供最佳的用户体验。
+      此示例演示如何使用**kinlink API**实现**移动端表单优化**。通过**设备检测**、**响应式布局调整**和**移动端交互优化**，确保表单在各种移动设备上都能提供最佳的用户体验。
 
-      ### 移动适配核心功能
-      - 📱 **设备识别**：准确检测移动设备类型和屏幕尺寸
-      - 🎨 **响应式布局**：自动调整表单布局适应不同屏幕
-      - 🔧 **操作栏优化**：移动端专用的操作按钮和工具栏
-      - ⌨️ **输入优化**：触控友好的输入体验和键盘适配
-      - 🎯 **性能优化**：针对移动网络的加载速度优化
-      - 🔄 **自适应更新**：屏幕旋转和窗口变化的响应处理
+      ### 移动端适配核心功能
+      - 📱 **设备检测**：自动识别移动设备类型和特性
+      - 🔧 **布局优化**：针对小屏幕调整字段布局和间距
+      - ✏️ **输入优化**：优化虚拟键盘和输入体验
+      - 👆 **触控友好**：增大按钮尺寸，优化触控交互
+      - 🎨 **视觉调整**：适配移动端的视觉元素和字体大小
+      - ⚡ **性能优化**：减少不必要的动画和复杂效果
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何使用kinlink
-        API根据用户的设备类型（移动端或桌面端）优化表单体验。移动设备通常需要更大的触控区域、简化的界面和更少的输入字段，而桌面设备可以展示更丰富的功能和布局。
-      </div>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>检测当前设备类型</li>
-        <li>为移动设备优化字段样式和大小</li>
-        <li>在移动端隐藏复杂组件</li>
-        <li>调整布局适应不同屏幕尺寸</li>
-        <li>添加设备类型指示器</li>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>检测移动设备类型和屏幕尺寸</li>
+        <li>动态调整表单布局和样式</li>
+        <li>优化移动端输入体验</li>
+        <li>增强触控交互友好性</li>
       </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例8: 移动端适配
- * 功能：根据设备类型提供不同的UI和交互体验
+ * 功能：检测移动设备并优化表单布局和交互
  */
 (function () {
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // 检测是否是移动端设备
-      const isMobile = kinlink.layoutApi.checkIsMobileDevice();
-      console.log('是否移动端:', isMobile);
+      // 移动设备检测
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+      const isTablet = /iPad|Android.*(?!.*Mobile)/i.test(navigator.userAgent);
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-      if (isMobile) {
-        // === 移动端优化 ===
-        applyMobileOptimization();
-      } else {
-        // === PC端优化 ===
-        applyDesktopOptimization();
+      // 获取设备信息
+      const deviceInfo = {
+        isMobile: isMobile,
+        isTablet: isTablet,
+        isTouchDevice: isTouchDevice,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        pixelRatio: window.devicePixelRatio || 1,
+      };
+
+      console.log('设备信息:', deviceInfo);
+
+      // 如果是移动设备，应用移动端优化
+      if (isMobile || isTablet || isTouchDevice) {
+        applyMobileOptimizations(deviceInfo);
       }
 
-      // 添加状态指示器
-      addDeviceIndicator(isMobile);
+      // 创建设备信息显示面板
+      createDeviceInfoPanel(deviceInfo);
+
+      // 监听屏幕方向变化
+      window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+          handleOrientationChange();
+        }, 100);
+      });
+
+      // 监听窗口大小变化
+      window.addEventListener('resize', () => {
+        handleWindowResize();
+      });
+
     } catch (error) {
-      console.error('移动端适配失败:', error);
+      console.error('移动端适配初始化失败:', error);
     }
   });
 
-  // 移动端优化函数
-  function applyMobileOptimization() {
-    const form = kinlink.formApi;
+  // 应用移动端优化
+  function applyMobileOptimizations(deviceInfo) {
+    const formElement = document.querySelector('.ant-form');
+    if (!formElement) return;
 
-    // 隐藏复杂的同行者表格，简化移动端体验
-    form.hideField('表格_13');
+    // 添加移动端样式类
+    formElement.classList.add('mobile-optimized');
 
-    // 增大触控区域，提高易用性
-    const fieldsToEnlarge = [
-      '文字列__1行__0',
-      '文字列__1行__1',
-      '单行文本框_8',
-      '单行文本框_9',
-      '文字列__1行__2',
-      '文字列__1行__3',
-    ];
+    // 创建移动端样式
+    const mobileStyles = document.createElement('style');
+    mobileStyles.textContent = \`
+      .mobile-optimized {
+        font-size: 16px !important; /* 防止iOS缩放 */
+      }
+      
+      .mobile-optimized .ant-form-item {
+        margin-bottom: 20px !important; /* 增加间距 */
+      }
+      
+      .mobile-optimized .ant-input,
+      .mobile-optimized .ant-select-selector,
+      .mobile-optimized .ant-picker {
+        min-height: 44px !important; /* 触控友好的最小高度 */
+        font-size: 16px !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+      }
+      
+      .mobile-optimized .ant-btn {
+        min-height: 44px !important;
+        font-size: 16px !important;
+        padding: 12px 20px !important;
+        border-radius: 8px !important;
+      }
+      
+      .mobile-optimized .ant-form-item-label {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        margin-bottom: 8px !important;
+      }
+      
+      /* 小屏幕适配 */
+      @media (max-width: 768px) {
+        .mobile-optimized {
+          padding: 16px !important;
+        }
+        
+        .mobile-optimized .ant-form-item {
+          margin-bottom: 24px !important;
+        }
+        
+        .mobile-optimized .ant-col {
+          width: 100% !important;
+          flex: none !important;
+        }
+      }
+      
+      /* 横屏适配 */
+      @media (orientation: landscape) and (max-height: 600px) {
+        .mobile-optimized .ant-form-item {
+          margin-bottom: 16px !important;
+        }
+      }
+    \`;
+    document.head.appendChild(mobileStyles);
 
-    fieldsToEnlarge.forEach((field) => {
-      form.setFieldComponentStyle(field, {
-        fontSize: '16px',
-        padding: '12px 8px',
-        borderRadius: '8px',
-        marginBottom: '16px',
-      });
-    });
+    // 设置特定字段的移动端优化
+    optimizeSpecificFields();
 
-    // 避免使用多列布局
-    document.querySelectorAll('.ant-row').forEach((row) => {
-      row.style.flexDirection = 'column';
-    });
+    // 优化数字输入
+    optimizeNumericInputs();
 
-    // 修改提交按钮样式
-    const submitButtonStyles = {
-      width: '100%',
-      height: '44px',
-      fontSize: '16px',
-      borderRadius: '8px',
-    };
+    // 添加移动端特定功能
+    addMobileSpecificFeatures();
+  }
 
-    // 假设有一个辅助函数来设置按钮样式（实际实现可能不同）
-    const submitButton = document.querySelector(
-      '#kinlink-mobile-submit-button',
-    );
-    if (submitButton) {
-      Object.assign(submitButton.style, submitButtonStyles);
+  // 优化特定字段
+  function optimizeSpecificFields() {
+    // 邮箱字段设置为email类型
+    const emailField = kinlink.formApi.getFieldElement('文字列__1行__3');
+    if (emailField) {
+      const emailInput = emailField.querySelector('input');
+      if (emailInput) {
+        emailInput.type = 'email';
+        emailInput.autocomplete = 'email';
+      }
     }
 
-    // 显示定制的移动端消息
-    form.showInfo('正在使用移动端视图');
-  }
+    // 电话字段设置为tel类型
+    const phoneField = kinlink.formApi.getFieldElement('文字列__1行__2');
+    if (phoneField) {
+      const phoneInput = phoneField.querySelector('input');
+      if (phoneInput) {
+        phoneInput.type = 'tel';
+        phoneInput.autocomplete = 'tel';
+      }
+    }
 
-  // PC端优化函数
-  function applyDesktopOptimization() {
-    // 使用更高级的表单布局
-    // 显示所有高级功能
-
-    // 显示定制的桌面端消息
-    kinlink.formApi.showInfo('正在使用桌面端视图');
-  }
-
-  // 添加设备类型指示器
-  function addDeviceIndicator(isMobile) {
-    const indicator = document.createElement('div');
-
-    // 设置样式
-    Object.assign(indicator.style, {
-      position: 'fixed',
-      top: '10px',
-      right: '10px',
-      padding: '5px 10px',
-      backgroundColor: isMobile ? '#3498db' : '#27ae60',
-      color: 'white',
-      borderRadius: '4px',
-      fontSize: '12px',
-      zIndex: '1000',
+    // 日期字段优化
+    ['日期_1', '日期_2'].forEach(fieldCode => {
+      const dateField = kinlink.formApi.getFieldElement(fieldCode);
+      if (dateField) {
+        const dateInput = dateField.querySelector('input');
+        if (dateInput) {
+          dateInput.autocomplete = 'bday';
+        }
+      }
     });
+  }
 
-    indicator.textContent = isMobile ? '移动端模式' : '桌面端模式';
-    document.body.appendChild(indicator);
+  // 优化数字输入
+  function optimizeNumericInputs() {
+    const numericFields = document.querySelectorAll('input[type="number"]');
+    numericFields.forEach(input => {
+      input.inputMode = 'numeric';
+      input.pattern = '[0-9]*';
+    });
+  }
+
+  // 添加移动端特定功能
+  function addMobileSpecificFeatures() {
+    // 防止双击缩放
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+      viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+    }
+
+    // 添加触摸反馈
+    const touchElements = document.querySelectorAll('button, .ant-btn, .ant-input, .ant-select');
+    touchElements.forEach(element => {
+      element.addEventListener('touchstart', function() {
+        this.style.opacity = '0.7';
+      });
+      
+      element.addEventListener('touchend', function() {
+        setTimeout(() => {
+          this.style.opacity = '1';
+        }, 150);
+      });
+    });
+  }
+
+  // 创建设备信息显示面板
+  function createDeviceInfoPanel(deviceInfo) {
+    const infoPanel = document.createElement('div');
+    infoPanel.style.cssText = \`
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      z-index: 1000;
+      max-width: 200px;
+    \`;
+
+    infoPanel.innerHTML = \`
+      <div><strong>设备信息</strong></div>
+      <div>移动设备: \${deviceInfo.isMobile ? '是' : '否'}</div>
+      <div>平板设备: \${deviceInfo.isTablet ? '是' : '否'}</div>
+      <div>触控设备: \${deviceInfo.isTouchDevice ? '是' : '否'}</div>
+      <div>屏幕: \${deviceInfo.screenWidth}×\${deviceInfo.screenHeight}</div>
+      <div>视口: \${deviceInfo.viewportWidth}×\${deviceInfo.viewportHeight}</div>
+      <div>像素比: \${deviceInfo.pixelRatio}</div>
+    \`;
+
+    document.body.appendChild(infoPanel);
+
+    // 5秒后自动隐藏
+    setTimeout(() => {
+      infoPanel.style.opacity = '0';
+      infoPanel.style.transition = 'opacity 0.5s';
+      setTimeout(() => {
+        if (infoPanel.parentNode) {
+          infoPanel.parentNode.removeChild(infoPanel);
+        }
+      }, 500);
+    }, 5000);
+  }
+
+  // 处理屏幕方向变化
+  function handleOrientationChange() {
+    console.log('屏幕方向已改变');
+    kinlink.formApi.showMessage('info', '屏幕方向已改变，已自动调整布局', 2);
+  }
+
+  // 处理窗口大小变化
+  function handleWindowResize() {
+    console.log('窗口大小已改变:', window.innerWidth + 'x' + window.innerHeight);
   }
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">
-        移动端优化最佳实践
-      </h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <strong>增大触控区域</strong>
-          ：移动设备上的触控目标应至少为44x44像素
-        </li>
-        <li>
-          <strong>简化表单</strong>：隐藏或简化复杂字段，减少输入数量
-        </li>
-        <li>
-          <strong>单列布局</strong>：避免使用多列布局，确保内容不会溢出屏幕
-        </li>
-        <li>
-          <strong>优化按钮</strong>：增大按钮尺寸，提供清晰的操作反馈
-        </li>
-        <li>
-          <strong>减少输入</strong>：尽可能使用选择控件代替手动输入
-        </li>
-        <li>
-          <strong>考虑网络条件</strong>
-          ：移动用户可能处于弱网环境，优化数据加载
-        </li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
-      <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段和业务需求修改优化逻辑。您可以进一步定制以满足特定的移动设备需求。
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
-          使用<code>document.querySelectorAll</code>
-          等DOM操作方法时要小心，确保目标元素存在且唯一。另外，过度依赖JavaScript修改样式可能导致性能问题，应当配合CSS媒体查询使用。
+    </div>
+
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。代码会自动检测移动设备并应用相应的优化。建议在移动设备上测试效果。
+      </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/8-移动端适配.js"
+          className="text-primary hover:underline ml-1"
+          download="8-移动端适配.js"
+        >
+          8-移动端适配.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          移动端适配涉及CSS样式修改，请确保样式不会与现有的主题冲突。建议在不同设备和方向上充分测试表单的显示效果。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
         <li>
-          <code>kinlink.layoutApi.checkIsMobileDevice()</code> -
-          检查是否为移动设备
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
         </li>
         <li>
-          <code>kinlink.formApi.hideField(fieldCode)</code> - 隐藏字段
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
         </li>
         <li>
-          <code>
-            kinlink.formApi.setFieldComponentStyle(fieldCode, styleObject)
-          </code>{" "}
-          - 设置字段组件样式
+          <code>kinlink.formApi.getFieldElement(fieldCode)</code> -
+          获取字段DOM元素
         </li>
         <li>
-          <code>kinlink.formApi.showInfo(message)</code> - 显示信息消息
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
         </li>
       </ul>
     </div>

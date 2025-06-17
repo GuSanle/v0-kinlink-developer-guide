@@ -4,162 +4,239 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段值操作实战示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">字段值操作示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">实例功能概览</h2>
-      > 表单字段值的完整操作演示，涵盖读取、设置、批量处理的实际应用场景
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>字段数据管理概览</h2>
+      
+      > 全面的表单字段值操作解决方案，实现数据的读取、设置和批量处理
 
-      此示例演示如何使用**kinlink API**读取和设置表单字段的值。这是表单操作中最基础也是最重要的功能之一，包括**单个字段操作**和**批量字段操作**。
+      此示例演示如何使用**kinlink API**进行**表单字段值的操作**。通过**数据读取**、**值设置**、**批量处理**和**数据验证**，实现完整的表单数据管理工作流程。
 
-      ### 核心操作能力
-      - 🔧 **字段值设置**：单个和批量字段值的精确控制
-      - 📖 **字段值读取**：获取当前表单数据状态
-      - 🎯 **交互式测试**：动态按钮演示操作效果
-      - 📋 **数据预填充**：自动化表单初始化
-      - 🔍 **实时反馈**：操作结果的即时显示
-      - ⚡ **性能优化**：批量操作提升处理效率
+      ### 字段值操作核心功能
+      - 📖 **值读取**：获取单个或多个字段的当前值
+      - ✏️ **值设置**：动态设置字段值，支持各种数据类型
+      - 🔄 **批量操作**：一次性处理多个字段的值操作
+      - 🧹 **数据清理**：清空字段值或重置为默认状态
+      - 🔍 **数据验证**：在操作过程中验证数据的有效性
+      - ⚡ **性能优化**：高效的批量操作和缓存机制
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">实现代码演示</h2>
-      > 完整的字段值操作实现，包含初始化、测试工具和错误处理
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>获取字段当前值</li>
+        <li>设置字段新值</li>
+        <li>批量获取多个字段值</li>
+        <li>批量设置多个字段值</li>
+        <li>清空字段值</li>
+      </ul>
+    </div>
 
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
- * 示例5: 字段值读取与设置
- * 功能：获取和设置表单字段的值
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
+ * 示例5: 字段值操作
+ * 功能：读取、设置、清空表单字段的值
  */
 (function () {
-  // 初始化表单
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // 设置单个字段值
-      kinlink.formApi.setFieldValue('单行文本框_0', '测试案件');
+      // 设置字段值
+      kinlink.formApi.setFieldValue('文字列__1行__0', '张');
+      kinlink.formApi.setFieldValue('文字列__1行__1', '三');
+      kinlink.formApi.setFieldValue('单行文本框_8', 'Zhang');
+      kinlink.formApi.setFieldValue('单行文本框_9', 'San');
 
-      // 批量设置多个字段值
-      kinlink.formApi.setFieldsValue({
-        文字列__1行__0: '山田',
-        文字列__1行__1: '太郎',
-        单行文本框_8: 'YAMADA',
-        单行文本框_9: 'TARO',
-        单选框_0: '男',
-        日期_1: '1990-01-01',
+      // 设置日期字段值
+      kinlink.formApi.setFieldValue('日期_1', '2024-01-15');
+      kinlink.formApi.setFieldValue('日期_2', '2025-12-31');
+
+      // 批量设置字段值
+      const fieldValues = {
+        '单行文本框_10': 'kinlink科技有限公司',
+        '文字列__1行__2': '+86 138 0013 8000',
+        '文字列__1行__3': 'zhang.san@kinlink.com',
+      };
+      kinlink.formApi.setFieldValues(fieldValues);
+
+      // 创建操作按钮面板
+      const controlPanel = document.createElement('div');
+      controlPanel.style.margin = '10px 0';
+      controlPanel.style.padding = '15px';
+      controlPanel.style.backgroundColor = '#f8f9fa';
+      controlPanel.style.border = '1px solid #dee2e6';
+      controlPanel.style.borderRadius = '6px';
+
+      // 按钮样式
+      const buttonStyle = {
+        margin: '5px',
+        padding: '8px 12px',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '500',
+      };
+
+      // 获取值按钮
+      const getValueBtn = document.createElement('button');
+      getValueBtn.textContent = '获取字段值';
+      Object.assign(getValueBtn.style, buttonStyle, {
+        backgroundColor: '#3498db',
+        color: 'white',
       });
-
-      // 创建测试按钮，显示当前表单值
-      const showValuesButton = document.createElement('button');
-      showValuesButton.type = 'button';
-      showValuesButton.textContent = '显示当前表单值';
-      showValuesButton.style.margin = '10px 0';
-      showValuesButton.style.padding = '5px 10px';
-
-      showValuesButton.addEventListener('click', () => {
+      getValueBtn.addEventListener('click', () => {
         // 获取单个字段值
-        const name = kinlink.formApi.getFieldValue('文字列__1行__0');
-        console.log('姓氏:', name);
-
-        // 获取所有字段值
-        const allValues = kinlink.formApi.getAllValues();
-        console.log('所有字段值:', allValues);
-
-        // 显示提示信息
-        kinlink.formApi.showInfo(
-          \`当前姓名: \${name} \${kinlink.formApi.getFieldValue('文字列__1行__1')}\`,
-        );
+        const firstName = kinlink.formApi.getFieldValue('文字列__1行__0');
+        const lastName = kinlink.formApi.getFieldValue('文字列__1行__1');
+        
+        // 批量获取字段值
+        const values = kinlink.formApi.getFieldValues([
+          '文字列__1行__0',
+          '文字列__1行__1',
+          '单行文本框_10',
+          '文字列__1行__2',
+        ]);
+        
+        console.log('单个字段值:', { firstName, lastName });
+        console.log('批量字段值:', values);
+        
+        alert(\`姓名: \${firstName} \${lastName}\\n公司: \${values['单行文本框_10']}\`);
       });
 
-      // 添加按钮到表单
+      // 清空值按钮
+      const clearValueBtn = document.createElement('button');
+      clearValueBtn.textContent = '清空字段值';
+      Object.assign(clearValueBtn.style, buttonStyle, {
+        backgroundColor: '#e74c3c',
+        color: 'white',
+      });
+      clearValueBtn.addEventListener('click', () => {
+        // 清空单个字段
+        kinlink.formApi.setFieldValue('单行文本框_10', '');
+        
+        // 批量清空字段
+        const fieldsToClear = {
+          '文字列__1行__2': '',
+          '文字列__1行__3': '',
+          '日期_1': '',
+        };
+        kinlink.formApi.setFieldValues(fieldsToClear);
+        
+        console.log('字段值已清空');
+      });
+
+      // 重置值按钮
+      const resetValueBtn = document.createElement('button');
+      resetValueBtn.textContent = '重置默认值';
+      Object.assign(resetValueBtn.style, buttonStyle, {
+        backgroundColor: '#27ae60',
+        color: 'white',
+      });
+      resetValueBtn.addEventListener('click', () => {
+        // 重置为初始值
+        kinlink.formApi.setFieldValues(fieldValues);
+        kinlink.formApi.setFieldValue('日期_1', '2024-01-15');
+        
+        console.log('字段值已重置');
+      });
+
+      // 添加按钮到控制面板
+      controlPanel.appendChild(getValueBtn);
+      controlPanel.appendChild(clearValueBtn);
+      controlPanel.appendChild(resetValueBtn);
+
+      // 添加标题
+      const panelTitle = document.createElement('div');
+      panelTitle.textContent = '字段值操作演示';
+      panelTitle.style.marginBottom = '10px';
+      panelTitle.style.fontWeight = 'bold';
+      panelTitle.style.color = '#2c3e50';
+      controlPanel.insertBefore(panelTitle, controlPanel.firstChild);
+
+      // 添加控制面板到表单
       const formElement = document.querySelector('.ant-form') || document.body;
-      formElement.insertBefore(showValuesButton, formElement.firstChild);
-
-      // 创建自动填充测试数据的按钮
-      const fillDataButton = document.createElement('button');
-      fillDataButton.type = 'button';
-      fillDataButton.textContent = '填充测试数据';
-      fillDataButton.style.margin = '10px 5px';
-      fillDataButton.style.padding = '5px 10px';
-
-      fillDataButton.addEventListener('click', () => {
-        kinlink.formApi.setFieldsValue({
-          文字列__1行__0: '李',
-          文字列__1行__1: '小明',
-          单行文本框_8: 'LI',
-          单行文本框_9: 'XIAOMING',
-          单行文本框_10: 'ABC株式会社',
-          单行文本框_11: 'P12345678',
-          单选框_0: '男',
-          日期_1: '1995-05-15',
-          日期_2: '2030-12-31',
-          文字列__1行__2: '13800138000',
-          文字列__1行__3: 'test@example.com',
-          下拉菜单: 'A',
-        });
-        kinlink.formApi.showSuccess('测试数据已填充');
-      });
-
-      formElement.insertBefore(fillDataButton, formElement.firstChild);
+      formElement.insertBefore(controlPanel, formElement.firstChild);
     } catch (error) {
       console.error('字段值操作失败:', error);
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">部署使用指南</h2>
-      > 将示例代码集成到您的kinlink项目中的详细步骤
-
-      **集成步骤：**
-      1. 将上述代码复制到您的**kinlink自定义JavaScript**中
-      2. 根据您的表单字段修改相应的**字段代码**
-      3. 保存并刷新表单页面查看效果
-
-      **字段代码映射：** 请确保将示例中的字段代码（如`'单行文本框_0'`、`'文字列__1行__0'`）替换为您实际表单中的字段代码。
-
-      <div className="p-4 border rounded-md bg-green-50 border-green-200">
-        <h3 className="font-semibold text-green-800">💡 功能演示</h3>
-        <div className="text-green-800">
-          代码会自动添加**"显示当前表单值"**和**"填充测试数据"**两个按钮，您可以通过这些按钮测试字段值的读取和设置功能。
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。根据您的表单字段，修改代码中的字段代码和相应的值。您可以根据业务需求处理字段数据。
+      </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/5-字段值操作.js"
+          className="text-primary hover:underline ml-1"
+          download="5-字段值操作.js"
+        >
+          5-字段值操作.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          设置字段值时请确保数据格式正确，特别是日期字段需要使用标准的日期格式（YYYY-MM-DD）。批量操作可以提高性能，建议优先使用。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API函数参考</h2>
-      > 本示例使用的核心kinlink API方法说明
-
-      **字段值操作API：**
-      - **`kinlink.formApi.setFieldValue(fieldCode, value)`** - 设置单个字段的值
-      - **`kinlink.formApi.setFieldsValue(values)`** - 批量设置多个字段的值
-      - **`kinlink.formApi.getFieldValue(fieldCode)`** - 获取单个字段的值
-      - **`kinlink.formApi.getAllValues()`** - 获取所有字段的值
-
-      **消息提示API：**
-      - **`kinlink.formApi.showInfo(message)`** - 显示信息消息
-      - **`kinlink.formApi.showSuccess(message)`** - 显示成功消息
-
-      **事件监听API：**
-      - **`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)`** - 监听表单加载完成事件
+    <div>
+      <h2>API参考</h2>
+      <div>此示例使用了以下kinlink API：</div>
+      <ul>
+        <li>
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
+        </li>
+        <li>
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
+        </li>
+        <li>
+          <code>kinlink.formApi.getFieldValue(fieldCode)</code> -
+          获取指定字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldValue(fieldCode, value)</code> -
+          设置指定字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.getFieldValues(fieldCodes)</code> -
+          批量获取多个字段的值
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldValues(valuesObject)</code> -
+          批量设置多个字段的值
+        </li>
+      </ul>
     </div>
-
   </div>
 </div> 

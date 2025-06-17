@@ -4,226 +4,406 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const sampleCode = `/**
- * 示例: 隐藏kintone标签
- * 功能：隐藏表单中的kintone相关标签和元素
- */
-(function () {
-  // 监听表单加载完成事件
-  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
-    try {
-      const formApi = kinlink.formApi;
-      formApi.hideKintoneLabel();
-    } catch (error) {}
-  });
-})();
-`;
-
-export const advancedSampleCode = `/**
- * 示例: 隐藏更多kintone相关元素
- * 功能：隐藏kintone相关标签、分组/折叠元素、页眉和操作栏
- */
-(function () {
-  // 监听表单加载完成事件
-  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
-    try {
-      // 隐藏kintone标签
-      kinlink.formApi.hideKintoneLabel();
-      
-      // 隐藏kintone分组/折叠元素
-      kinlink.formApi.hideKintoneCollapse();
-      
-      // 隐藏页眉
-      kinlink.layoutApi.hideHeader();
-      
-      // 在移动设备上隐藏表单操作栏
-      if (kinlink.layoutApi.checkIsMobileDevice()) {
-        kinlink.layoutApi.mobileHideFormActionBar();
-      }
-      
-      // 隐藏提交按钮
-      kinlink.layoutApi.hideSubmitButton();
-      
-      // 创建自定义提交按钮
-      const customSubmitBtn = document.createElement('button');
-      customSubmitBtn.textContent = '提交表单';
-      customSubmitBtn.style.padding = '10px 20px';
-      customSubmitBtn.style.backgroundColor = '#1890ff';
-      customSubmitBtn.style.color = 'white';
-      customSubmitBtn.style.border = 'none';
-      customSubmitBtn.style.borderRadius = '4px';
-      customSubmitBtn.style.margin = '20px 0';
-      customSubmitBtn.style.cursor = 'pointer';
-      
-      customSubmitBtn.addEventListener('click', () => {
-        kinlink.formApi.submit();
-      });
-      
-      // 添加到表单底部
-      const formElement = document.querySelector('.ant-form');
-      if (formElement) {
-        formElement.appendChild(customSubmitBtn);
-      }
-    } catch (error) {
-      console.error('隐藏kintone元素失败:', error);
-    }
-  });
-})();
-`;
-
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">Kintone原生标签隐藏示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">隐藏kintone标签示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">标签控制功能概览</h2>
-      > Kintone平台专用的标签显隐控制，实现自定义标签替换和界面优化
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>标签隐藏管理概览</h2>
+      
+      > 精确控制表单字段标签显示，创造简洁流畅的用户界面
 
-      此示例演示如何使用**kinlink API**隐藏**Kintone原生字段标签**，实现更加定制化的表单界面。通过隐藏默认标签，您可以使用自定义标签样式或完全重新设计表单外观。
+      此示例演示如何使用**kinlink API**隐藏表单字段的**原生标签**，实现**极简表单设计**和**自定义标签布局**。通过隐藏系统标签，可以创建更具设计感的表单界面，同时保持字段功能完整。
 
-      ### 标签控制核心功能
-      - 🙈 **原生标签隐藏**：完全隐藏Kintone默认字段标签
-      - 🎨 **自定义标签设计**：使用自定义样式替换原生标签
-      - 🔄 **动态标签切换**：条件性显示或隐藏特定标签
-      - 🎯 **界面简化**：移除冗余标签，简化用户界面
-      - 📱 **响应式优化**：针对移动端的标签布局优化
-      - ⚡ **批量操作**：同时处理多个字段的标签显隐
+      ### 标签隐藏核心功能
+      - 🎯 **精准隐藏**：选择性隐藏特定字段标签
+      - 🎨 **界面简化**：创造更简洁的视觉效果
+      - 📱 **移动优化**：在小屏幕上优化空间使用
+      - 🔧 **自定义布局**：为自定义标签腾出空间
+      - ⚡ **性能友好**：不影响表单加载和提交性能
+      - 🔄 **动态控制**：可根据条件动态显示或隐藏标签
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">基本示例</h2>
-      <div>以下代码展示了如何隐藏基本的Kintone标签：</div>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={sampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">高级示例</h2>
-      <div>以下代码展示了如何隐藏更多Kintone元素并添加自定义提交按钮：</div>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={advancedSampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">
-        可隐藏的Kintone元素
-      </h2>
-      <div>使用kinlink API，您可以隐藏以下Kintone原生元素：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <strong>Kintone标签</strong>：通过<code>hideKintoneLabel()</code>
-          隐藏
-        </li>
-        <li>
-          <strong>Kintone分组/折叠元素</strong>：通过
-          <code>hideKintoneCollapse()</code>隐藏
-        </li>
-        <li>
-          <strong>页眉</strong>：通过<code>hideHeader()</code>隐藏
-        </li>
-        <li>
-          <strong>提交按钮</strong>：通过<code>hideSubmitButton()</code>隐藏
-        </li>
-        <li>
-          <strong>移动设备表单操作栏</strong>：通过
-          <code>mobileHideFormActionBar()</code>隐藏
-        </li>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>批量隐藏多个字段标签</li>
+        <li>保持字段功能完整性</li>
+        <li>优化移动端显示效果</li>
+        <li>支持动态标签切换</li>
       </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用场景</h2>
-      <div>以下是隐藏Kintone元素的常见使用场景：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <strong>品牌统一</strong>：创建符合企业品牌的表单外观
-        </li>
-        <li>
-          <strong>简化界面</strong>：移除不必要的元素，使表单更加简洁
-        </li>
-        <li>
-          <strong>自定义工作流</strong>
-          ：隐藏默认提交按钮，使用自定义按钮实现更复杂的提交逻辑
-        </li>
-        <li>
-          <strong>嵌入式表单</strong>
-          ：在其他页面中嵌入kinlink表单时，隐藏不必要的平台元素
-        </li>
-        <li>
-          <strong>移动设备优化</strong>：为移动用户提供更简洁的界面
-        </li>
-      </ul>
-    </div>
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
+ * 示例12: 隐藏kintone标签
+ * 功能：隐藏指定字段的原生标签，创造简洁界面
+ */
+(function () {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 定义需要隐藏标签的字段列表
+      const fieldsToHideLabels = [
+        '文字列__1行__0',  // 姓名字段
+        '文字列__1行__1',  // 假名字段
+        '文字列__1行__2',  // 电话字段
+        '文字列__1行__3',  // 邮箱字段
+        '单行文本框_10',   // 公司字段
+        '单行文本框_11'    // 身份证字段
+      ];
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
-      <div>
-        将代码复制到您的kinlink自定义JavaScript中。您可以根据需要组合使用不同的隐藏方法。
+      console.log('开始隐藏字段标签...');
+
+      // 批量隐藏标签
+      hideMultipleLabels(fieldsToHideLabels);
+
+      // 创建标签控制面板
+      const controlPanel = createLabelControlPanel(fieldsToHideLabels);
+      
+      // 将控制面板添加到表单顶部
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(controlPanel, formElement.firstChild);
+
+      // 为字段添加占位符，补偿隐藏的标签
+      addPlaceholdersForHiddenLabels(fieldsToHideLabels);
+
+      // 移动端优化处理
+      setupMobileOptimization();
+
+      console.log('标签隐藏设置完成');
+
+    } catch (error) {
+      console.error('隐藏kintone标签失败:', error);
+    }
+  });
+
+  // 批量隐藏标签
+  function hideMultipleLabels(fieldCodes) {
+    fieldCodes.forEach((fieldCode, index) => {
+      try {
+        kinlink.formApi.hideFieldLabel(fieldCode);
+        console.log(\`已隐藏字段 \${fieldCode} 的标签\`);
+        
+        // 添加渐进式隐藏效果
+        setTimeout(() => {
+          const element = kinlink.formApi.getFieldElement(fieldCode);
+          if (element) {
+            addHiddenLabelEffect(element);
+          }
+        }, index * 100); // 延迟执行，创造渐进效果
+        
+      } catch (error) {
+        console.warn(\`隐藏字段 \${fieldCode} 标签失败:\`, error);
+      }
+    });
+  }
+
+  // 创建标签控制面板
+  function createLabelControlPanel(fieldCodes) {
+    const panel = document.createElement('div');
+    panel.className = 'label-control-panel';
+    panel.style.cssText = \`
+      margin: 15px 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    \`;
+
+    panel.innerHTML = \`
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600;">
+          🏷️ 标签显示控制中心
+        </h3>
+        <div style="font-size: 14px; opacity: 0.9;">
+          已隐藏 \${fieldCodes.length} 个字段标签，简化界面显示
+        </div>
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
-          如果隐藏了默认提交按钮，请确保提供替代的提交方式，否则用户将无法提交表单。同样，请确保隐藏元素后的表单布局仍然美观和易用。
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px;">
+        <button id="toggleAllLabels" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+          👁️ 切换所有标签
+        </button>
+        <button id="showLabelInfo" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+          ℹ️ 显示标签状态
+        </button>
+        <button id="optimizeLayout" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+          📱 优化移动布局
+        </button>
+        <button id="restoreDefaults" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+          🔄 恢复默认
+        </button>
+      </div>
+      
+      <div id="statusDisplay" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; font-size: 13px; font-family: monospace;">
+        状态：所有标签已隐藏 | 界面已优化
+      </div>
+    \`;
+
+    // 添加按钮悬停效果
+    const buttons = panel.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        this.style.background = 'rgba(255,255,255,0.3)';
+        this.style.transform = 'translateY(-2px)';
+      });
+      
+      button.addEventListener('mouseleave', function() {
+        this.style.background = 'rgba(255,255,255,0.2)';
+        this.style.transform = 'translateY(0)';
+      });
+    });
+
+    // 绑定控制事件
+    panel.addEventListener('click', (e) => handleControlPanelClick(e, fieldCodes));
+
+    return panel;
+  }
+
+  // 处理控制面板点击事件
+  let labelsHidden = true;
+  function handleControlPanelClick(event, fieldCodes) {
+    const target = event.target;
+    const statusDisplay = document.getElementById('statusDisplay');
+    
+    if (target.id === 'toggleAllLabels') {
+      toggleAllLabelsVisibility(fieldCodes);
+      labelsHidden = !labelsHidden;
+      updateStatus(statusDisplay, labelsHidden ? '所有标签已隐藏' : '所有标签已显示');
+      
+    } else if (target.id === 'showLabelInfo') {
+      showLabelStatusInfo(fieldCodes);
+      
+    } else if (target.id === 'optimizeLayout') {
+      optimizeFormLayout();
+      updateStatus(statusDisplay, '移动布局已优化');
+      
+    } else if (target.id === 'restoreDefaults') {
+      restoreDefaultLabels(fieldCodes);
+      labelsHidden = false;
+      updateStatus(statusDisplay, '已恢复默认标签显示');
+    }
+  }
+
+  // 更新状态显示
+  function updateStatus(statusElement, message) {
+    if (statusElement) {
+      const timestamp = new Date().toLocaleTimeString();
+      statusElement.innerHTML = \`状态：\${message} | 更新时间：\${timestamp}\`;
+    }
+  }
+
+  // 切换所有标签可见性
+  function toggleAllLabelsVisibility(fieldCodes) {
+    fieldCodes.forEach(fieldCode => {
+      if (labelsHidden) {
+        kinlink.formApi.showFieldLabel(fieldCode);
+      } else {
+        kinlink.formApi.hideFieldLabel(fieldCode);
+      }
+    });
+    
+    kinlink.formApi.showMessage(
+      'info', 
+      labelsHidden ? '所有标签已显示' : '所有标签已隐藏', 
+      2
+    );
+  }
+
+  // 显示标签状态信息
+  function showLabelStatusInfo(fieldCodes) {
+    let info = '字段标签状态报告:\\n\\n';
+    
+    fieldCodes.forEach(fieldCode => {
+      const element = kinlink.formApi.getFieldElement(fieldCode);
+      const isVisible = element ? getComputedStyle(element.querySelector('.ant-form-item-label') || element).display !== 'none' : false;
+      info += \`字段: \${fieldCode}\\n标签状态: \${isVisible ? '显示' : '隐藏'}\\n\\n\`;
+    });
+    
+    info += \`总计: \${fieldCodes.length} 个字段\\n\`;
+    info += \`当前时间: \${new Date().toLocaleString()}\`;
+    
+    alert(info);
+  }
+
+  // 优化表单布局
+  function optimizeFormLayout() {
+    const formItems = document.querySelectorAll('.ant-form-item');
+    formItems.forEach(item => {
+      // 减少字段间距
+      item.style.marginBottom = '16px';
+      
+      // 优化输入框样式
+      const input = item.querySelector('input, textarea, select');
+      if (input) {
+        input.style.fontSize = '16px'; // 防止移动端缩放
+        input.style.padding = '12px';
+        input.style.borderRadius = '8px';
+        input.style.transition = 'all 0.3s ease';
+      }
+    });
+    
+    kinlink.formApi.showMessage('success', '表单布局已优化', 2);
+  }
+
+  // 恢复默认标签
+  function restoreDefaultLabels(fieldCodes) {
+    fieldCodes.forEach(fieldCode => {
+      kinlink.formApi.showFieldLabel(fieldCode);
+    });
+    
+    // 移除自定义样式
+    const formItems = document.querySelectorAll('.ant-form-item');
+    formItems.forEach(item => {
+      item.style.marginBottom = '';
+      const input = item.querySelector('input, textarea, select');
+      if (input) {
+        input.style.fontSize = '';
+        input.style.padding = '';
+        input.style.borderRadius = '';
+      }
+    });
+    
+    kinlink.formApi.showMessage('info', '已恢复所有默认设置', 2);
+  }
+
+  // 为隐藏标签的字段添加占位符
+  function addPlaceholdersForHiddenLabels(fieldCodes) {
+    const placeholderTexts = {
+      '文字列__1行__0': '请输入您的姓名',
+      '文字列__1行__1': '请输入假名读音',
+      '文字列__1行__2': '请输入手机号码',
+      '文字列__1行__3': '请输入邮箱地址',
+      '单行文本框_10': '请输入公司名称',
+      '单行文本框_11': '请输入身份证号码'
+    };
+    
+    fieldCodes.forEach(fieldCode => {
+      const element = kinlink.formApi.getFieldElement(fieldCode);
+      if (element) {
+        const input = element.querySelector('input, textarea');
+        if (input && placeholderTexts[fieldCode]) {
+          input.placeholder = placeholderTexts[fieldCode];
+          input.style.fontWeight = '500';
+        }
+      }
+    });
+  }
+
+  // 添加隐藏标签效果
+  function addHiddenLabelEffect(element) {
+    if (element) {
+      element.style.transition = 'all 0.3s ease';
+      element.style.transform = 'translateX(-10px)';
+      setTimeout(() => {
+        element.style.transform = 'translateX(0)';
+      }, 300);
+    }
+  }
+
+  // 移动端优化设置
+  function setupMobileOptimization() {
+    // 检测移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // 移动端特殊优化
+      const style = document.createElement('style');
+      style.textContent = \`
+        .ant-form-item {
+          margin-bottom: 12px !important;
+        }
+        .ant-input, .ant-select-selector {
+          font-size: 16px !important;
+          padding: 10px 12px !important;
+        }
+        .label-control-panel {
+          position: sticky !important;
+          top: 0 !important;
+          z-index: 1000 !important;
+        }
+      \`;
+      document.head.appendChild(style);
+      
+      console.log('移动端优化已启用');
+    }
+  }
+})();`} 
+              language="javascript" 
+            />
+        </TabsContent>
+      </Tabs>
+    </div>
+    </div>
+
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。代码会自动隐藏指定字段的标签，并提供一个控制面板来管理标签显示状态。
+    </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/12-隐藏kintone标签.js"
+          className="text-primary hover:underline ml-1"
+          download="12-隐藏kintone标签.js"
+        >
+          12-隐藏kintone标签.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          隐藏标签后，建议为字段添加适当的占位符文本，以确保用户仍能理解字段的用途。在移动设备上要特别注意可用性。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
         <li>
-          <code>kinlink.formApi.hideKintoneLabel()</code> - 隐藏Kintone标签
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
         </li>
         <li>
-          <code>kinlink.formApi.hideKintoneCollapse()</code> -
-          隐藏Kintone分组/折叠元素
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
         </li>
         <li>
-          <code>kinlink.layoutApi.hideHeader()</code> - 隐藏页眉
+          <code>kinlink.formApi.hideFieldLabel(fieldCode)</code> -
+          隐藏指定字段的标签
         </li>
         <li>
-          <code>kinlink.layoutApi.hideSubmitButton()</code> - 隐藏提交按钮
+          <code>kinlink.formApi.showFieldLabel(fieldCode)</code> -
+          显示指定字段的标签
         </li>
         <li>
-          <code>kinlink.layoutApi.mobileHideFormActionBar()</code> -
-          隐藏移动设备表单操作栏
-        </li>
-         <li>
-          <code>kinlink.layoutApi.checkIsMobileDevice()</code> -
-          检测是否为移动设备
+          <code>kinlink.formApi.getFieldElement(fieldCode)</code> -
+          获取指定字段的DOM元素
         </li>
         <li>
-          <code>kinlink.formApi.submit()</code> - 提交表单
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
         </li>
       </ul>
-    </div>
-    <div className="mt-8 not-prose">
-      <Link href="/examples">
-        <Button variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回示例
-        </Button>
-      </Link>
     </div>
   </div>
 </div> 

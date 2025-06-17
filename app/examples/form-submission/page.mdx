@@ -4,19 +4,20 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">表单提交生命周期处理示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">表单提交生命周期处理示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">提交流程控制概览</h2>
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>提交流程控制概览</h2>
+      
       > 完整的表单提交生命周期管理，实现数据预处理、验证和结果处理
 
       此示例演示如何使用**kinlink API**在表单提交前后处理数据。这允许您在提交表单前**自动格式化或补充数据**，以及在提交后**执行特定操作**，如显示成功消息或处理结果。
@@ -29,29 +30,26 @@ import { Button } from "@/components/ui/button";
       - 🎯 **用户体验**：实时状态提示和操作引导
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">表单事件生命周期</h2>
-      > kinlink提供的表单生命周期事件及其触发时机
-
-      **核心事件类型：**
-      - 🎬 **`FORM_LOADED`** - 表单加载完成时触发，用于初始化UI元素和设置默认值
-      - 🔍 **`BEFORE_SUBMIT`** - 表单提交前触发，可以修改数据或验证表单
-        - 返回`true`：继续提交流程
-        - 返回`false`：取消提交操作
-      - 📋 **`AFTER_SUBMIT`** - 表单提交后触发，用于处理结果或显示反馈消息
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>监听表单提交前事件进行数据预处理</li>
+        <li>监听表单提交后事件处理结果反馈</li>
+        <li>自动补全和格式化表单数据</li>
+        <li>集成外部API调用和错误处理</li>
+      </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">基础提交处理实现</h2>
-      > 完整的表单提交处理代码，包含数据预处理和结果反馈
-
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例9: 表单提交前后处理（自动修改数据示例）
  * 功能：在表单提交前自动修改数据，如自动补全、格式化、添加新字段
  * 所有提示统一用 showMessage
@@ -89,6 +87,7 @@ import { Button } from "@/components/ui/button";
   kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, (data) => {
     try {
       const { values } = data;
+      
       // 自动补全：如果没有填写公司名，自动补全为"未填写"
       if (!values['单行文本框_10']) {
         values['单行文本框_10'] = '未填写';
@@ -98,14 +97,17 @@ import { Button } from "@/components/ui/button";
           3,
         );
       }
+      
       // 自动格式化：手机号去除空格
       if (values['文字列__1行__2']) {
         values['文字列__1行__2'] = values['文字列__1行__2'].replace(/\\s+/g, '');
         kinlink.formApi.showMessage('info', '手机号已自动去除空格', 3);
       }
+      
       // 添加新字段：提交时间戳
       values['_autoSubmitTime'] = new Date().toISOString();
       kinlink.formApi.showMessage('info', '已自动添加提交时间戳', 3);
+      
       // 允许提交
       return true;
     } catch (error) {
@@ -120,6 +122,7 @@ import { Button } from "@/components/ui/button";
     try {
       const { success, result } = data;
       console.log('表单提交结果:', success, result);
+      
       if (success) {
         kinlink.formApi.showMessage('success', '表单提交成功!', 3);
       } else {
@@ -132,126 +135,62 @@ import { Button } from "@/components/ui/button";
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API代理集成示例</h2>
-      > 通过kinlink代理安全调用外部API，实现第三方系统集成
-
-      以下示例展示了如何使用**kinlink的API代理功能**在表单提交时向其他系统发送数据：
-
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
- * 示例: 表单提交时API代理请求示例
- * 功能：表单提交时发送数据到kintone API
- */
-(function () {
-  // 监听表单提交前事件
-  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, async (data) => {
-    try {
-      const { values } = data;
-      // 使用kinlink.proxy发送数据到kintone API
-      const res = await kinlink.proxy(
-        'https://pokemon36.cybozu.cn/k/v1/record.json',
-        'POST',
-        { 'Content-Type': 'application/json' },
-        {
-          app: 187,
-          record: {
-            单行文本框: { value: 'kinlink' },
-          },
-        },
-      );
-      console.log(res, 'res');
-      // 返回true允许表单继续提交
-      return true;
-    } catch (error) {
-      console.error('表单提交前处理失败:', error);
-      // 返回false阻止表单提交
-      return false;
-    }
-  });
-})();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">数据处理操作类型</h2>
-      > 表单提交过程中的常见数据预处理和后处理操作
-
-      **数据预处理操作：**
-      - 🧹 **数据清理**：去除多余空格、格式化电话号码或邮箱等
-      - 📝 **数据补全**：为空字段设置默认值、自动生成编号
-      - 🔄 **数据转换**：转换日期格式、单位转换、大小写处理
-      - 📊 **添加元数据**：添加时间戳、用户信息、系统标识等
-
-      **数据关联操作：**
-      - 🔗 **字段关联**：根据已有字段值设置关联字段
-      - 🧮 **自动计算**：计算总价、税费、折扣等衍生数据
-      - ✅ **验证与确认**：执行最终验证，必要时提示用户确认
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">集成部署指南</h2>
-      > 将提交处理逻辑集成到您的表单项目中的详细步骤
-
-      **部署操作：**
-      1. 将上述代码复制到您的**kinlink自定义JavaScript**中
-      2. 根据您的表单字段修改相应的**字段代码**
-      3. 调整数据处理逻辑以符合业务需求
-      4. 测试提交流程和错误处理机制
-
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">⚠️ 重要注意事项</h3>
-        <div className="text-yellow-800">
-          在**BEFORE_SUBMIT**事件处理程序中，必须返回布尔值。返回`true`允许表单继续提交，返回`false`取消提交。如果包含异步操作，确保使用**async/await**或**Promise**正确处理返回值。
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。您可以根据业务需求在提交前后添加自定义的数据处理逻辑，如验证、格式化、API调用等。
+      </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/9-表单提交处理.js"
+          className="text-primary hover:underline ml-1"
+          download="9-表单提交处理.js"
+        >
+          9-表单提交处理.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          在BEFORE_SUBMIT事件中返回false会阻止表单提交。请确保您的处理逻辑能够正确处理各种异常情况，避免影响正常的表单提交流程。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">相关API参考</h2>
-      > 表单提交处理涉及的kinlink API方法详细说明
-
-      **事件监听API：**
-      - **`kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback)`** - 监听表单加载完成事件
-      - **`kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, callback)`** - 监听表单提交前事件
-      - **`kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, callback)`** - 监听表单提交后事件
-
-      **表单操作API：**
-      - **`kinlink.formApi.submit()`** - 程序化触发表单提交
-      - **`kinlink.formApi.showMessage(type, message, duration)`** - 显示状态消息
-
-      **代理请求API：**
-      - **`kinlink.proxy(url, method, headers, body)`** - 发送安全的API代理请求
-
-      **事件数据结构：**
-      ```javascript
-      // BEFORE_SUBMIT 事件数据
-      {
-        values: { fieldCode: value, ... },  // 表单字段值
-        formElement: HTMLElement            // 表单DOM元素
-      }
-
-      // AFTER_SUBMIT 事件数据  
-      {
-        success: boolean,    // 提交是否成功
-        result: any,        // 提交结果数据
-        error?: string      // 错误信息（如有）
-      }
-      ```
+    <div>
+      <h2>API参考</h2>
+      <div>此示例使用了以下kinlink API：</div>
+      <ul>
+        <li>
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
+        </li>
+        <li>
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
+        </li>
+        <li>
+          <code>kinlink.FormEvents.BEFORE_SUBMIT</code> - 表单提交前事件
+        </li>
+        <li>
+          <code>kinlink.FormEvents.AFTER_SUBMIT</code> - 表单提交后事件
+        </li>
+        <li>
+          <code>kinlink.formApi.submit()</code> -
+          手动触发表单提交
+        </li>
+        <li>
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
+        </li>
+      </ul>
     </div>
   </div>
 </div> 

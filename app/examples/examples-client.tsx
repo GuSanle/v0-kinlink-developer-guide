@@ -150,7 +150,7 @@ export function ExamplesClient() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mt-4">
       <ExamplesSearch onSearch={setSearchQuery} />
 
       <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>

@@ -4,153 +4,157 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段状态动态控制示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">字段启用禁用控制示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">字段状态管理概览</h2>
-      > 智能控制表单字段的启用和禁用状态，实现条件式表单交互逻辑
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>字段交互状态管理概览</h2>
+      
+      > 精确控制表单字段的可编辑状态，实现条件式表单交互逻辑
 
-      此示例演示如何使用**kinlink API**动态控制表单字段的启用和禁用状态。通过**条件逻辑**和**用户交互**，实现智能的表单流程控制和用户权限管理。
+      此示例演示如何使用**kinlink API**控制表单字段的**启用和禁用状态**。通过**条件逻辑**、**状态联动**和**用户权限控制**，实现灵活的表单交互体验和数据保护机制。
 
-      ### 状态控制核心能力
-      - 🔒 **条件禁用**：基于业务规则自动禁用字段编辑
-      - 🔓 **智能启用**：满足条件时自动开放字段输入
-      - 🎯 **权限控制**：根据用户角色动态调整字段权限
-      - 🔄 **实时响应**：即时响应表单状态变化
-      - 🛡️ **数据保护**：防止意外修改重要数据
-      - 📋 **流程控制**：实现多步骤表单的逐步解锁
+      ### 状态控制核心功能
+      - 🔓 **字段启用控制**：动态启用特定字段供用户编辑
+      - 🔒 **字段禁用机制**：保护关键字段免受意外修改
+      - 🔄 **状态联动**：基于其他字段值控制字段可编辑性
+      - 🎯 **权限管理**：根据用户角色控制字段访问权限
+      - 📝 **数据保护**：防止敏感数据被误操作
+      - ⚡ **实时响应**：即时响应用户操作调整字段状态
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>禁用特定字段使其变为只读</li>
-        <li>启用先前禁用的字段</li>
-        <li>检查字段的禁用状态</li>
-        <li>通过用户交互动态控制字段的启用/禁用状态</li>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>动态启用指定字段</li>
+        <li>动态禁用指定字段</li>
+        <li>批量控制多个字段的启用状态</li>
+        <li>基于条件的字段状态管理</li>
       </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
- * 示例4: 字段启用/禁用控制
- * 功能：控制表单字段的启用和禁用状态
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
+ * 示例4: 字段启用禁用控制
+ * 功能：动态控制表单字段的启用和禁用状态
  */
 (function () {
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // 禁用特定字段
-      kinlink.formApi.disableField('单行文本框_10'); // 会社名
-      kinlink.formApi.disableField('单行文本框_8'); // ローマ字姓
+      // 禁用指定字段
+      kinlink.formApi.disableField('单行文本框_10');
+      kinlink.formApi.disableField('日期_2');
 
-      // 创建控制按钮进行交互测试
-      const controlPanel = document.createElement('div');
-      controlPanel.style.margin = '10px 0';
-      controlPanel.style.padding = '10px';
-      controlPanel.style.backgroundColor = '#f8f9fa';
-      controlPanel.style.border = '1px solid #dee2e6';
-      controlPanel.style.borderRadius = '4px';
+      // 启用指定字段（如果之前被禁用）
+      kinlink.formApi.enableField('文字列__1行__0');
+      kinlink.formApi.enableField('文字列__1行__1');
 
-      // 添加控制按钮到面板
-      const buttonStyles = 'margin-right: 10px; padding: 5px 10px;';
-
-      // 创建启用/禁用护照字段的按钮
-      const passportBtn = document.createElement('button');
-      passportBtn.textContent = '启用/禁用护照字段';
-      passportBtn.type = 'button';
-      passportBtn.style = buttonStyles;
-      passportBtn.addEventListener('click', () => {
-        const isDisabled =
-          kinlink.formApi.getFieldState('单行文本框_11').disabled;
-        if (isDisabled) {
-          kinlink.formApi.enableField('单行文本框_11');
-          kinlink.formApi.enableField('日期_2');
-          passportBtn.textContent = '禁用护照字段';
-          kinlink.formApi.showSuccess('护照字段已启用');
-        } else {
-          kinlink.formApi.disableField('单行文本框_11');
-          kinlink.formApi.disableField('日期_2');
-          passportBtn.textContent = '启用护照字段';
-          kinlink.formApi.showInfo('护照字段已禁用');
-        }
+      // 批量禁用多个字段
+      const fieldsToDisable = ['单行文本框_8', '单行文本框_9'];
+      fieldsToDisable.forEach((fieldCode) => {
+        kinlink.formApi.disableField(fieldCode);
       });
 
-      controlPanel.appendChild(passportBtn);
+      // 创建切换按钮来演示动态控制
+      const toggleButton = document.createElement('button');
+      toggleButton.textContent = '切换字段状态';
+      toggleButton.style.margin = '10px 0';
+      toggleButton.style.padding = '8px 16px';
+      toggleButton.style.backgroundColor = '#e74c3c';
+      toggleButton.style.color = 'white';
+      toggleButton.style.border = 'none';
+      toggleButton.style.borderRadius = '4px';
+      toggleButton.style.cursor = 'pointer';
 
-      // 获取表单元素并添加控制面板
+      let isDisabled = true;
+      toggleButton.addEventListener('click', () => {
+        if (isDisabled) {
+          kinlink.formApi.enableField('单行文本框_10');
+          kinlink.formApi.enableField('日期_2');
+          toggleButton.textContent = '禁用字段';
+          toggleButton.style.backgroundColor = '#e74c3c';
+        } else {
+          kinlink.formApi.disableField('单行文本框_10');
+          kinlink.formApi.disableField('日期_2');
+          toggleButton.textContent = '启用字段';
+          toggleButton.style.backgroundColor = '#27ae60';
+        }
+        isDisabled = !isDisabled;
+      });
+
+      // 添加按钮到表单
       const formElement = document.querySelector('.ant-form') || document.body;
-      formElement.insertBefore(controlPanel, formElement.firstChild);
+      formElement.insertBefore(toggleButton, formElement.firstChild);
     } catch (error) {
-      console.error('控制字段启用/禁用失败:', error);
+      console.error('控制字段启用禁用失败:', error);
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+    <div>
+      <h2>使用说明</h2>
       <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段和需求修改字段代码。您可以根据业务逻辑或用户权限控制字段的启用和禁用状态。
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。根据您的表单字段，修改代码中的字段代码。您可以根据业务逻辑和权限要求控制字段的启用和禁用状态。
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
-          禁用字段的值仍会被提交。如果需要完全排除某个字段，请考虑使用hideField方法隐藏该字段。
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/4-字段启用禁用控制.js"
+          className="text-primary hover:underline ml-1"
+          download="4-字段启用禁用控制.js"
+        >
+          4-字段启用禁用控制.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          禁用的字段仍会保留其值并参与表单提交。如果需要阻止某些值的提交，请结合字段验证或提交前数据处理。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
+        <li>
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
+        </li>
+        <li>
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
+        </li>
+        <li>
+          <code>kinlink.formApi.enableField(fieldCode)</code> -
+          启用指定字段
+        </li>
         <li>
           <code>kinlink.formApi.disableField(fieldCode)</code> -
           禁用指定字段
         </li>
-        <li>
-          <code>kinlink.formApi.enableField(fieldCode)</code> - 启用指定字段
-        </li>
-        <li>
-          <code>kinlink.formApi.getFieldState(fieldCode)</code> -
-          获取字段状态，包含disabled属性
-        </li>
-        <li>
-          <code>kinlink.formApi.showSuccess(message)</code> - 显示成功消息
-        </li>
-        <li>
-          <code>kinlink.formApi.showInfo(message)</code> - 显示信息消息
-        </li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>基于用户角色或权限控制字段的可编辑性</li>
-        <li>根据表单状态（如已提交、审核中等）调整字段的可编辑性</li>
-        <li>基于其他字段的值控制相关字段的可编辑性</li>
-        <li>创建向导式表单，根据当前步骤启用或禁用特定字段</li>
       </ul>
     </div>
   </div>

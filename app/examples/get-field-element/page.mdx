@@ -4,217 +4,368 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const sampleCode = `/**
- * 示例：在指定字段后面插入按钮，实现条件隐藏/显示字段 并且实现视觉隐藏和真实隐藏
- * 视觉隐藏为被隐藏的内容最终还是会被提交，而真实隐藏为被隐藏的内容不会被提交
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">获取字段元素示例</h1>
+  </div>
+
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>字段元素操作概览</h2>
+      
+      > 深度访问表单字段DOM元素，实现高级自定义和精细控制
+
+      此示例演示如何使用**kinlink API**获取表单字段的**DOM元素**，并对其进行**直接操作**。通过获取字段元素，您可以实现更高级的自定义功能，如添加自定义事件、修改内部结构或集成第三方插件。
+
+      ### 字段元素操作核心功能
+      - 🎯 **精确获取**：通过字段代码准确定位DOM元素
+      - 🔧 **直接操作**：对字段进行底层DOM操作
+      - 🎨 **深度定制**：实现API无法覆盖的高级定制
+      - 📝 **事件绑定**：为字段添加自定义事件监听器
+      - 🔍 **条件隐藏**：基于复杂逻辑控制字段显示
+      - 🔗 **第三方集成**：与其他JavaScript库无缝集成
+    </div>
+
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>获取指定字段的DOM元素</li>
+        <li>对字段元素进行直接操作</li>
+        <li>实现条件性字段隐藏</li>
+        <li>添加自定义事件和交互</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
+ * 示例11: 获取字段元素，并使用条件隐藏
+ * 功能：通过API获取字段DOM元素并进行操作
  */
 (function () {
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // ========== 携帯電話字段后面插入按钮，控制会社名隐藏/显示 ==========
-      const targetFieldCode = '文字列__1行__2'; // 携帯電話
-      const controlFieldCode = '单行文本框_10'; // 会社名
+      // 获取各种字段的DOM元素
+      const nameField = kinlink.formApi.getFieldElement('文字列__1行__0');
+      const emailField = kinlink.formApi.getFieldElement('文字列__1行__3');
+      const phoneField = kinlink.formApi.getFieldElement('文字列__1行__2');
+      const companyField = kinlink.formApi.getFieldElement('单行文本框_10');
 
-      const input = document.querySelector('[id$="' + targetFieldCode + '"]');
-      if (input) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = '隐藏/显示会社名';
-        btn.style.marginLeft = '8px';
-        input.parentNode.insertBefore(btn, input.nextSibling);
-        let isHidden = false;
-        btn.onclick = function () {
-          if (isHidden) {
-            kinlink.formApi.showField(controlFieldCode);
-            btn.textContent = '隐藏会社名';
-          } else {
-            kinlink.formApi.hideField(controlFieldCode);
-            btn.textContent = '显示会社名';
-          }
-          isHidden = !isHidden;
-        };
+      console.log('获取到的字段元素:');
+      console.log('姓名字段:', nameField);
+      console.log('邮箱字段:', emailField);
+      console.log('电话字段:', phoneField);
+      console.log('公司字段:', companyField);
+
+      // 创建操作演示面板
+      const demoPanel = createDemoPanel();
+      
+      // 示例1: 为字段添加自定义样式和事件
+      if (nameField) {
+        enhanceNameField(nameField);
       }
 
-      // ========== Eメールアドレス字段后面插入按钮，视觉隐藏/显示身分証番号 ==========
-      const emailFieldCode = '文字列__1行__3'; // Eメールアドレス
-      const idFieldCode = '单行文本框_11'; // パスポート番号／身分証番号
-      const emailInput = document.querySelector('[id$="' + emailFieldCode + '"]');
-      if (emailInput) {
-        const btn2 = document.createElement('button');
-        btn2.type = 'button';
-        btn2.textContent = '视觉隐藏/显示身分証番号';
-        btn2.style.marginLeft = '8px';
-        emailInput.parentNode.insertBefore(btn2, emailInput.nextSibling);
-        let isVisuallyHidden = false;
-        btn2.onclick = function () {
-          if (isVisuallyHidden) {
-            kinlink.formApi.showField(idFieldCode);
-            btn2.textContent = '视觉隐藏身分証番号';
-          } else {
-            kinlink.formApi.visuallyHideField(idFieldCode);
-            btn2.textContent = '显示身分証番号';
-          }
-          isVisuallyHidden = !isVisuallyHidden;
-        };
+      // 示例2: 条件性显示/隐藏字段
+      setupConditionalVisibility();
+
+      // 示例3: 为字段添加自定义验证提示
+      if (emailField) {
+        addCustomValidationToEmail(emailField);
       }
+
+      // 示例4: 字段焦点管理
+      setupFocusManagement([nameField, emailField, phoneField]);
+
+      // 添加演示面板到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(demoPanel, formElement.firstChild);
+
     } catch (error) {
-      console.error('插入按钮并控制字段显示失败:', error);
+      console.error('获取字段元素操作失败:', error);
     }
   });
-})();
-`;
 
-<div className="container py-6 lg:py-10">
-  <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
-        <ArrowLeft className="h-4 w-4" />
-      </Button>
-    </Link>
-    <h1 className="text-3xl font-bold tracking-tight">DOM元素访问控制示例</h1>
-  </div>
+  // 创建演示操作面板
+  function createDemoPanel() {
+    const panel = document.createElement('div');
+    panel.style.cssText = \`
+      margin: 10px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    \`;
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">元素访问机制概览</h2>
-      > 直接操作表单DOM元素，实现高级样式定制和原生事件处理
+    panel.innerHTML = \`
+      <h3 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 18px; font-weight: bold;">
+        字段元素操作演示
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        <button id="highlightFields" style="padding: 10px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          🎯 高亮显示所有字段
+        </button>
+        <button id="toggleCompanyField" style="padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          👁️ 切换公司字段显示
+        </button>
+        <button id="focusFirstField" style="padding: 10px; background: #27ae60; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          📍 聚焦到第一个字段
+        </button>
+        <button id="showFieldInfo" style="padding: 10px; background: #f39c12; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          ℹ️ 显示字段信息
+        </button>
+      </div>
+    \`;
 
-      此示例演示如何使用**kinlink API**获取表单字段的**DOM元素**，进行更精细的控制和定制。通过直接访问原生HTML元素，实现**高级样式**、**自定义事件监听**和**第三方库集成**。
+    // 绑定按钮事件
+    panel.addEventListener('click', handlePanelClick);
 
-      ### DOM访问核心能力
-      - 🎯 **精确元素定位**：获取特定字段的DOM元素引用
-      - 🎨 **原生样式控制**：直接操作CSS样式和类名
-      - 👂 **事件监听增强**：添加自定义原生事件处理
-      - 🔧 **属性动态管理**：设置和修改HTML元素属性
-      - 📦 **第三方集成**：与外部UI库和插件无缝集成
-      - ⚡ **性能优化**：避免重复查询，缓存元素引用
-    </div>
+    return panel;
+  }
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何获取表单字段元素，并在其旁边添加控制按钮，实现对其他字段的条件隐藏和显示功能。示例展示了两种隐藏方式：真实隐藏（hideField）和视觉隐藏（visuallyHideField）的区别和使用场景。
+  // 处理演示面板按钮点击
+  function handlePanelClick(event) {
+    const target = event.target;
+    
+    if (target.id === 'highlightFields') {
+      highlightAllFields();
+    } else if (target.id === 'toggleCompanyField') {
+      toggleCompanyFieldVisibility();
+    } else if (target.id === 'focusFirstField') {
+      focusToFirstField();
+    } else if (target.id === 'showFieldInfo') {
+      showAllFieldsInfo();
+    }
+  }
+
+  // 高亮显示所有字段
+  function highlightAllFields() {
+    const fieldCodes = ['文字列__1行__0', '文字列__1行__1', '文字列__1行__2', '文字列__1行__3', '单行文本框_10'];
+    
+    fieldCodes.forEach((fieldCode, index) => {
+      const element = kinlink.formApi.getFieldElement(fieldCode);
+      if (element) {
+        // 添加高亮效果
+        element.style.transition = 'all 0.3s ease';
+        element.style.background = \`hsl(\${index * 60}, 70%, 95%)\`;
+        element.style.border = \`2px solid hsl(\${index * 60}, 70%, 60%)\`;
+        element.style.borderRadius = '8px';
+        element.style.padding = '10px';
+        
+        // 3秒后移除高亮
+        setTimeout(() => {
+          element.style.background = '';
+          element.style.border = '';
+          element.style.borderRadius = '';
+          element.style.padding = '';
+        }, 3000);
+      }
+    });
+
+    kinlink.formApi.showMessage('info', '所有字段已高亮显示，3秒后恢复正常', 3);
+  }
+
+  // 切换公司字段显示状态
+  let companyFieldHidden = false;
+  function toggleCompanyFieldVisibility() {
+    const companyElement = kinlink.formApi.getFieldElement('单行文本框_10');
+    
+    if (companyElement) {
+      if (companyFieldHidden) {
+        companyElement.style.display = '';
+        kinlink.formApi.showMessage('success', '公司字段已显示', 2);
+      } else {
+        companyElement.style.display = 'none';
+        kinlink.formApi.showMessage('warning', '公司字段已隐藏', 2);
+      }
+      companyFieldHidden = !companyFieldHidden;
+    }
+  }
+
+  // 聚焦到第一个字段
+  function focusToFirstField() {
+    const firstField = kinlink.formApi.getFieldElement('文字列__1行__0');
+    
+    if (firstField) {
+      const input = firstField.querySelector('input, textarea, select');
+      if (input) {
+        input.focus();
+        input.style.boxShadow = '0 0 10px #3498db';
+        setTimeout(() => {
+          input.style.boxShadow = '';
+        }, 2000);
+        kinlink.formApi.showMessage('info', '已聚焦到第一个字段', 2);
+      }
+    }
+  }
+
+  // 显示所有字段信息
+  function showAllFieldsInfo() {
+    const fieldCodes = ['文字列__1行__0', '文字列__1行__1', '文字列__1行__2', '文字列__1行__3', '单行文本框_10'];
+    let info = '字段信息:\\n\\n';
+    
+    fieldCodes.forEach(fieldCode => {
+      const element = kinlink.formApi.getFieldElement(fieldCode);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        info += \`字段代码: \${fieldCode}\\n\`;
+        info += \`位置: \${Math.round(rect.left)}, \${Math.round(rect.top)}\\n\`;
+        info += \`大小: \${Math.round(rect.width)} × \${Math.round(rect.height)}\\n\\n\`;
+      }
+    });
+    
+    alert(info);
+  }
+
+  // 增强姓名字段
+  function enhanceNameField(element) {
+    if (!element) return;
+    
+    const input = element.querySelector('input');
+    if (input) {
+      // 添加输入提示
+      input.placeholder = '请输入您的真实姓名';
+      
+      // 添加自定义事件监听
+      input.addEventListener('input', function() {
+        if (this.value.length > 10) {
+          this.style.borderColor = '#e74c3c';
+          kinlink.formApi.showMessage('warning', '姓名长度不应超过10个字符', 2);
+        } else {
+          this.style.borderColor = '';
+        }
+      });
+    }
+  }
+
+  // 设置条件性可见性
+  function setupConditionalVisibility() {
+    // 监听字段值变化
+    kinlink.events.on(kinlink.FormEvents.FIELD_VALUE_CHANGED, (data) => {
+      const { fieldCode, value } = data;
+      
+      // 如果邮箱字段有值，显示公司字段
+      if (fieldCode === '文字列__1行__3') {
+        const companyElement = kinlink.formApi.getFieldElement('单行文本框_10');
+        if (companyElement) {
+          if (value && value.includes('@')) {
+            companyElement.style.display = '';
+            kinlink.formApi.showMessage('info', '检测到邮箱，已显示公司字段', 2);
+          } else {
+            companyElement.style.display = 'none';
+          }
+        }
+      }
+    });
+  }
+
+  // 为邮箱字段添加自定义验证提示
+  function addCustomValidationToEmail(element) {
+    if (!element) return;
+    
+    const input = element.querySelector('input');
+    if (input) {
+      input.addEventListener('blur', function() {
+        const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        if (this.value && !emailRegex.test(this.value)) {
+          this.style.borderColor = '#e74c3c';
+          kinlink.formApi.showMessage('error', '请输入有效的邮箱地址', 3);
+        } else if (this.value) {
+          this.style.borderColor = '#27ae60';
+        }
+      });
+    }
+  }
+
+  // 设置焦点管理
+  function setupFocusManagement(elements) {
+    elements.forEach((element, index) => {
+      if (!element) return;
+      
+      const input = element.querySelector('input, textarea, select');
+      if (input) {
+        input.addEventListener('keydown', function(e) {
+          // Enter键跳到下一个字段
+          if (e.key === 'Enter' && index < elements.length - 1) {
+            e.preventDefault();
+            const nextElement = elements[index + 1];
+            if (nextElement) {
+              const nextInput = nextElement.querySelector('input, textarea, select');
+              if (nextInput) {
+                nextInput.focus();
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+})();`} 
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键概念</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <strong>真实隐藏 (hideField)</strong>
-          ：完全隐藏字段，其值也不会被提交
-        </li>
-        <li>
-          <strong>视觉隐藏 (visuallyHideField)</strong>
-          ：字段不可见，但其值仍会被提交
-        </li>
-        <li>
-          <strong>DOM操作</strong>：获取字段元素并在其旁边添加交互元素
-        </li>
-        <li>
-          <strong>条件切换</strong>：根据用户交互切换字段的显示状态
-        </li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={sampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">实现细节</h2>
-      <ol className="list-decimal pl-6 space-y-2">
-        <li>
-          使用<code>document.querySelector</code>获取字段输入元素
-        </li>
-        <li>创建按钮元素并设置其样式和文本</li>
-        <li>将按钮插入到字段元素旁边</li>
-        <li>设置按钮点击事件处理程序</li>
-        <li>在点击事件中切换目标字段的显示状态</li>
-        <li>更新按钮文本以反映当前状态</li>
-      </ol>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+    <div>
+      <h2>使用说明</h2>
       <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段修改字段代码。确保使用正确的字段ID以获取正确的元素。
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。通过获取字段元素，您可以实现更高级的字段操作和自定义功能。
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
-          使用<code>document.querySelector</code>
-          时需要小心，确保选择器足够具体以获取正确的元素。通过
-          <code>[id$='fieldCode']</code>
-          可以选择ID以特定字段代码结尾的元素，这在kinlink生成的动态ID中非常有用。
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/11-获取字段元素，并使用条件隐藏.js"
+          className="text-primary hover:underline ml-1"
+          download="11-获取字段元素，并使用条件隐藏.js"
+        >
+          11-获取字段元素，并使用条件隐藏.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          直接操作DOM元素需要谨慎，确保不会破坏表单的原有功能。建议在修改元素前先备份原始状态，以便必要时恢复。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">选择器技巧</h2>
-      <div>在kinlink表单中获取字段元素时，可以使用以下选择器技巧：</div>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <code>[id$='fieldCode']</code> - 选择ID以特定字段代码结尾的元素
-        </li>
-        <li>
-          <code>[data-field-code='fieldCode']</code> -
-          如果字段有data属性，可以使用此选择器
-        </li>
-        <li>
-          <code>.ant-form-item[data-field='fieldCode']</code> -
-          选择特定字段的表单项
-        </li>
-        <li>
-          <code>document.querySelector('[id$="' + "字段代码" + '"]')</code> -
-          结合模板字符串动态构建选择器
-        </li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
         <li>
-          <code>kinlink.formApi.hideField(fieldCode)</code> -
-          完全隐藏字段（值不提交）
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
         </li>
         <li>
-          <code>kinlink.formApi.visuallyHideField(fieldCode)</code> -
-          视觉隐藏字段（值仍提交）
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
         </li>
         <li>
-          <code>kinlink.formApi.showField(fieldCode)</code> - 显示字段
+          <code>kinlink.FormEvents.FIELD_VALUE_CHANGED</code> - 字段值变化事件
+        </li>
+        <li>
+          <code>kinlink.formApi.getFieldElement(fieldCode)</code> -
+          获取指定字段的DOM元素
+        </li>
+        <li>
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
         </li>
       </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>在表单字段旁添加辅助按钮或控件</li>
-        <li>根据其他字段的值条件显示/隐藏信息</li>
-        <li>创建更具交互性和动态性的表单体验</li>
-      </ul>
-    </div>
-
-    <div className="mt-8 not-prose">
-      <Link href="/examples">
-        <Button variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回示例
-        </Button>
-      </Link>
     </div>
   </div>
 </div> 

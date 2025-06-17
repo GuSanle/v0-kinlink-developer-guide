@@ -110,126 +110,156 @@ export const additionalSampleCode = `/**
 })();
 `;
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段动态显隐控制示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">字段显示隐藏控制示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">可见性控制功能概览</h2>
-      > 智能表单字段显隐管理，实现条件式表单布局和用户体验优化
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>字段可见性管理概览</h2>
+      
+      > 动态控制表单字段的显示和隐藏，实现智能表单交互体验
 
-      此示例演示如何使用**kinlink API**动态控制表单字段的可见性。通过**条件逻辑**实现字段的显示和隐藏，创建更加智能和用户友好的表单体验。
+      此示例演示如何使用**kinlink API**控制表单字段的**显示和隐藏状态**。通过**条件逻辑**、**用户交互响应**和**动态界面调整**，创建更加智能和用户友好的表单体验。
 
-      ### 可见性控制核心特性
-      - 👁️ **条件显示**：基于用户选择动态显示相关字段
-      - 🙈 **智能隐藏**：自动隐藏不相关或可选字段
-      - 🔄 **实时切换**：即时响应用户操作的字段显隐
-      - 🎯 **用户体验**：简化表单界面，减少用户困惑
-      - 🛡️ **数据保护**：隐藏字段的数据安全处理
-      - ⚡ **性能优化**：按需显示，提升页面加载速度
+      ### 可见性控制核心功能
+      - 👁️ **字段显示控制**：根据条件动态显示特定字段
+      - 🙈 **字段隐藏机制**：隐藏不相关或条件不满足的字段
+      - 🔄 **实时响应**：基于用户输入实时调整界面布局
+      - 🎯 **条件逻辑**：复杂的字段依赖关系管理
+      - 📱 **界面优化**：减少视觉噪音，提升用户体验
+      - ⚡ **性能友好**：高效的DOM操作和状态管理
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键概念</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>
-          <strong>完全隐藏 (hideField)</strong>
-          ：字段完全不可见，其值也不会被提交
-        </li>
-        <li>
-          <strong>视觉隐藏 (visuallyHideField)</strong>
-          ：字段不可见，但其值仍会被提交
-        </li>
-        <li>
-          <strong>显示字段 (showField)</strong>：恢复字段的可见性
-        </li>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>动态显示指定字段</li>
+        <li>动态隐藏指定字段</li>
+        <li>批量控制多个字段的可见性</li>
+        <li>基于条件的字段显示逻辑</li>
       </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">基本使用示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={sampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
+ * 示例3: 字段显示隐藏控制
+ * 功能：动态控制表单字段的显示和隐藏
+ */
+(function () {
+  kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
+    try {
+      // 隐藏指定字段
+      kinlink.formApi.hideField('单行文本框_10');
+      kinlink.formApi.hideField('日期_2');
+
+      // 显示指定字段
+      kinlink.formApi.showField('文字列__1行__0');
+      kinlink.formApi.showField('文字列__1行__1');
+
+      // 批量隐藏多个字段
+      const fieldsToHide = ['单行文本框_8', '单行文本框_9'];
+      fieldsToHide.forEach((fieldCode) => {
+        kinlink.formApi.hideField(fieldCode);
+      });
+
+      // 创建切换按钮来演示动态控制
+      const toggleButton = document.createElement('button');
+      toggleButton.textContent = '切换字段显示';
+      toggleButton.style.margin = '10px 0';
+      toggleButton.style.padding = '8px 16px';
+      toggleButton.style.backgroundColor = '#3498db';
+      toggleButton.style.color = 'white';
+      toggleButton.style.border = 'none';
+      toggleButton.style.borderRadius = '4px';
+      toggleButton.style.cursor = 'pointer';
+
+      let isHidden = false;
+      toggleButton.addEventListener('click', () => {
+        if (isHidden) {
+          kinlink.formApi.showField('单行文本框_10');
+          kinlink.formApi.showField('日期_2');
+          toggleButton.textContent = '隐藏字段';
+        } else {
+          kinlink.formApi.hideField('单行文本框_10');
+          kinlink.formApi.hideField('日期_2');
+          toggleButton.textContent = '显示字段';
+        }
+        isHidden = !isHidden;
+      });
+
+      // 添加按钮到表单
+      const formElement = document.querySelector('.ant-form') || document.body;
+      formElement.insertBefore(toggleButton, formElement.firstChild);
+    } catch (error) {
+      console.error('控制字段显示隐藏失败:', error);
+    }
+  });
+})();`} 
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">
-        高级示例：获取字段元素并添加控制按钮
-      </h2>
+    <div>
+      <h2>使用说明</h2>
       <div>
-        以下示例展示如何获取字段元素，并在其旁边添加控制按钮以切换其他字段的显示状态。
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。根据您的表单字段，修改代码中的字段代码。您可以根据业务逻辑控制字段的显示和隐藏。
       </div>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={additionalSampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
       <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段和需求修改字段代码。您可以根据业务逻辑控制字段的显示和隐藏。
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/3-字段显示隐藏控制.js"
+          className="text-primary hover:underline ml-1"
+          download="3-字段显示隐藏控制.js"
+        >
+          3-字段显示隐藏控制.js
+        </a>
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
-          选择合适的隐藏方式很重要。如果需要保留字段值用于后续处理，请使用视觉隐藏；如果希望隐藏的字段不参与提交，则使用完全隐藏。
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          隐藏的字段仍然存在于DOM中，只是视觉上不可见。如果需要完全移除字段，请谨慎操作以避免影响表单验证。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
+        <li>
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
+        </li>
+        <li>
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
+        </li>
         <li>
           <code>kinlink.formApi.hideField(fieldCode)</code> -
-          完全隐藏字段（值不提交）
+          隐藏指定字段
         </li>
         <li>
-          <code>kinlink.formApi.visuallyHideField(fieldCode)</code> -
-          视觉隐藏字段（值仍提交）
-        </li>
-        <li>
-          <code>kinlink.formApi.showField(fieldCode)</code> - 显示字段
+          <code>kinlink.formApi.showField(fieldCode)</code> -
+          显示指定字段
         </li>
       </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>基于用户选择显示/隐藏相关字段</li>
-        <li>简化复杂表单，只在需要时显示高级选项</li>
-        <li>根据用户权限控制敏感字段的可见性</li>
-        <li>创建动态性、交互性更强的表单</li>
-      </ul>
-    </div>
-
-    <div className="mt-8 not-prose">
-      <Link href="/examples">
-        <Button variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回示例
-        </Button>
-      </Link>
     </div>
   </div>
 </div> 

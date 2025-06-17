@@ -4,206 +4,757 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">API代理服务集成示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">Kinlink代理示例</h1>
   </div>
 
-  <div className="my-8 space-y-8">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">代理服务实现概览</h2>
-      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-        > 安全的外部API集成解决方案，实现跨域请求和第三方系统无缝对接
-      </div>
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>API代理系统概览</h2>
+      
+      > 构建强大的后端集成能力，实现数据同步和业务流程自动化
 
-      <div className="text-gray-700 leading-7 mb-6">
-        此示例演示如何使用**kinlink代理服务**安全地调用外部API。通过**服务端代理机制**解决跨域限制，同时保护敏感的认证信息不被前端暴露，实现与第三方系统的安全集成。
-      </div>
+      此示例演示如何使用**kinlink proxy API**与外部系统集成，实现数据的**双向同步**、**实时处理**和**业务自动化**。通过代理服务，可以安全地与企业内部系统、第三方API和云服务进行通信。
 
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-4">代理服务核心优势</h3>
-        <ul className="space-y-3 ml-4">
-          <li className="flex items-start gap-2">
-            <span>🔐</span>
-            <div>
-              <strong>安全认证</strong>：敏感Token和API Key在服务端安全管理
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>🌍</span>
-            <div>
-              <strong>跨域解决</strong>：绕过浏览器同源策略限制
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>🔗</span>
-            <div>
-              <strong>系统集成</strong>：与CRM、ERP、HR等外部系统无缝对接
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>🛡️</span>
-            <div>
-              <strong>请求过滤</strong>：服务端验证和过滤所有外部请求
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>⚡</span>
-            <div>
-              <strong>性能优化</strong>：智能缓存和请求去重机制
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span>📊</span>
-            <div>
-              <strong>监控告警</strong>：完整的API调用监控和异常告警
-            </div>
-          </li>
-        </ul>
-      </div>
+      ### API代理核心功能
+      - 🔗 **外部集成**：与第三方API和内部系统无缝对接
+      - 🔐 **安全通信**：加密传输和身份验证机制
+      - 🔄 **数据同步**：实时或批量数据同步处理
+      - ⚡ **高性能**：异步处理和请求优化
+      - 📊 **监控日志**：完整的请求追踪和错误处理
+      - 🛡️ **错误恢复**：自动重试和故障转移机制
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">功能概述</h2>
-      <div className="text-gray-700 leading-7 mb-4">
-        此示例演示如何使用kinlink的代理功能发送API请求。kinlink代理允许您从表单前端安全地调用外部API，无需担心跨域问题或暴露敏感凭据。这对于与外部系统集成、数据验证或动态获取信息非常有用。
-      </div>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>HTTP请求代理和转发</li>
+        <li>数据格式转换和映射</li>
+        <li>认证和权限管理</li>
+        <li>错误处理和重试机制</li>
+      </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">基本示例</h2>
-      <div className="text-gray-700 leading-7 mb-4">
-        以下代码展示了如何在表单提交前使用kinlink代理发送POST请求：
-      </div>
-      <div className="mt-4">
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
         <Tabs defaultValue="javascript">
-          <TabsList>
+          <TabsList className="ml-8">
             <TabsTrigger value="javascript">JavaScript</TabsTrigger>
           </TabsList>
           <TabsContent value="javascript" className="mt-4">
             <CodeBlock 
               code={`/**
- * 示例: kinlink代理
- * 功能：在表单提交前使用代理发送API请求
+ * 示例14: Kinlink代理集成
+ * 功能：使用代理API与外部系统集成，实现数据同步和业务自动化
  */
 (function () {
-  // 监听表单加载完成事件
-  kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, async (data) => {
-    try {
-      const { values } = data;
-      const res = await kinlink.proxy(
-        'https://pokemon36.cybozu.cn/k/v1/record.json',
-        'POST',
-        { 'Content-Type': 'application/json' },
-        {
-          app: 187,
-          record: {
-            单行文本框: { value: 'kinlink' },
-          },
-        },
-      );
-      console.log(res, 'res');
-    } catch (error) {
-      console.error('表单提交前处理失败:', error);
-    }
-  });
-})();`} 
-              language="javascript" 
-            />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
+  // 代理配置
+  const PROXY_CONFIG = {
+    baseUrl: 'https://api.example.com',
+    endpoints: {
+      users: '/api/users',
+      orders: '/api/orders',
+      notifications: '/api/notifications',
+      validation: '/api/validate'
+    },
+    timeout: 10000,
+    retryCount: 3,
+    retryDelay: 1000
+  };
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">高级示例</h2>
-      <div className="text-gray-700 leading-7 mb-4">
-        以下代码展示了一个更复杂的用例，使用代理获取公司信息并自动填充表单字段：
-      </div>
-      <div className="mt-4">
-        <Tabs defaultValue="javascript">
-          <TabsList>
-            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-          </TabsList>
-          <TabsContent value="javascript" className="mt-4">
-            <CodeBlock 
-              code={`/**
- * 示例: 高级kinlink代理用例
- * 功能：使用代理获取外部数据并填充表单字段
- */
-(function () {
+  // 认证配置
+  const AUTH_CONFIG = {
+    type: 'bearer', // 或 'basic', 'api-key'
+    token: null,
+    refreshUrl: '/api/auth/refresh'
+  };
+
+  // 请求队列和状态管理
+  let requestQueue = [];
+  let isProcessingQueue = false;
+  let authToken = null;
+
   kinlink.events.on(kinlink.FormEvents.FORM_LOADED, () => {
     try {
-      // 创建搜索按钮
-      const searchButton = document.createElement('button');
-      searchButton.type = 'button';
-      searchButton.textContent = '搜索公司信息';
-      searchButton.style.marginLeft = '10px';
-      searchButton.style.padding = '5px 10px';
-      searchButton.style.backgroundColor = '#1890ff';
-      searchButton.style.color = 'white';
-      searchButton.style.border = 'none';
-      searchButton.style.borderRadius = '4px';
-      searchButton.style.cursor = 'pointer';
+      console.log('初始化Kinlink代理系统...');
       
-      // 获取公司名称字段
-      const companyField = document.querySelector('[id$="单行文本框_10"]');
-      if (companyField && companyField.parentNode) {
-        companyField.parentNode.insertBefore(searchButton, companyField.nextSibling);
-        
-        // 添加点击事件
-        searchButton.addEventListener('click', async () => {
-          const companyName = kinlink.formApi.getFieldValue('单行文本框_10');
-          if (!companyName) {
-            kinlink.formApi.showError('请先输入公司名称', 3);
-            return;
-          }
-          
-          // 显示加载状态
-          searchButton.disabled = true;
-          searchButton.textContent = '搜索中...';
-          
-          try {
-            // 使用代理请求获取公司信息（示例URL，实际URL需要替换）
-            const response = await kinlink.proxy(
-              'https://api.example.com/company/search',
-              'GET',
-              { 'Content-Type': 'application/json' },
-              { query: companyName }
-            );
-            
-            // 处理响应
-            if (response && response.data) {
-              // 填充相关字段
-              kinlink.formApi.setFieldsValue({
-                '文字列__1行__3': response.data.email,
-                '文字列__1行__2': response.data.phone,
-                '下拉菜单': response.data.category
-              });
-              
-              kinlink.formApi.showSuccess('已自动填充公司相关信息', 3);
-            } else {
-              kinlink.formApi.showWarning('未找到相关公司信息', 3);
-            }
-          } catch (error) {
-            console.error('获取公司信息失败:', error);
-            kinlink.formApi.showError('搜索失败，请稍后再试', 3);
-          } finally {
-            // 恢复按钮状态
-            searchButton.disabled = false;
-            searchButton.textContent = '搜索公司信息';
-          }
-        });
-      }
+      // 创建代理管理面板
+      createProxyDashboard();
+      
+      // 初始化认证
+      initializeAuth();
+      
+      // 设置表单事件监听
+      setupFormEventListeners();
+      
+      // 启动定时任务
+      startPeriodicTasks();
+      
+      console.log('Kinlink代理系统初始化完成');
+      
     } catch (error) {
-      console.error('初始化搜索功能失败:', error);
+      console.error('代理系统初始化失败:', error);
     }
   });
+
+  // 创建代理管理面板
+  function createProxyDashboard() {
+    const dashboardHTML = \`
+      <div id="proxyDashboard" style="
+        background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%);
+        padding: 25px;
+        margin: 20px 0;
+        border-radius: 15px;
+        color: white;
+        box-shadow: 0 6px 25px rgba(142, 68, 173, 0.3);
+      ">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: 700;">
+            🔗 Kinlink代理系统
+          </h2>
+          <div style="font-size: 15px; opacity: 0.95;">
+            实时监控外部API集成状态和数据同步
+          </div>
+        </div>
+        
+        <div id="proxyStats" style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 15px;
+          margin-bottom: 20px;
+        ">
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;" id="totalRequests">0</div>
+            <div style="font-size: 13px; opacity: 0.9;">总请求数</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;" id="successRate">100%</div>
+            <div style="font-size: 13px; opacity: 0.9;">成功率</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;" id="queueLength">0</div>
+            <div style="font-size: 13px; opacity: 0.9;">队列长度</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 600; margin-bottom: 5px;" id="connectionStatus">连接中</div>
+            <div style="font-size: 13px; opacity: 0.9;">连接状态</div>
+      </div>
+    </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <button id="testConnection" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            🔍 测试连接
+          </button>
+          <button id="syncData" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            🔄 同步数据
+          </button>
+          <button id="clearQueue" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            🗑️ 清空队列
+          </button>
+          <button id="showLogs" style="padding: 12px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;">
+            📋 查看日志
+          </button>
+        </div>
+        
+        <div id="requestLog" style="
+          background: rgba(0,0,0,0.2);
+          padding: 15px;
+          border-radius: 8px;
+          max-height: 200px;
+          overflow-y: auto;
+          font-size: 12px;
+          font-family: monospace;
+          line-height: 1.4;
+        ">
+          <div>系统就绪，等待API请求...</div>
+        </div>
+      </div>
+    \`;
+
+    // 插入面板到表单顶部
+    const formElement = document.querySelector('.ant-form') || document.body;
+    const dashboardElement = document.createElement('div');
+    dashboardElement.innerHTML = dashboardHTML;
+    formElement.insertBefore(dashboardElement, formElement.firstChild);
+
+    // 绑定面板事件
+    bindDashboardEvents();
+  }
+
+  // 绑定面板事件
+  function bindDashboardEvents() {
+    const dashboard = document.getElementById('proxyDashboard');
+    if (!dashboard) return;
+
+    dashboard.addEventListener('click', async (e) => {
+      const target = e.target;
+      
+      if (target.id === 'testConnection') {
+        await testApiConnection();
+      } else if (target.id === 'syncData') {
+        await performDataSync();
+      } else if (target.id === 'clearQueue') {
+        clearRequestQueue();
+      } else if (target.id === 'showLogs') {
+        showDetailedLogs();
+      }
+    });
+  }
+
+  // 初始化认证
+  async function initializeAuth() {
+    try {
+      // 尝试从本地存储获取令牌
+      const storedToken = localStorage.getItem('kinlink_proxy_token');
+      if (storedToken) {
+        authToken = storedToken;
+        AUTH_CONFIG.token = storedToken;
+      }
+
+      // 验证令牌有效性
+      if (authToken) {
+        const isValid = await validateToken(authToken);
+        if (!isValid) {
+          await refreshAuthToken();
+        }
+      } else {
+        await requestNewToken();
+      }
+
+      logMessage('认证初始化完成', 'success');
+    } catch (error) {
+      logMessage(\`认证失败: \${error.message}\`, 'error');
+    }
+  }
+
+  // 验证令牌
+  async function validateToken(token) {
+    try {
+      const response = await makeProxyRequest('/api/auth/validate', {
+        method: 'POST',
+        headers: {
+          'Authorization': \`Bearer \${token}\`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      return response.status === 200;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // 刷新认证令牌
+  async function refreshAuthToken() {
+    try {
+      const response = await makeProxyRequest(AUTH_CONFIG.refreshUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': \`Bearer \${authToken}\`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        authToken = data.token;
+        AUTH_CONFIG.token = authToken;
+        localStorage.setItem('kinlink_proxy_token', authToken);
+        logMessage('令牌刷新成功', 'success');
+      } else {
+        throw new Error('令牌刷新失败');
+      }
+    } catch (error) {
+      logMessage(\`令牌刷新失败: \${error.message}\`, 'error');
+      await requestNewToken();
+    }
+  }
+
+  // 请求新令牌
+  async function requestNewToken() {
+    // 这里应该实现获取新令牌的逻辑
+    // 可能需要重新登录或使用其他认证方式
+    logMessage('需要重新认证', 'warning');
+  }
+
+  // 设置表单事件监听
+  function setupFormEventListeners() {
+    // 监听表单提交前事件
+    kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, handleBeforeSubmit);
+        
+    // 监听表单提交后事件
+    kinlink.events.on(kinlink.FormEvents.AFTER_SUBMIT, handleAfterSubmit);
+    
+    // 监听字段值变化
+    kinlink.events.on(kinlink.FormEvents.FIELD_VALUE_CHANGED, handleFieldChange);
+  }
+
+  // 处理提交前事件
+  async function handleBeforeSubmit(data) {
+    try {
+      logMessage('开始表单验证...', 'info');
+      
+      // 调用外部验证API
+      const validationResult = await validateFormData(data.values);
+      
+      if (!validationResult.valid) {
+        kinlink.formApi.showMessage('error', \`验证失败: \${validationResult.message}\`, 5);
+        return false; // 阻止提交
+      }
+      
+      logMessage('表单验证通过', 'success');
+      return true;
+    } catch (error) {
+      logMessage(\`验证过程出错: \${error.message}\`, 'error');
+      kinlink.formApi.showMessage('error', '验证服务暂时不可用，请稍后重试', 3);
+      return false;
+    }
+          }
+          
+  // 处理提交后事件
+  async function handleAfterSubmit(data) {
+    if (data.success) {
+      try {
+        logMessage('开始数据同步...', 'info');
+        
+        // 同步到外部系统
+        await syncToExternalSystems(data.submittedData);
+        
+        // 发送通知
+        await sendNotifications(data.submittedData);
+        
+        logMessage('数据同步完成', 'success');
+      } catch (error) {
+        logMessage(\`同步失败: \${error.message}\`, 'error');
+      }
+    }
+  }
+
+  // 处理字段变化
+  async function handleFieldChange(data) {
+    const { fieldCode, value } = data;
+    
+    // 对特定字段进行实时验证
+    if (fieldCode === '文字列__1行__3') { // 邮箱字段
+      await validateEmailField(value);
+    }
+    
+    // 更新外部系统的草稿
+    queueRequest({
+      type: 'UPDATE_DRAFT',
+      fieldCode,
+      value,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // 执行代理请求
+  async function makeProxyRequest(endpoint, options = {}) {
+    const url = \`\${PROXY_CONFIG.baseUrl}\${endpoint}\`;
+    
+    const requestOptions = {
+      timeout: PROXY_CONFIG.timeout,
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authToken ? \`Bearer \${authToken}\` : undefined,
+        ...options.headers
+      }
+    };
+
+    try {
+      // 使用kinlink的代理功能
+      const response = await kinlink.proxy.request(url, requestOptions);
+      
+      updateStats('success');
+      logMessage(\`请求成功: \${endpoint}\`, 'success');
+      
+      return response;
+    } catch (error) {
+      updateStats('error');
+      logMessage(\`请求失败: \${endpoint} - \${error.message}\`, 'error');
+      
+      // 实现重试逻辑
+      if (shouldRetry(error)) {
+        return await retryRequest(endpoint, options);
+      }
+      
+      throw error;
+    }
+  }
+
+  // 重试请求
+  async function retryRequest(endpoint, options, attempt = 1) {
+    if (attempt > PROXY_CONFIG.retryCount) {
+      throw new Error(\`请求失败，已达到最大重试次数: \${endpoint}\`);
+    }
+
+    logMessage(\`重试请求 (\${attempt}/\${PROXY_CONFIG.retryCount}): \${endpoint}\`, 'warning');
+    
+    // 等待重试延迟
+    await new Promise(resolve => setTimeout(resolve, PROXY_CONFIG.retryDelay * attempt));
+    
+    try {
+      return await makeProxyRequest(endpoint, options);
+    } catch (error) {
+      return await retryRequest(endpoint, options, attempt + 1);
+    }
+  }
+
+  // 判断是否应该重试
+  function shouldRetry(error) {
+    const retryableErrors = ['NETWORK_ERROR', 'TIMEOUT', 'SERVER_ERROR'];
+    return retryableErrors.some(errorType => error.message.includes(errorType));
+  }
+
+  // 验证表单数据
+  async function validateFormData(formData) {
+    try {
+      const response = await makeProxyRequest(PROXY_CONFIG.endpoints.validation, {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return result;
+            } else {
+        return { valid: false, message: '验证服务返回错误' };
+      }
+    } catch (error) {
+      return { valid: false, message: error.message };
+    }
+  }
+
+  // 验证邮箱字段
+  async function validateEmailField(email) {
+    if (!email || !email.includes('@')) return;
+
+    try {
+      const response = await makeProxyRequest('/api/validate/email', {
+        method: 'POST',
+        body: JSON.stringify({ email })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (!result.valid) {
+          kinlink.formApi.showMessage('warning', result.message, 3);
+        }
+            }
+          } catch (error) {
+      console.warn('邮箱验证失败:', error);
+    }
+  }
+
+  // 同步到外部系统
+  async function syncToExternalSystems(data) {
+    const syncTasks = [
+      syncToUserSystem(data),
+      syncToOrderSystem(data),
+      updateAnalytics(data)
+    ];
+
+    const results = await Promise.allSettled(syncTasks);
+    
+    results.forEach((result, index) => {
+      if (result.status === 'rejected') {
+        logMessage(\`同步任务 \${index + 1} 失败: \${result.reason.message}\`, 'error');
+      }
+    });
+  }
+
+  // 同步到用户系统
+  async function syncToUserSystem(data) {
+    return await makeProxyRequest(PROXY_CONFIG.endpoints.users, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'create_or_update',
+        userData: extractUserData(data)
+      })
+    });
+  }
+
+  // 同步到订单系统
+  async function syncToOrderSystem(data) {
+    return await makeProxyRequest(PROXY_CONFIG.endpoints.orders, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'create',
+        orderData: extractOrderData(data)
+      })
+    });
+  }
+
+  // 更新分析数据
+  async function updateAnalytics(data) {
+    return await makeProxyRequest('/api/analytics/events', {
+      method: 'POST',
+      body: JSON.stringify({
+        event: 'form_submission',
+        timestamp: new Date().toISOString(),
+        data: data
+      })
+    });
+  }
+
+  // 发送通知
+  async function sendNotifications(data) {
+    const notifications = [
+      {
+        type: 'email',
+        to: data['文字列__1行__3'], // 邮箱字段
+        template: 'submission_confirmation',
+        data: data
+      },
+      {
+        type: 'webhook',
+        url: 'https://hooks.example.com/form-submission',
+        data: data
+      }
+    ];
+
+    for (const notification of notifications) {
+      try {
+        await makeProxyRequest(PROXY_CONFIG.endpoints.notifications, {
+          method: 'POST',
+          body: JSON.stringify(notification)
+        });
+        logMessage(\`通知发送成功: \${notification.type}\`, 'success');
+      } catch (error) {
+        logMessage(\`通知发送失败: \${notification.type} - \${error.message}\`, 'error');
+      }
+    }
+  }
+
+  // 提取用户数据
+  function extractUserData(formData) {
+    return {
+      name: formData['文字列__1行__0'],
+      email: formData['文字列__1行__3'],
+      phone: formData['文字列__1行__2'],
+      company: formData['单行文本框_10']
+    };
+  }
+
+  // 提取订单数据
+  function extractOrderData(formData) {
+    return {
+      customerEmail: formData['文字列__1行__3'],
+      orderDate: new Date().toISOString(),
+      items: [], // 根据表单数据解析
+      total: 0 // 根据表单数据计算
+    };
+  }
+
+  // 队列管理
+  function queueRequest(request) {
+    requestQueue.push({
+      ...request,
+      id: Date.now(),
+      status: 'pending'
+    });
+    
+    updateQueueDisplay();
+    
+    if (!isProcessingQueue) {
+      processQueue();
+    }
+  }
+
+  // 处理请求队列
+  async function processQueue() {
+    if (isProcessingQueue || requestQueue.length === 0) return;
+    
+    isProcessingQueue = true;
+    
+    while (requestQueue.length > 0) {
+      const request = requestQueue.shift();
+      
+      try {
+        await processQueuedRequest(request);
+        logMessage(\`队列请求处理成功: \${request.type}\`, 'success');
+      } catch (error) {
+        logMessage(\`队列请求处理失败: \${request.type} - \${error.message}\`, 'error');
+      }
+      
+      updateQueueDisplay();
+    }
+    
+    isProcessingQueue = false;
+  }
+
+  // 处理队列中的请求
+  async function processQueuedRequest(request) {
+    switch (request.type) {
+      case 'UPDATE_DRAFT':
+        return await updateDraft(request);
+      case 'SYNC_DATA':
+        return await syncSingleData(request);
+      default:
+        throw new Error(\`未知请求类型: \${request.type}\`);
+    }
+  }
+
+  // 更新草稿
+  async function updateDraft(request) {
+    return await makeProxyRequest('/api/drafts/update', {
+      method: 'PUT',
+      body: JSON.stringify({
+        fieldCode: request.fieldCode,
+        value: request.value,
+        timestamp: request.timestamp
+      })
+    });
+  }
+
+  // 测试API连接
+  async function testApiConnection() {
+    try {
+      logMessage('测试API连接...', 'info');
+      
+      const response = await makeProxyRequest('/api/health', {
+        method: 'GET'
+      });
+
+      if (response.ok) {
+        logMessage('API连接正常', 'success');
+        kinlink.formApi.showMessage('success', 'API连接测试成功', 2);
+        updateConnectionStatus('connected');
+      } else {
+        throw new Error('API返回错误状态');
+      }
+    } catch (error) {
+      logMessage(\`API连接失败: \${error.message}\`, 'error');
+      kinlink.formApi.showMessage('error', 'API连接测试失败', 2);
+      updateConnectionStatus('disconnected');
+    }
+  }
+
+  // 执行数据同步
+  async function performDataSync() {
+    try {
+      logMessage('开始手动数据同步...', 'info');
+      
+      const formData = kinlink.formApi.getAllFieldValues();
+      await syncToExternalSystems(formData);
+      
+      logMessage('手动数据同步完成', 'success');
+      kinlink.formApi.showMessage('success', '数据同步成功', 2);
+    } catch (error) {
+      logMessage(\`数据同步失败: \${error.message}\`, 'error');
+      kinlink.formApi.showMessage('error', '数据同步失败', 2);
+    }
+  }
+
+  // 清空请求队列
+  function clearRequestQueue() {
+    requestQueue = [];
+    updateQueueDisplay();
+    logMessage('请求队列已清空', 'info');
+    kinlink.formApi.showMessage('info', '队列已清空', 2);
+    }
+
+  // 显示详细日志
+  function showDetailedLogs() {
+    const logs = document.getElementById('requestLog').innerHTML;
+    const newWindow = window.open('', '_blank', 'width=800,height=600');
+    newWindow.document.write(\`
+      <html>
+        <head><title>API请求日志</title></head>
+        <body style="font-family: monospace; padding: 20px;">
+          <h1>API请求详细日志</h1>
+          <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+            \${logs}
+          </div>
+        </body>
+      </html>
+    \`);
+  }
+
+  // 记录日志消息
+  function logMessage(message, type = 'info') {
+    const timestamp = new Date().toLocaleTimeString();
+    const logElement = document.getElementById('requestLog');
+    
+    if (logElement) {
+      const colors = {
+        info: '#3498db',
+        success: '#27ae60',
+        warning: '#f39c12',
+        error: '#e74c3c'
+      };
+      
+      const newLog = document.createElement('div');
+      newLog.style.color = colors[type] || colors.info;
+      newLog.innerHTML = \`[\${timestamp}] \${message}\`;
+      
+      logElement.appendChild(newLog);
+      
+      // 保持最多50条日志
+      while (logElement.children.length > 50) {
+        logElement.removeChild(logElement.firstChild);
+      }
+      
+      // 滚动到底部
+      logElement.scrollTop = logElement.scrollHeight;
+    }
+  }
+
+  // 更新统计数据
+  let totalRequests = 0;
+  let successfulRequests = 0;
+  
+  function updateStats(type) {
+    totalRequests++;
+    if (type === 'success') {
+      successfulRequests++;
+    }
+    
+    const successRate = totalRequests > 0 ? Math.round((successfulRequests / totalRequests) * 100) : 100;
+    
+    document.getElementById('totalRequests').textContent = totalRequests;
+    document.getElementById('successRate').textContent = \`\${successRate}%\`;
+  }
+
+  // 更新队列显示
+  function updateQueueDisplay() {
+    document.getElementById('queueLength').textContent = requestQueue.length;
+  }
+
+  // 更新连接状态
+  function updateConnectionStatus(status) {
+    const statusElement = document.getElementById('connectionStatus');
+    const statusTexts = {
+      connected: '已连接',
+      disconnected: '未连接',
+      connecting: '连接中'
+    };
+    
+    statusElement.textContent = statusTexts[status] || status;
+  }
+
+  // 启动定时任务
+  function startPeriodicTasks() {
+    // 每30秒检查连接状态
+    setInterval(async () => {
+      await testApiConnection();
+    }, 30000);
+    
+    // 每10秒处理队列
+    setInterval(() => {
+      if (!isProcessingQueue && requestQueue.length > 0) {
+        processQueue();
+      }
+    }, 10000);
+  }
 })();`} 
               language="javascript" 
             />
@@ -212,126 +763,60 @@ import { Button } from "@/components/ui/button";
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">
-        代理功能参数说明
-      </h2>
-      <div className="overflow-x-auto my-6">
-        <table className="min-w-full border-collapse border border-gray-300 rounded-lg">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
-                参数
-              </th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
-                类型
-              </th>
-              <th className="border border-gray-300 px-4 py-3 text-left font-semibold">
-                说明
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">url</td>
-              <td className="border border-gray-300 px-4 py-3">String</td>
-              <td className="border border-gray-300 px-4 py-3">
-                API请求的完整URL
-              </td>
-            </tr>
-            <tr className="bg-gray-50">
-              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">method</td>
-              <td className="border border-gray-300 px-4 py-3">String</td>
-              <td className="border border-gray-300 px-4 py-3">
-                HTTP方法，如'GET'、'POST'、'PUT'、'DELETE'等
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">headers</td>
-              <td className="border border-gray-300 px-4 py-3">Object</td>
-              <td className="border border-gray-300 px-4 py-3">
-                HTTP请求头，如{`'Content-Type': 'application/json'`}
-              </td>
-            </tr>
-            <tr className="bg-gray-50">
-              <td className="border border-gray-300 px-4 py-3 font-mono text-sm">body</td>
-              <td className="border border-gray-300 px-4 py-3">
-                Object/null
-              </td>
-              <td className="border border-gray-300 px-4 py-3">
-                请求体数据，对于POST/PUT请求必需，GET请求可为null
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div>
+      <h2>使用说明</h2>
+      <div>
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。请根据您的实际API配置修改代理地址、认证信息和端点路径。
+      </div>
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/14-kinlink proxy.js"
+          className="text-primary hover:underline ml-1"
+          download="14-kinlink proxy.js"
+        >
+          14-kinlink proxy.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
+          使用代理功能需要确保目标API支持CORS或配置了适当的代理服务器。认证信息应安全存储，避免在前端代码中暴露敏感数据。
+        </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">使用场景</h2>
-      <ul className="list-disc pl-6 space-y-3">
-        <li className="leading-7">
-          <strong>数据验证</strong>
-          ：验证表单中输入的数据（如邮箱、公司名称等）
+    <div>
+      <h2>API参考</h2>
+      <div>此示例使用了以下kinlink API：</div>
+      <ul>
+        <li>
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
         </li>
-        <li className="leading-7">
-          <strong>数据填充</strong>：根据已有信息自动填充其他字段
+        <li>
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
         </li>
-        <li className="leading-7">
-          <strong>第三方集成</strong>：将表单数据发送到外部系统或服务
+        <li>
+          <code>kinlink.FormEvents.BEFORE_SUBMIT</code> - 表单提交前事件
         </li>
-        <li className="leading-7">
-          <strong>数据查询</strong>：从外部数据源获取信息
+        <li>
+          <code>kinlink.FormEvents.AFTER_SUBMIT</code> - 表单提交后事件
         </li>
-        <li className="leading-7">
-          <strong>通知和消息</strong>：发送邮件、短信或其他通知
+        <li>
+          <code>kinlink.FormEvents.FIELD_VALUE_CHANGED</code> - 字段值变化事件
         </li>
-        <li className="leading-7">
-          <strong>工作流触发</strong>：触发外部系统中的工作流程
+        <li>
+          <code>kinlink.proxy.request(url, options)</code> -
+          执行代理HTTP请求
         </li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">最佳实践</h2>
-      <ul className="list-disc pl-6 space-y-3">
-        <li className="leading-7">始终使用try/catch处理API请求异常</li>
-        <li className="leading-7">为长时间运行的请求提供适当的用户反馈（如加载状态）</li>
-        <li className="leading-7">处理请求失败的情况，并向用户提供友好的错误消息</li>
-        <li className="leading-7">仅发送必要的数据，避免传输敏感信息</li>
-        <li className="leading-7">使用HTTPS URL确保数据传输安全</li>
-        <li className="leading-7">考虑请求的性能影响，避免过多或过大的请求</li>
-      </ul>
-    </div>
-
-    <div className="p-6 border rounded-lg bg-yellow-50 border-yellow-200 my-8">
-      <h3 className="font-semibold text-yellow-800 mb-3">注意事项</h3>
-      <div className="text-yellow-800 leading-7">
-        kinlink代理功能受到安全策略和跨域限制。确保目标API允许来自kinlink服务器的请求。敏感操作（如支付处理）应使用适当的安全措施和授权。在生产环境中，避免直接在前端存储API密钥或访问令牌。
-      </div>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight mb-4">API参考</h2>
-      <div className="text-gray-700 leading-7 mb-4">此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-3">
-        <li className="leading-7">
-          kinlink.proxy(url, method, headers, body) - 发送API代理请求
+        <li>
+          <code>kinlink.formApi.getAllFieldValues()</code> -
+          获取所有字段值
         </li>
-        <li className="leading-7">
-          kinlink.events.on(kinlink.FormEvents.BEFORE_SUBMIT, callback) - 监听表单提交前事件
-        </li>
-        <li className="leading-7">
-          kinlink.events.on(kinlink.FormEvents.FORM_LOADED, callback) - 监听表单加载完成事件
-        </li>
-        <li className="leading-7">
-          kinlink.formApi.getFieldValue(fieldCode) - 获取字段值
-        </li>
-        <li className="leading-7">
-          kinlink.formApi.setFieldsValue(valuesObject) - 设置多个字段的值
-        </li>
-        <li className="leading-7">
-          kinlink.formApi.showSuccess/showError/showWarning(message, duration) - 显示消息
+        <li>
+          <code>kinlink.formApi.showMessage(type, message, duration)</code> -
+          显示消息提示
         </li>
       </ul>
     </div>

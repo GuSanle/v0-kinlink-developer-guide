@@ -4,7 +4,53 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const sampleCode = `/**
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
+  <div className="flex items-center gap-4 mb-8">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
+    </Link>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">字段样式视觉定制示例</h1>
+  </div>
+
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>样式定制系统概览</h2>
+      
+      > 全面的表单字段外观定制解决方案，实现品牌一致的视觉体验
+
+      此示例演示如何使用**kinlink API**对表单字段进行**深度样式定制**。通过**动态CSS控制**、**主题切换**和**响应式设计**，创建符合品牌风格的表单界面。
+
+      ### 样式定制核心能力
+      - 🎨 **标签样式控制**：字体、颜色、大小的精细调整
+      - 🖌️ **组件外观定制**：输入框、按钮、选择器的视觉重设计
+      - 🌈 **主题系统**：一键切换不同风格主题
+      - 📱 **响应式适配**：适应不同设备屏幕的样式调整
+      - 🔄 **动态样式更新**：基于状态和条件的实时样式变化
+      - ⚡ **性能优化**：CSS变量和样式缓存机制
+    </div>
+
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>设置单个字段标签样式</li>
+        <li>设置单个字段输入组件样式</li>
+        <li>批量设置多个字段标签样式</li>
+        <li>批量设置多个字段组件样式</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例2: 字段样式自定义
  * 功能：修改表单字段标签和组件的样式
  */
@@ -49,120 +95,61 @@ export const sampleCode = `/**
       console.error('设置字段样式失败:', error);
     }
   });
-})();
-`;
-
-<div className="container py-6 lg:py-10">
-  <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
-        <ArrowLeft className="h-4 w-4" />
-      </Button>
-    </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段样式视觉定制示例</h1>
-  </div>
-
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">样式定制系统概览</h2>
-      > 全面的表单字段外观定制解决方案，实现品牌一致的视觉体验
-
-      此示例演示如何使用**kinlink API**对表单字段进行**深度样式定制**。通过**动态CSS控制**、**主题切换**和**响应式设计**，创建符合品牌风格的表单界面。
-
-      ### 样式定制核心能力
-      - 🎨 **标签样式控制**：字体、颜色、大小的精细调整
-      - 🖌️ **组件外观定制**：输入框、按钮、选择器的视觉重设计
-      - 🌈 **主题系统**：一键切换不同风格主题
-      - 📱 **响应式适配**：适应不同设备屏幕的样式调整
-      - 🔄 **动态样式更新**：基于状态和条件的实时样式变化
-      - ⚡ **性能优化**：CSS变量和样式缓存机制
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">功能概述</h2>
-      <div>
-        此示例演示如何使用kinlink
-        API自定义表单字段的样式，包括修改字段标签和输入组件的样式属性，使表单更符合您的品牌风格或提高用户体验。
+})();`} 
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>设置单个字段标签样式</li>
-        <li>设置单个字段输入组件样式</li>
-        <li>批量设置多个字段标签样式</li>
-        <li>批量设置多个字段组件样式</li>
-      </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock code={sampleCode} language="javascript" />
-        </TabsContent>
-      </Tabs>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+    <div>
+      <h2>使用说明</h2>
       <div>
-        将代码复制到您的kinlink自定义JavaScript中，根据您的表单字段和需求修改样式。您可以使用标准的CSS属性来自定义样式。
+        要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。根据您的表单字段，修改代码中的字段代码和样式属性。您可以使用标准的CSS属性来自定义样式。
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
+      <div>
+        完整代码请下载查看：
+        <a
+          href="/samplesCodes/2-字段样式自定义.js"
+          className="text-primary hover:underline ml-1"
+          download="2-字段样式自定义.js"
+        >
+          2-字段样式自定义.js
+        </a>
+      </div>
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
           样式修改会覆盖系统默认样式。如果遇到样式冲突，可能需要增加CSS选择器的特异性或使用!important规则。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
         <li>
-          <code>
-            kinlink.formApi.setFieldLabelStyle(fieldCode, styleObject)
-          </code>{" "}
-          - 设置字段标签样式
+          <code>kinlink.events.on(eventName, callback)</code> -
+          注册事件监听器
         </li>
         <li>
-          <code>
-            kinlink.formApi.setFieldComponentStyle(fieldCode, styleObject)
-          </code>{" "}
-          - 设置字段组件样式
+          <code>kinlink.FormEvents.FORM_LOADED</code> - 表单加载完成事件
         </li>
         <li>
-          <code>
-            kinlink.formApi.setFieldsComponentStyles(stylesObject)
-          </code>{" "}
-          - 批量设置多个字段组件样式
+          <code>kinlink.formApi.setFieldLabelStyle(fieldCode, styleObject)</code> -
+          设置字段标签样式
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldComponentStyle(fieldCode, styleObject)</code> -
+          设置字段组件样式
+        </li>
+        <li>
+          <code>kinlink.formApi.setFieldsComponentStyles(stylesObject)</code> -
+          批量设置多个字段组件样式
         </li>
       </ul>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">常见应用场景</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>突出显示必填字段或重要字段</li>
-        <li>根据字段内容或状态改变样式（如错误状态）</li>
-        <li>统一表单风格以符合企业VI</li>
-        <li>优化特定字段的用户交互体验</li>
-      </ul>
-    </div>
-
-    <div className="mt-8 not-prose">
-      <Link href="/examples">
-        <Button variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回示例
-        </Button>
-      </Link>
     </div>
   </div>
 </div> 

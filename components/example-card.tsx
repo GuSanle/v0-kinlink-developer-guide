@@ -1,18 +1,25 @@
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ExampleCardProps {
-  title: string
-  description: string
-  category: string
-  features: string[]
-  href: string
-  difficulty?: string
-  isNew?: boolean
-  isPopular?: boolean
+  title: string;
+  description: string;
+  category: string;
+  features: string[];
+  href: string;
+  difficulty?: string;
+  isNew?: boolean;
+  isPopular?: boolean;
 }
 
 export function ExampleCard({
@@ -37,11 +44,13 @@ export function ExampleCard({
         </div>
         <div className="flex items-center gap-2 mt-1">
           <Badge variant="outline">{category}</Badge>
-          <Badge variant="secondary" className="bg-slate-100">
+          <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-700">
             {difficulty}
           </Badge>
         </div>
-        <CardDescription className="line-clamp-2 mt-2">{description}</CardDescription>
+        <CardDescription className="line-clamp-2 mt-2">
+          {description}
+        </CardDescription>
       </CardHeader>
       <CardContent className="p-6 pt-0 text-sm flex-grow">
         <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
@@ -52,12 +61,15 @@ export function ExampleCard({
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <Link href={href} className="w-full">
-          <Button className="w-full" variant="outline">
+          <Button
+            className="w-full bg-white text-gray-900 border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700"
+            variant="outline"
+          >
             查看示例
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
       </CardFooter>
     </Card>
-  )
+  );
 }

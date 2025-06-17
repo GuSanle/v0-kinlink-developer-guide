@@ -4,41 +4,40 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">多步骤表单流程控制示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">多步骤表单示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">分步表单系统概览</h2>
-      > 构建用户友好的分步填写体验，实现复杂表单的逐步引导和验证
+  <div className="space-y-8 px-8">
+    <div>
+      <h2>多步骤表单管理概览</h2>
+      
+      > 构建流畅的分步式表单体验，提升用户填写效率和完成率
 
-      此示例演示如何创建**智能多步骤表单**，将复杂的表单分解为**逐步填写**的简单步骤。通过**进度指示**、**步骤验证**和**数据保存**，提供流畅的用户体验。
+      此示例演示如何使用**kinlink API**创建**多步骤表单**，通过分段填写的方式提升用户体验。系统会自动管理步骤切换、数据验证和进度展示，让复杂表单变得简单易用。
 
-      ### 分步表单核心特性
-      - 📊 **进度跟踪**：可视化显示当前进度和剩余步骤
-      - ✅ **分步验证**：每个步骤独立验证，减少用户挫败感
-      - 💾 **状态保存**：支持中途保存和继续填写
-      - 🔄 **灵活导航**：支持前进、后退和跳转操作
-      - 🎯 **条件分支**：基于答案显示不同的后续步骤
-      - 📱 **响应式设计**：适配各种设备的分步体验
+      ### 多步骤表单核心功能
+      - 📝 **分步导航**：清晰的步骤指示和进度展示
+      - ✅ **智能验证**：每步完成前的数据校验
+      - 💾 **自动保存**：实时保存用户输入数据
+      - 🔄 **灵活切换**：支持前进、后退和跳转
+      - 📱 **响应式设计**：适配各种屏幕尺寸
+      - 🎯 **用户引导**：清晰的操作指引和提示
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
-        <li>步骤配置和字段分组</li>
-        <li>步骤导航和进度指示器</li>
-        <li>每步字段验证</li>
-        <li>提交前摘要页面</li>
-        <li>自定义UI和操作按钮</li>
-        <li>移动端适配</li>
+    <div>
+      <h2>关键功能</h2>
+      <ul>
+        <li>动态步骤管理和导航</li>
+        <li>分步数据验证和提交</li>
+        <li>进度指示和视觉反馈</li>
+        <li>自动保存和恢复机制</li>
       </ul>
     </div>
 
