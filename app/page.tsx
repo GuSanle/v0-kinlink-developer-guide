@@ -138,7 +138,7 @@ const Home = () => {
             快速开始
           </h2>
           <div className="bg-card border border-border rounded-lg p-8 text-left">
-            <pre className="text-sm overflow-x-auto text-card-foreground">
+            <pre className="text-sm overflow-x-auto text-card-foreground rounded-lg">
               <code className="text-green-600 dark:text-green-400">
                 {`// 基础用法示例
 (function() {
