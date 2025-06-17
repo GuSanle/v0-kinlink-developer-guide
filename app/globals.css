@@ -62,7 +62,174 @@
   @apply prose prose-blue dark:prose-invert max-w-none;
 }
 
-/* 删除所有 PrismJS 和行号相关样式 */
+/* MDX 内容样式优化 */
+.mdx-content {
+  @apply max-w-none;
+}
+
+.mdx-content h1 {
+  @apply text-3xl font-bold tracking-tight mb-6 mt-10 first:mt-0 text-foreground;
+}
+
+/* 特殊处理：页面标题对齐 */
+.mdx-content .flex.items-center h1 {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 2.5rem !important;
+}
+
+.mdx-content h2 {
+  @apply text-2xl font-bold tracking-tight mb-4 mt-10 first:mt-0 text-foreground;
+}
+
+.mdx-content h3 {
+  @apply text-xl font-semibold mb-3 mt-8 first:mt-0 text-foreground;
+}
+
+.mdx-content h4 {
+  @apply text-lg font-semibold mb-2 mt-6 first:mt-0 text-foreground;
+}
+
+/* p 标签样式直接在 CSS 中处理，避免组件嵌套问题 */
+.mdx-content p {
+  @apply mb-4 leading-7 text-foreground;
+}
+
+.mdx-content ul, .mdx-content ol {
+  @apply mb-6 pl-6;
+}
+
+.mdx-content li {
+  @apply mb-2 text-foreground;
+}
+
+.mdx-content blockquote {
+  @apply border-l-4 border-primary/30 pl-6 py-2 italic my-6 text-muted-foreground bg-muted/30 rounded-r;
+}
+
+/* 只对非 CodeBlock 组件的 code 元素应用样式 */
+.mdx-content code:not(.hljs) {
+  @apply bg-muted px-2 py-1 rounded text-sm font-mono text-foreground;
+}
+
+/* 确保 CodeBlock 组件的样式不被覆盖 */
+.mdx-content .not-prose {
+  all: revert;
+  isolation: isolate;
+}
+
+.mdx-content .not-prose pre {
+  all: revert;
+}
+
+.mdx-content .not-prose code {
+  all: revert;
+}
+
+/* 修复负边距容器中的 CodeBlock 样式 */
+.mdx-content .-ml-8 .not-prose {
+  isolation: isolate;
+  z-index: 1;
+  position: relative;
+}
+
+/* 强制应用 CodeBlock 的原始样式 */
+.mdx-content .not-prose,
+.mdx-content .-ml-8 .not-prose {
+  background: #0d1117 !important;
+  border: 1px solid #30363d !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  margin: 1.5rem 0 !important;
+}
+
+.mdx-content .not-prose pre,
+.mdx-content .-ml-8 .not-prose pre {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+  margin: 0 !important;
+  padding: 1rem !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  overflow-x: auto !important;
+}
+
+.mdx-content .not-prose code,
+.mdx-content .-ml-8 .not-prose code {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
+/* 复制按钮样式 */
+.mdx-content .not-prose button,
+.mdx-content .-ml-8 .not-prose button {
+  background: rgb(64 64 64) !important;
+  color: rgb(212 212 212) !important;
+  border: none !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem !important;
+  position: absolute !important;
+  right: 0.75rem !important;
+  top: 0.75rem !important;
+  z-index: 10 !important;
+}
+
+/* 只对非 CodeBlock 组件的 pre 元素应用样式 */
+.mdx-content pre:not(.not-prose pre) {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-6;
+}
+
+.mdx-content pre:not(.not-prose pre) code {
+  @apply bg-transparent p-0;
+}
+
+.mdx-content a {
+  @apply text-primary hover:underline font-medium;
+}
+
+.mdx-content strong {
+  @apply font-semibold text-foreground;
+}
+
+.mdx-content .space-y-8 > * + * {
+  @apply mt-8;
+}
+
+.mdx-content .space-y-6 > * + * {
+  @apply mt-6;
+}
+
+.mdx-content .space-y-4 > * + * {
+  @apply mt-4;
+}
+
+/* 改善列表样式 */
+.mdx-content ul {
+  @apply list-disc;
+}
+
+.mdx-content ol {
+  @apply list-decimal;
+}
+
+/* 改善表格样式（如果有的话） */
+.mdx-content table {
+  @apply w-full border-collapse my-6;
+}
+
+.mdx-content th, .mdx-content td {
+  @apply border border-border px-4 py-2 text-left;
+}
+
+.mdx-content th {
+  @apply bg-muted font-semibold;
+}
 
 /* Dark mode adjustments */
 .dark pre[class*="language-"] {

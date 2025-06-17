@@ -4,19 +4,20 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-<div className="container py-6 lg:py-10">
+<div className="container max-w-4xl py-6 lg:py-10 mdx-content">
   <div className="flex items-center gap-4 mb-8">
-    <Link href="/examples">
-      <Button variant="outline" size="icon">
+    <Link href="/examples" className="flex items-center">
+      <Button variant="outline" size="icon" className="h-10 w-10 flex items-center justify-center">
         <ArrowLeft className="h-4 w-4" />
       </Button>
     </Link>
-    <h1 className="text-3xl font-bold tracking-tight">字段标签动态修改示例</h1>
+    <h1 className="text-3xl font-bold tracking-tight m-0 p-0 leading-[1.2] flex items-center">字段标签动态修改示例</h1>
   </div>
 
-  <div className="my-8 space-y-6">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">标签修改系统概览</h2>
+  <div className="space-y-8 pl-8">
+    <div>
+      <h2>标签修改系统概览</h2>
+      
       > 灵活的字段标签内容管理，实现多语言支持和动态文本更新
 
       此示例演示如何使用**kinlink API**动态修改表单字段的**标签文本内容**。通过**程序化标签控制**，实现**多语言切换**、**个性化标签**和**上下文相关的提示信息**。
@@ -30,9 +31,9 @@ import { Button } from "@/components/ui/button";
       - 📱 **响应式文本**：适配不同屏幕尺寸的标签长度
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">关键功能</h2>
-      <ul className="list-disc pl-6 space-y-2">
+    <div>
+      <h2>关键功能</h2>
+      <ul>
         <li>监听表单加载完成事件</li>
         <li>
           通过<code>setFieldLabelText</code>方法修改字段标签文本
@@ -41,15 +42,16 @@ import { Button } from "@/components/ui/button";
       </ul>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">代码示例</h2>
-      <Tabs defaultValue="javascript">
-        <TabsList>
-          <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-        </TabsList>
-        <TabsContent value="javascript">
-          <CodeBlock 
-            code={`/**
+    <div>
+      <h2>代码示例</h2>
+      <div className="-ml-8">
+        <Tabs defaultValue="javascript">
+          <TabsList className="ml-8">
+            <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+          </TabsList>
+          <TabsContent value="javascript" className="mt-4">
+            <CodeBlock 
+              code={`/**
  * 示例1: 修改字段标签
  * 功能：修改表单字段的标签显示文本
  */
@@ -67,14 +69,15 @@ import { Button } from "@/components/ui/button";
     }
   });
 })();`} 
-            language="javascript" 
-          />
-        </TabsContent>
-      </Tabs>
+              language="javascript" 
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">使用说明</h2>
+    <div>
+      <h2>使用说明</h2>
       <div>
         要使用此功能，只需将代码复制到您的kinlink自定义JavaScript中。根据您的表单字段，修改代码中的字段代码（如'文字列__1行__0'）和所需的新标签文本。
       </div>
@@ -82,24 +85,24 @@ import { Button } from "@/components/ui/button";
         完整代码请下载查看：
         <a
           href="/samplesCodes/1-修改字段标签.js"
-          className="text-blue-600 hover:underline ml-1"
+          className="text-primary hover:underline ml-1"
           download="1-修改字段标签.js"
         >
           1-修改字段标签.js
         </a>
       </div>
-      <div className="p-4 border rounded-md bg-yellow-50 border-yellow-200">
-        <h3 className="font-semibold text-yellow-800">注意事项</h3>
-        <div className="text-yellow-800">
+      <div className="p-4 border rounded-md bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700">
+        <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">注意事项</h3>
+        <div className="text-yellow-800 dark:text-yellow-300">
           请确保使用正确的字段代码，字段代码可以在表单设计器中找到。如果字段代码不存在，修改操作将不会生效。
         </div>
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold tracking-tight">API参考</h2>
+    <div>
+      <h2>API参考</h2>
       <div>此示例使用了以下kinlink API：</div>
-      <ul className="list-disc pl-6 space-y-2">
+      <ul>
         <li>
           <code>kinlink.events.on(eventName, callback)</code> -
           注册事件监听器
