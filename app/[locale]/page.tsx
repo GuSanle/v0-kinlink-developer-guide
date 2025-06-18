@@ -8,20 +8,21 @@ import {
 } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
 
-const Home = () => {
+const HomePage = () => {
+  const t = useTranslations();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl lg:text-7xl font-bold text-foreground mb-6">
-            连接 <span className="text-primary">kintone</span> 与外部世界
+            {t('siteTitle')}
           </h1>
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Kinlink 是基于 kintone 构建的强大外部集成系统，让您轻松将 kintone
-            数据分享给外部用户， 提供完整的表单自定义能力和丰富的 JavaScript
-            API。
+            {t('greeting')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/docs">
@@ -182,4 +183,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
